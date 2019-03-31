@@ -6,7 +6,8 @@ export class Main {
     private readonly launchMessage: string = 'Start';
 
     Run() {
-        console.log('running');
+        // console.log('running');
+        this.Start();
     }
 
     Start(): string {

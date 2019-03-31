@@ -2,7 +2,10 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
+        "jsx": "react",
         "sourceMap": true,
-        "outDir": "build"
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "allowJs": true
     }
 }

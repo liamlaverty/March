@@ -1,11 +1,16 @@
 {
   "name": "march",
   "version": "1.0.0",
+  "private": true,
   "description": "messing",
-  "main": "index.js",
+  "main": "index.ts",
   "dependencies": {},
   "devDependencies": {
-    "typescript": "^3.4.1"
+    "lodash": "^4.17.11",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.4.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
