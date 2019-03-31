@@ -4,7 +4,7 @@ export class CanvasManager {
 
     }
 
-    CreateCanvas() {
+    InitCanvasManager() {
         this.theCanvas = document.createElement('canvas');
 
     }
