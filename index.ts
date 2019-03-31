@@ -1,5 +1,13 @@
-function start() {
-    return 'start';
-}
+import { Main } from "./application/_main";
 
-document.body.innerHTML = start();
+export class App {
+    start() {
+        let main = new Main();
+
+
+        while(true) {
+            main.Run();
+        }
+    }
+ 
+}
