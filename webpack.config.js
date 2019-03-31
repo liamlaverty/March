@@ -1,7 +1,8 @@
 const path = require('path');
+/* ===> import './main.scss'; <=== */
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: ['./index.ts'], // , './scss/_main.scss'],
     devtool: 'inline-source-map',
     module: {
         rules: [
@@ -9,7 +10,36 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/
-            }
+            },
+            // {
+            //     test: /\.scss$/,
+            //     use: [
+            //         {
+            //             loader: 'file-loader',
+            //             options: {
+            //                 name: 'css/app.css'
+            //             }
+            //         },
+            //         {
+            //             loader: 'style-loader',
+            //             options: {
+            //                 sourceMap: true
+            //             }
+            //         },
+            //         {
+            //             loader: 'css-loader',
+            //             options: {
+            //                 sourceMap: true
+            //             }
+            //         },
+            //         {
+            //             loader: 'sass-loader',
+            //             options: {
+            //                 sourceMap: true
+            //             }
+            //         }
+            //     ]
+            // }
         ]
     },
     resolve: {
