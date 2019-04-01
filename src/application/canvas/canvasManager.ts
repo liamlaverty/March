@@ -20,6 +20,8 @@ export class CanvasManager {
         const documentDiv = document.getElementById('main_div');
         this.DrawableVector = ViewportHelper.GetSquareInBrowser();
         this.parentCanvas = new ParentCanvas(this.DrawableVector.x, this.DrawableVector.y, 'parent', documentDiv);
+        
+        this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y)
     }
 
 
@@ -27,13 +29,6 @@ export class CanvasManager {
 
     Draw() {
         this.parentCanvas.Draw();
-        // this.ctx.fillStyle = '#A9A9A9';
-        // this.ctx.fillRect(0, 0, this.DrawableVector.y, this.DrawableVector.y);
-
-        // this.ctx.fillStyle = '#0000ff';
-        // this.ctx.fillRect(10, 10, 100, 100);
-
-        // document.body.appendChild(this.theCanvas);
     }
 
 

@@ -8,5 +8,9 @@ import { BaseCanvas } from "./_BaseCanvas";
  * @extends {BaseCanvas}
  */
 export class ChildCanvas extends BaseCanvas {
+ Draw() {
+     console.log('called from child');
+     return super.Draw();
 
+ }
 }
