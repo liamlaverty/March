@@ -1,4 +1,6 @@
 import { Vector2 } from "../../../numerics/models/Vector2.model";
+import { RandomNumberGenerator } from "../../random_generators/random_number.generators";
+import { RandomStringGenerator } from "../../random_generators/random_string.generator";
 
 export class BaseCanvas extends Vector2 {
     protected theCanvas: HTMLCanvasElement;
@@ -15,17 +17,25 @@ export class BaseCanvas extends Vector2 {
         attachedTo.append(this.theCanvas);
     }
 
-    Draw(): CanvasRenderingContext2D {
-        this.ctx.fillStyle = '#A9A9A9';
-        this.ctx.fillRect(0, 0, this.GetWidth(), this.GetHeight());
+    
+    
+    
 
-        this.ctx.fillStyle = '#0000ff';
-        this.ctx.fillRect(10, 10, 100, 100);
+    Draw(): CanvasRenderingContext2D {
+        // console.log('drawing ' + this.theCanvas.id);
+        // this.ctx.fillStyle = '#A9A9A9';
+        // this.ctx.fillRect(0, 0, this.GetWidth(), this.GetHeight());
+        const randomPosition = RandomNumberGenerator.GetRandomVector2(
+            0, this.getValueX(), 
+            0, this.getValueY());
+        this.ctx.fillStyle = RandomStringGenerator.GetRandomHexColour();
+        this.ctx.fillRect(randomPosition.x, randomPosition.y, 10, 10);
 
         return this.ctx;
     }
 
     protected GreedyClearCanvas() {
+        console.log('greedy clearing')
         this.ctx.clearRect(0, 0, this.GetWidth(), this.GetHeight());
     }
 

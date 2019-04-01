@@ -20,12 +20,14 @@ export class CanvasManager {
         const documentDiv = document.getElementById('main_div');
         this.DrawableVector = ViewportHelper.GetSquareInBrowser();
         this.parentCanvas = new ParentCanvas(this.DrawableVector.x, this.DrawableVector.y, 'parent', documentDiv);
-        
-        this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y)
+
+        for (let i = 0; i < 10; i++) {
+            this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y)
+        }
     }
 
 
-    
+
 
     Draw() {
         this.parentCanvas.Draw();

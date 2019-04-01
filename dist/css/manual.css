@@ -56,9 +56,11 @@ body {
 	background:#0f0f0f;
 }
 canvas {
-    background:white;
+    background:transparent;
     display:block;
-    margin: 0 auto;
+	margin: 0 auto;
+	border:1px dashed white;
+	box-sizing: border-box;
 }
 
 #main_div {

@@ -24,8 +24,7 @@ export class ParentCanvas extends BaseCanvas {
    }
 
     Draw(): CanvasRenderingContext2D {
-       console.log('draw called from parent');
-       // super.Draw();
+        this.GreedyClearCanvas();
        for (const childCanvas of this.children) {
            const drawnLayer = childCanvas.Draw();
            this.ctx.drawImage(drawnLayer.canvas, 0, 0);
