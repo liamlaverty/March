@@ -43,6 +43,7 @@ export class InputManager {
     checkKeyPressIsValid(pressedKey: string) {
         for (let i = 0; i < InputManager.validInputs.length; i++) {
             if (InputManager.validInputs[i] === pressedKey) {
+                console.log('key ' + pressedKey + ' is pressed');
                 return true;
             }
         }

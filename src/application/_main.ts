@@ -30,7 +30,7 @@ export class Main {
     }
 
     Loop(){
-        console.log('in loop. Rendering ' + this.loopCount);
+        // console.log('in loop. Rendering ' + this.loopCount);
     
         this.inputManager.NewInputLoopCheck();
         this.canvasManager.DrawCanvas();
