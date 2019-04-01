@@ -1,6 +1,6 @@
-import { Vector2 } from "../../numerics/models/Vector2.model";
 import { ParentCanvas } from "./ParentCanvas";
-import { ViewportHelper } from "../viewport/Viewport.Helper";
+import { Vector2 } from "../../../numerics/models/Vector2.model";
+import { ViewportHelper } from "../Viewport.Helper";
 
 export class CanvasManager {
     private theCanvas: HTMLCanvasElement;

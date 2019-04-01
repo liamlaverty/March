@@ -1,5 +1,5 @@
-import { CanvasManager } from "./canvas/CanvasManager";
 import { InputManager } from "./input/InputManager";
+import { CanvasManager } from "./viewport/canvas/CanvasManager";
 
 export class Main {
     private canvasManager: CanvasManager;

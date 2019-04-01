@@ -1,4 +1,4 @@
-import { Vector2 } from "../../numerics/models/Vector2.model";
+import { Vector2 } from "../../../numerics/models/Vector2.model";
 
 export class BaseCanvas extends Vector2 {
     protected theCanvas: HTMLCanvasElement;
