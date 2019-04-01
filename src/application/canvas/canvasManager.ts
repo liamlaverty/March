@@ -1,52 +1,40 @@
 import { Vector2 } from "../../numerics/models/Vector2.model";
+import { ParentCanvas } from "./ParentCanvas";
+import { ViewportHelper } from "../viewport/Viewport.Helper";
 
 export class CanvasManager {
     private theCanvas: HTMLCanvasElement;
+    private mainDiv: HTMLDivElement;
     private ctx: CanvasRenderingContext2D;
     private DrawableVector: Vector2;
+
+    private parentCanvas: ParentCanvas;
     constructor() {
 
     }
 
     InitCanvasManager() {
-        this.theCanvas = document.createElement('canvas');
-        this.theCanvas.id = 'workingCanvas';
-
-        this.ctx = this.GetCanvasContext2D(this.theCanvas);
-
-        this.DrawableVector = this.GetSquareInBrowser();
-        this.theCanvas.height = this.DrawableVector.x;
-        this.theCanvas.width = this.DrawableVector.y;
-        console.log('canvas size is ' + this.DrawableVector.concat());
+        this.mainDiv = document.createElement('div');
+        this.mainDiv.id = 'main_div';
+        document.body.appendChild(this.mainDiv);
+        const documentDiv = document.getElementById('main_div');
+        this.DrawableVector = ViewportHelper.GetSquareInBrowser();
+        this.parentCanvas = new ParentCanvas(this.DrawableVector.x, this.DrawableVector.y, 'parent', documentDiv);
     }
 
-    private GetBrowserWidth() {
-        return window.innerWidth;
-    }
-    private GetBrowserHeight() {
-        return window.innerHeight;
-    }
-    private GetSquareInBrowser(): Vector2 {
-        const h = this.GetBrowserHeight();
-        const w = this.GetBrowserWidth();
-        const box = new Vector2(0, 0);
-        if (h < w) {
-            box.setValues(h, h);
-        } else {
-            box.setValues(w, w);
-        }
-        return box;
+
+    
+
+    Draw() {
+        this.parentCanvas.Draw();
+        // this.ctx.fillStyle = '#A9A9A9';
+        // this.ctx.fillRect(0, 0, this.DrawableVector.y, this.DrawableVector.y);
+
+        // this.ctx.fillStyle = '#0000ff';
+        // this.ctx.fillRect(10, 10, 100, 100);
+
+        // document.body.appendChild(this.theCanvas);
     }
 
-    DrawCanvas() {
-        
-        this.ctx.fillStyle = 'green';
-        this.ctx.fillRect(10, 10, 100, 100);
 
-        document.body.appendChild(this.theCanvas);
-    }
-
-    private GetCanvasContext2D(theCanvas: HTMLCanvasElement): CanvasRenderingContext2D {
-        return theCanvas.getContext('2d');
-    }
 }
