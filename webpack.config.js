@@ -1,16 +1,24 @@
 const path = require('path');
-/* ===> import './main.scss'; <=== */
 
 module.exports = {
-    entry: ['./index.ts'], // , './scss/_main.scss'],
+    mode: 'development',
+    entry: ['./src/index.ts'], // , './scss/_main.scss'],
     devtool: 'inline-source-map',
+    devServer: {
+        contentBase: './dist',
+        watchOptions: {
+            ignored: /node_modules/
+        }
+        // compress: true,
+        // port: 9000
+    },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/
-            },
+            }
             // {
             //     test: /\.scss$/,
             //     use: [

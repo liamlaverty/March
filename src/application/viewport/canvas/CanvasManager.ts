@@ -18,7 +18,7 @@ export class CanvasManager {
         this.mainDiv.id = 'main_div';
         document.body.appendChild(this.mainDiv);
         const documentDiv = document.getElementById('main_div');
-        this.DrawableVector = ViewportHelper.GetSquareInBrowser();
+        this.DrawableVector = ViewportHelper.GetWindowInAspectRatio(16, 9, .99, .99);
         this.parentCanvas = new ParentCanvas(this.DrawableVector.x, this.DrawableVector.y, 'parent', documentDiv);
 
         for (let i = 0; i < 10; i++) {

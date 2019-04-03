@@ -1,1 +1,5 @@
-in terminal run `npx webpack` in `./src`
+# To run:
+in terminal run
+
+`cd ./src`
+`npm run start`

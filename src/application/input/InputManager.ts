@@ -1,9 +1,8 @@
 export class InputManager {
 
-    currentInputs: string[];
+    currentInputs: Array<string>;
     private static readonly validInputs: Array<string> = ['w', 'a', 's', 'd', ' '];
-    private keyCurrentlyPressed: boolean;
-    
+
     constructor() {
         this.currentInputs = new Array<string>();
     }
@@ -25,11 +24,53 @@ export class InputManager {
      */
     InitInputManager() {
         document.addEventListener('keydown', event => {
-            console.log('key is pressed');
+
+            if (this.checkKeyPressIsValid(event.key)) {
+                // console.log(`key [${event.key}] is pressed`);
+                event.preventDefault();
+                this.pushToCurrentInputs(event.key);
+            }
         })
-        // throw new Error("Method not implemented.");
+
+        document.addEventListener('keyup', event => {
+            // console.log(`key [${event.key}] is up`);
+            event.preventDefault();
+            this.popFromCurrentInputs(event.key);
+        })
+
+        // setInterval(() => {
+        //     console.log('currently pressed keys are ' + this.currentInputs.toString())
+        // }, 100);
     }
-    
+
+
+    /**
+     * public method to check if a key is pressed or not
+     *
+     * @param {string} key
+     * @returns
+     * @memberof InputManager
+     */
+    IsKeyPressed(key: string) {
+        return this.checkCurrentKeysForInput(key);
+    }
+
+    private pushToCurrentInputs(input: string) {
+        if (!this.checkCurrentKeysForInput(input)) {
+            this.currentInputs.push(input);
+        }
+    }
+    private popFromCurrentInputs(input: string) {
+        if (this.checkCurrentKeysForInput(input)) {
+            const locationInArr = this.currentInputs.indexOf(input);
+            this.currentInputs.splice(locationInArr, 1);
+        }
+    }
+
+    private checkCurrentKeysForInput(input: string): boolean {
+        const exists = this.currentInputs.indexOf(input) > -1;
+        return exists;
+    }
 
     /**
      * checks if a given key is in the list of valid keys
@@ -40,10 +81,10 @@ export class InputManager {
      * @returns
      * @memberof InputManager
      */
-    checkKeyPressIsValid(pressedKey: string) {
+    private checkKeyPressIsValid(pressedKey: string) {
         for (let i = 0; i < InputManager.validInputs.length; i++) {
             if (InputManager.validInputs[i] === pressedKey) {
-                console.log('key ' + pressedKey + ' is pressed');
+                // console.log('key ' + pressedKey + ' is pressed');
                 return true;
             }
         }
@@ -53,7 +94,7 @@ export class InputManager {
         // }
         // return false;
     }
-    
+
 
 
 }

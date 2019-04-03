@@ -17,10 +17,6 @@ export class BaseCanvas extends Vector2 {
         attachedTo.append(this.theCanvas);
     }
 
-    
-    
-    
-
     Draw(): CanvasRenderingContext2D {
         // console.log('drawing ' + this.theCanvas.id);
         // this.ctx.fillStyle = '#A9A9A9';
@@ -35,7 +31,6 @@ export class BaseCanvas extends Vector2 {
     }
 
     protected GreedyClearCanvas() {
-        console.log('greedy clearing')
         this.ctx.clearRect(0, 0, this.GetWidth(), this.GetHeight());
     }
 
@@ -46,9 +41,9 @@ export class BaseCanvas extends Vector2 {
 
 
     protected GetWidth() {
-        return this.x;
+        return this.getValueX();
     }
     protected GetHeight() {
-        return this.y;
+        return this.getValueY();
     }
 }
