@@ -23,10 +23,12 @@
     "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "build": "concurrently \"webpack\" \"copyfiles --flat src/*.html dist\"",
-    "watch": "webpack --watch",
-    "start": "webpack-dev-server --open",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "concurrently \"webpack\" \"copyfiles --flat src/index.html dist\"",
+    "watch": "concurrently \"webpack --watch\" ",
+    "start": "concurrently \"webpack-dev-server --open\" \"copyfiles --flat src/index.html dist\"",
+    
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:sass": "node-sass --include-path sass ./src/scss/_main.scss ./dist/css/style.css"
   },
   "author": "",
   "license": "ISC"

@@ -6,6 +6,9 @@ module.exports = {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
+        watchOptions: {
+            ignored: /node_modules/
+        }
         // compress: true,
         // port: 9000
     },
