@@ -24,11 +24,10 @@
   },
   "scripts": {
     "build": "concurrently \"webpack\" \"copyfiles --flat src/index.html dist\"",
+    "build:sass": "node-sass --include-path sass ./src/scss/_main.scss ./dist/css/style.css",
     "watch": "concurrently \"webpack --watch\" ",
-    "start": "concurrently \"webpack-dev-server --open\" \"copyfiles --flat src/index.html dist\"",
-    
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:sass": "node-sass --include-path sass ./src/scss/_main.scss ./dist/css/style.css"
+    "start": "concurrently \"webpack-dev-server --open\" \"copyfiles --flat src/index.html dist\" \"node-sass --include-path sass ./src/scss/_main.scss ./dist/css/style.css\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC"
