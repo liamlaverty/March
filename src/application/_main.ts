@@ -15,7 +15,7 @@ export class Main {
     Run(timeout: number) {
         // console.log('running');
         this.Start();
-        setInterval(() => {
+        setInterval(() => { 
             this.Loop();
             this.loopCount++;
         }, timeout);
