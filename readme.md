@@ -1,4 +1,5 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/vtw90xu6vtf95l2k?svg=true)](https://ci.appveyor.com/project/Liam/march)[![Build status](https://ci.appveyor.com/api/projects/status/vtw90xu6vtf95l2k/branch/master?svg=true)](https://ci.appveyor.com/project/Liam/march/branch/master)
+Latest: [![Build status](https://ci.appveyor.com/api/projects/status/vtw90xu6vtf95l2k?svg=true)](https://ci.appveyor.com/project/Liam/march)
+Master: [![Build status](https://ci.appveyor.com/api/projects/status/vtw90xu6vtf95l2k/branch/master?svg=true)](https://ci.appveyor.com/project/Liam/march/branch/master)
 
 
 # To run:
