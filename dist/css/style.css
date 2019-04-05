@@ -46,6 +46,20 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+#el_canvasable {
+  height: 100%;
+  width: 100%; }
+
+div.in_debug_mode #el_canvasable {
+  height: 100%;
+  width: 70%; }
+
+div.in_debug_mode #el_debug_info {
+  height: 100%;
+  width: 30%;
+  color: #c0c0c0;
+  background-color: #2F4F4F; }
+
 body {
   background: #ff0000; }
 

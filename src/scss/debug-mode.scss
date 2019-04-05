@@ -1,0 +1,16 @@
+#el_canvasable {
+  height: 100%;
+  width: 100%;
+}
+div.in_debug_mode {
+  #el_canvasable {
+    height: 100%;
+    width: 70%;
+  }
+  #el_debug_info {
+    height: 100%;
+    width: 30%;
+    color: $brightGrey;
+    background-color: $midBackground;
+  }
+}

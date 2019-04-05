@@ -11,8 +11,6 @@ export class ViewportHelper {
         }
     }
 
-
-
     /**
      * Gets a window in a given aspect ratio. 
      *
@@ -21,10 +19,20 @@ export class ViewportHelper {
      * @param {number} [aspectRatioHeight=9]
      * @param {number} [widthPercent=1] between 0 & 1. Should usually be the same as heightPercent
      * @param {number} [heightPercent=1] between 0 & 1. Shoudl usually be the same as widthPercent
+     * @param {string} elementId An element to put this canvas into. Can be null (will use the full window)
+     * @returns {Vector2}
+     * @memberof ViewportHelper
      * @returns {Vector2}
      * @memberof ViewportHelper
      */
-    public static GetWindowInAspectRatio(aspectRatioWidth: number = 16, aspectRatioHeight: number = 9, widthPercent: number = 1, heightPercent: number = 1): Vector2 {
+    public static GetWindowInAspectRatio(aspectRatioWidth: number = 16, aspectRatioHeight: number = 9,
+        widthPercent: number = 1, heightPercent: number = 1, canvasableElement: HTMLElement = null): Vector2 {
+
+        if (!canvasableElement) {
+            console.warn(`setup with no canvasable element. Will use the entire window`);
+        } else {
+            console.warn(`setup with id of ${canvasableElement.id}`);
+        }
         const aspectRatio = aspectRatioWidth / aspectRatioHeight;
 
         if (heightPercent !== widthPercent) {
@@ -36,8 +44,8 @@ export class ViewportHelper {
             console.info(`starting in landscape mode (${aspectRatioWidth}:${aspectRatioHeight})`);
         }
 
-        const adjustedWindowHeight = this.GetBrowserHeight() * heightPercent;
-        const adjustedWindowWidth = this.GetBrowserWidth() * widthPercent;
+        const adjustedWindowHeight = this.GetBrowserHeight(canvasableElement) * heightPercent;
+        const adjustedWindowWidth = this.GetBrowserWidth(canvasableElement) * widthPercent;
 
         const displayWidth = Math.min(adjustedWindowWidth, (adjustedWindowHeight * aspectRatio));
         const displayHeight = Math.min(adjustedWindowHeight, (adjustedWindowWidth / aspectRatio));
@@ -45,10 +53,19 @@ export class ViewportHelper {
         return new Vector2(displayWidth, displayHeight);
     }
 
-    private static GetBrowserWidth() {
-        return window.innerWidth;
+    private static GetBrowserWidth(element: HTMLElement = null) {
+        if (!element) {
+            return window.innerWidth;
+        } else {
+            return element.clientWidth;
+
+        }
     }
-    private static GetBrowserHeight() {
-        return window.innerHeight;
+    private static GetBrowserHeight(element: HTMLElement = null) {
+        if (!element) {
+            return window.innerHeight;
+        } else {
+            return element.clientHeight;
+        }
     }
 }
