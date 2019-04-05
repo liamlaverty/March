@@ -21,6 +21,8 @@ export class Main {
         }, timeout);
 
 
+
+
     }
 
     Start(): string {
@@ -34,7 +36,7 @@ export class Main {
         // console.log('in loop. Rendering ' + this.loopCount);
 
         this.inputManager.NewInputLoopCheck();
-        this.canvasManager.Draw();
+        // this.canvasManager.Draw();
 
     }
 }
