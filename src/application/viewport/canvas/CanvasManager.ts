@@ -3,6 +3,7 @@ import { ParentCanvas } from "./ParentCanvas";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { ViewportHelper } from "../Viewport.Helper";
 import { IDebugService } from "../../_debug/debug.service";
+import { IEntity } from "../../Entities/_base-entity";
 
 // @autoInjectable()
 export class CanvasManager {
@@ -21,15 +22,15 @@ export class CanvasManager {
         this._debugService = debugService;
     }
 
-    InitCanvasManager(mainDivId: string): void {
+    InitCanvasManager(mainDivId: string, entities: Array<IEntity>): void {
         this.createMainDiv(mainDivId);
         const canvasable = this.createCanvasableDiv(this.mainDiv);
 
         this.DrawableVector = ViewportHelper.GetWindowInAspectRatio(16, 9, .99, .99, canvasable);
         this.parentCanvas = new ParentCanvas(this.DrawableVector.x, this.DrawableVector.y, 'parent', canvasable);
 
-        for (let i = 0; i < 10; i++) {
-            this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y)
+        for (let i = 0; i < entities.length; i++) {
+            this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y, entities[i].id, entities[i]);
         }
 
         // this.tick();
