@@ -3,16 +3,16 @@ import { CanvasManager } from "./viewport/canvas/CanvasManager";
 import { IDebugService, DebugService } from './_debug/debug.service';
 import { DebugComponent } from "./_debug/debug.component";
 
-export class Main {
+export class Game {
     private canvasManager: CanvasManager;
     private inputManager: InputManager;
     private debugService: IDebugService;
     private debugComponent: DebugComponent;
     private loopCount: number = 0;
+    private running: boolean = false;
+
     constructor() {
         const loadedInDebugMode = this.checkDebugModeFromQueryString();
-        
-        
 
         this.debugService = new DebugService(loadedInDebugMode);
         this.canvasManager = new CanvasManager(this.debugService);
@@ -22,17 +22,6 @@ export class Main {
 
     private readonly launchMessage: string = 'Start';
 
-    Run(timeout: number) {
-        // console.log('running');
-        this.Start();
-        setInterval(() => { 
-            this.Loop();
-            this.loopCount++;
-        }, timeout)
-    }
-
-
-
     Start(): string {
         console.log(this.launchMessage + ' will now be posted to the document ');
         this.inputManager.InitInputManager();
@@ -41,15 +30,35 @@ export class Main {
             console.log('setting up with debug info');
             this.debugComponent.InitDebugComponent('main_div');
         }
-        
-        
         return this.launchMessage;
+    }
+    
+    Run() {
+        console.log('Run called in game.ts');
+        this.Start();
+        this.running = true;
+        this.Loop();
+
     }
 
     Loop() {
-        // console.log('in loop. Rendering ' + this.loopCount);
+        requestAnimationFrame(() => {
+            if (this.running) {
+                this.Update();
+                this.Render();
+            }
+            this.loopCount++;
+            this.Loop();
+        });
+
+    }
+
+    Update() {
         this.inputManager.NewInputLoopCheck();
-        // this.canvasManager.Draw();
+    }
+
+    Render() {
+        this.canvasManager.Draw();
     }
 
     checkDebugModeFromQueryString(): boolean {

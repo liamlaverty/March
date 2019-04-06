@@ -21,7 +21,7 @@ export class CanvasManager {
         this._debugService = debugService;
     }
 
-    InitCanvasManager(mainDivId: string) {
+    InitCanvasManager(mainDivId: string): void {
         this.createMainDiv(mainDivId);
         const canvasable = this.createCanvasableDiv(this.mainDiv);
 
@@ -32,7 +32,7 @@ export class CanvasManager {
             this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y)
         }
 
-        this.tick();
+        // this.tick();
     }
     private createCanvasableDiv(parentElement: HTMLElement, id: string = 'el_canvasable'): HTMLElement {
         const canvasableElement = document.createElement('div');
@@ -52,21 +52,21 @@ export class CanvasManager {
         return this.mainDiv.id;
     }
 
-    tick(): void {
-        setTimeout(() => {
-            this.ticks++;
-        });
-        requestAnimationFrame(() => {
-            // console.log('drawing canvasManager')
-            this.Draw();
-            this.tick();
-        })
-    }
+    // tick(): void {
+    //     setTimeout(() => {
+    //         this.ticks++;
+    //     });
+    //     requestAnimationFrame(() => {
+    //         // console.log('drawing canvasManager')
+    //         this.Draw();
+    //         this.tick();
+    //     })
+    // }
 
 
 
 
-    private Draw() {
+    public Draw() {
         this.parentCanvas.Draw();
     }
 
