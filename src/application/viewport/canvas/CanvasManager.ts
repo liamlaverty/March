@@ -57,6 +57,7 @@ export class CanvasManager {
             this.ticks++;
         });
         requestAnimationFrame(() => {
+            // console.log('drawing canvasManager')
             this.Draw();
             this.tick();
         })

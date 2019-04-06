@@ -52,13 +52,15 @@ table {
 
 div.in_debug_mode #el_canvasable {
   height: 100%;
-  width: 70%; }
+  width: 100%; }
 
 div.in_debug_mode #el_debug_info {
+  position: absolute;
+  right: 0;
   height: 100%;
   width: 30%;
   color: #c0c0c0;
-  background-color: #2F4F4F; }
+  background-color: rgba(45, 45, 45, 0.5); }
 
 body {
   background: #ff0000; }
