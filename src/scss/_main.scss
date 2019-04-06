@@ -1,6 +1,9 @@
 @import './reset';
+@import './_settings';
 
-$bodyBg: #ff0000;
+@import './debug-mode';
+
+
 body{
     background: $bodyBg;
 }
@@ -14,7 +17,7 @@ body, html {
 	width:100%;
 }
 body {    
-	background:#0f0f0f;
+	background:$darkBackground;
 }
 #main_div {
 	width:100%;

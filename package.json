@@ -5,7 +5,8 @@
   "description": "messing",
   "main": "index.ts",
   "dependencies": {
-    "concurrently": "^4.1.0"
+    "concurrently": "^4.1.0",
+    "tsyringe": "^3.0.1"
   },
   "devDependencies": {
     "copyfiles": "^2.1.0",
