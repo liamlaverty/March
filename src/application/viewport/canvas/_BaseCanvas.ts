@@ -1,6 +1,6 @@
 import { Vector2 } from "../../../numerics/models/Vector2.model";
-import { RandomNumberGenerator } from "../../random_generators/random_number.generators";
-import { RandomStringGenerator } from "../../random_generators/random_string.generator";
+import { RandomNumberGenerator } from "../../tools/random_generators/random_number.generators";
+import { RandomStringGenerator } from "../../tools/random_generators/random_string.generator";
 
 export class BaseCanvas extends Vector2 {
     protected theCanvas: HTMLCanvasElement;
