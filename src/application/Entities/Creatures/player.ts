@@ -14,18 +14,22 @@ export class Player extends Creature {
 
     public Tick(): void {
         if (this.inputManager.IsKeyPressed('w')) {
-            this.position.y--;
+            this.position.y -= 3;
         }
         if (this.inputManager.IsKeyPressed('s')) {
-            this.position.y++;
+            this.position.y += 3;
         }
 
         if (this.inputManager.IsKeyPressed('a')) {
-            this.position.x--;
+            this.position.x -= 3;
         }
 
         if (this.inputManager.IsKeyPressed('d')) {
-            this.position.x++;
+            this.position.x += 3;
+        }
+
+        if (this.inputManager.IsKeyPressed(' ')) {
+            console.log('space pressed')
         }
     }
     public Render(): void {
