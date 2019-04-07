@@ -8,11 +8,11 @@ export class GameState extends BaseState {
     }
 
     public Tick(): void {
-        console.error("Method not implemented.");
+        // console.error("Method not implemented.");
     }
 
     public Render(): void {
-        console.error("Method not implemented.");
+        // console.error("Method not implemented.");
     }
 
 

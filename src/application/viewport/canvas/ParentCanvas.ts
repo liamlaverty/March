@@ -1,6 +1,6 @@
 import { BaseCanvas } from "./_BaseCanvas";
 import { ChildCanvas } from "./ChildCanvas";
-import { IEntity } from "../../Entities/_base-entity";
+import { Entity } from "../../Entities/_base-entity";
 
 /**
  * Main canvas. Only create one of these
@@ -17,7 +17,7 @@ export class ParentCanvas extends BaseCanvas {
         this.children = new Array<ChildCanvas>();
     }
 
-    RegisterChildCanvas(width: number, height: number, canvasIdPrefix: string = '', entity: IEntity) {
+    RegisterChildCanvas(width: number, height: number, canvasIdPrefix: string = '', entity: Entity) {
         const canvasId = canvasIdPrefix + '_child_canvas_' + (this.children.length + 1);
         console.log('registering a new canvas with ID [ ' + canvasId + ']');
         const childCanvas = new ChildCanvas(width, height, canvasId, this.theCanvas, entity);

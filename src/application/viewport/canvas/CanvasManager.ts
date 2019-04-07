@@ -3,7 +3,7 @@ import { ParentCanvas } from "./ParentCanvas";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { ViewportHelper } from "../Viewport.Helper";
 import { IDebugService } from "../../_debug/debug.service";
-import { IEntity } from "../../Entities/_base-entity";
+import { Entity } from "../../Entities/_base-entity";
 
 // @autoInjectable()
 export class CanvasManager {
@@ -22,7 +22,7 @@ export class CanvasManager {
         this._debugService = debugService;
     }
 
-    InitCanvasManager(mainDivId: string, entities: Array<IEntity>): void {
+    InitCanvasManager(mainDivId: string, entities: Array<Entity>): void {
         this.createMainDiv(mainDivId);
         const canvasable = this.createCanvasableDiv(this.mainDiv);
 
@@ -30,7 +30,7 @@ export class CanvasManager {
         this.parentCanvas = new ParentCanvas(this.DrawableVector.x, this.DrawableVector.y, 'parent', canvasable);
 
         for (let i = 0; i < entities.length; i++) {
-            this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y, entities[i].id, entities[i]);
+            this.parentCanvas.RegisterChildCanvas(this.DrawableVector.x, this.DrawableVector.y, entities[i].getId(), entities[i]);
         }
 
         // this.tick();

@@ -2,13 +2,15 @@ import { InputManager } from "./input/InputManager";
 import { CanvasManager } from "./viewport/canvas/CanvasManager";
 import { IDebugService, DebugService } from './_debug/debug.service';
 import { DebugComponent } from "./_debug/debug.component";
-import { IEntity, Entity } from "./Entities/_base-entity";
-import { Creature } from "./Entities/creature";
+import { Entity } from "./Entities/_base-entity";
+import { Creature } from "./Entities/Creatures/creature";
 import { Vector2 } from "../numerics/models/Vector2.model";
 import { BaseState } from "./states/_BaseState";
 import { GameState } from "./states/GameState";
 import { StateService } from "./states/state.service";
 import { MenuState } from "./states/MenuState";
+import { SettingsState } from "./states/SettingsState";
+import { Player } from "./Entities/Creatures/player";
 
 export class Game {
     private canvasManager: CanvasManager;
@@ -21,7 +23,9 @@ export class Game {
 
     private gameState: GameState;
     private menuState: MenuState;
-    gameEntities: IEntity[];
+    private settingsState: SettingsState;
+
+    gameEntities: Entity[];
 
     fps: number;
     timePerTick: number;
@@ -60,7 +64,7 @@ export class Game {
 
     Init(): string {
         console.log(this.launchMessage + ' will now be posted to the document ');
-        
+        this.SetupStates();
         this.inputManager.InitInputManager();
         this.gameEntities = this.registerEntities();
         this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
@@ -74,20 +78,19 @@ export class Game {
     private SetupStates() {
         this.gameState = new GameState();
         this.menuState = new MenuState();
+        this.settingsState = new SettingsState();
 
-        
         this.stateService.setState(this.gameState);
     }
 
 
     Loop() {
-        
+
         requestAnimationFrame(() => {
             if (this.running) {
 
 
                 if (this.CheckShouldRunLoop()) {
-                    this.gameEntities[0].position.setValueX(this.ticks);
                     this.Update();
                     this.Render();
                     this.UpdateTicksAndRenderAfterLoop();
@@ -128,6 +131,9 @@ export class Game {
         if (this.stateService.GetState() !== null) {
             this.stateService.GetState().Tick();
             this.inputManager.NewInputLoopCheck();
+            for (let i = 0; i < this.gameEntities.length; i++) {
+                this.gameEntities[i].Tick();
+            }
 
         }
     }
@@ -146,9 +152,13 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(): Array<IEntity> {
-        const entities = new Array<IEntity>();
-        entities.push(new Creature(new Vector2(10, 10), new Vector2(25, 25), 'player'));
+    registerEntities(): Array<Entity> {
+        const entities = new Array<Entity>();
+        entities.push(new Player(
+            new Vector2(10, 10),
+            new Vector2(25, 25),
+            'player',
+            this.inputManager));
         return entities;
     }
 }
