@@ -23,7 +23,7 @@ export class ChildCanvas extends BaseCanvas {
      this.ctx.fillStyle = RandomStringGenerator.GetRandomHexColour();
      this.ctx.fillRect(this.entity.getPosition().x, this.entity.getPosition().y, 
         this.entity.getSize().x, this.entity.getSize().y);
- 
+
      return this.ctx;
  }
 }

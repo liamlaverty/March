@@ -23,7 +23,7 @@ export class BaseCanvas extends Vector2 {
     }
 
     Draw(): CanvasRenderingContext2D {
-        // console.log('drawing ' + this.theCanvas.id);
+        console.log('drawing ' + this.theCanvas.id);
         // this.ctx.fillStyle = '#A9A9A9';
         // this.ctx.fillRect(0, 0, this.GetWidth(), this.GetHeight());
         this.GreedyClearCanvas();

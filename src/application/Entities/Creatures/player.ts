@@ -1,6 +1,7 @@
 import { Creature } from "./creature";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { InputManager } from "../../input/InputManager";
+import { Paintable } from "../../viewport/paintable";
 
 export class Player extends Creature {
     inputManager: InputManager;
@@ -33,8 +34,13 @@ export class Player extends Creature {
         }
     }
     public Render(): void {
-
+        this.Draw();
     }
 
+    Draw(): CanvasRenderingContext2D {
+        super.Draw();
+        throw new Error('not implemented');
+        return null;
+    }
 
 }

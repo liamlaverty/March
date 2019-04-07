@@ -11,7 +11,7 @@ import { Entity } from "../../Entities/_base-entity";
  */
 export class ParentCanvas extends BaseCanvas {
     private children: ChildCanvas[];
-
+    private CanvasRenderingContext2DArray: Array<CanvasRenderingContext2D>;
     constructor(width: number, height: number, id: string, attachedTo: HTMLElement) {
         super(width, height, id, attachedTo);
         this.children = new Array<ChildCanvas>();
@@ -24,6 +24,7 @@ export class ParentCanvas extends BaseCanvas {
         this.children.push(childCanvas);
     }
 
+
     Draw(): CanvasRenderingContext2D {
         this.GreedyClearCanvas();
         for (const childCanvas of this.children) {
@@ -31,7 +32,8 @@ export class ParentCanvas extends BaseCanvas {
             const drawnLayer = childCanvas.Draw();
             this.ctx.drawImage(drawnLayer.canvas, 0, 0);
         }
+        return null;
 
-        return this.ctx;
+        // return this.ctx;
     }
 }

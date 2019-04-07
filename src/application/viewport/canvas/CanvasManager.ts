@@ -4,21 +4,21 @@ import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { ViewportHelper } from "../Viewport.Helper";
 import { IDebugService } from "../../_debug/debug.service";
 import { Entity } from "../../Entities/_base-entity";
+import { ChildCanvas } from "./ChildCanvas";
 
 // @autoInjectable()
 export class CanvasManager {
     private _debugService: IDebugService;
 
-    private theCanvas: HTMLCanvasElement;
     private mainDiv: HTMLDivElement;
     private ctx: CanvasRenderingContext2D;
     private DrawableVector: Vector2;
 
-    private ticks: number;
 
     private parentCanvas: ParentCanvas;
+    private childrenCanvasArray: Array<ChildCanvas>;
+
     constructor(private debugService: IDebugService) {
-        this.ticks = 0;
         this._debugService = debugService;
     }
 
@@ -52,20 +52,6 @@ export class CanvasManager {
         document.body.appendChild(this.mainDiv);
         return this.mainDiv.id;
     }
-
-    // tick(): void {
-    //     setTimeout(() => {
-    //         this.ticks++;
-    //     });
-    //     requestAnimationFrame(() => {
-    //         // console.log('drawing canvasManager')
-    //         this.Draw();
-    //         this.tick();
-    //     })
-    // }
-
-
-
 
     public Draw() {
         this.parentCanvas.Draw();

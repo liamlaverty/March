@@ -11,8 +11,10 @@ import { StateService } from "./states/state.service";
 import { MenuState } from "./states/MenuState";
 import { SettingsState } from "./states/SettingsState";
 import { Player } from "./Entities/Creatures/player";
+import { GraphicsService } from "./viewport/graphics/graphics.service";
 
 export class Game {
+    private graphicsService: GraphicsService;
     private canvasManager: CanvasManager;
     private inputManager: InputManager;
     private debugService: IDebugService;
@@ -38,7 +40,7 @@ export class Game {
 
     constructor() {
         const loadedInDebugMode = this.checkDebugModeFromQueryString();
-
+        this.graphicsService = new GraphicsService();
         this.stateService = new StateService();
         this.debugService = new DebugService(loadedInDebugMode);
         this.canvasManager = new CanvasManager(this.debugService);
@@ -66,8 +68,9 @@ export class Game {
         console.log(this.launchMessage + ' will now be posted to the document ');
         this.SetupStates();
         this.inputManager.InitInputManager();
+        this.graphicsService.InitGraphicsService();
         this.gameEntities = this.registerEntities();
-        this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
+        // this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
         if (this.debugService.IsInDebugMode()) {
             console.log('setting up with debug info');
             this.debugComponent.InitDebugComponent('main_div');
@@ -129,8 +132,10 @@ export class Game {
 
     Update() {
         if (this.stateService.GetState() !== null) {
-            this.stateService.GetState().Tick();
             this.inputManager.NewInputLoopCheck();
+
+            this.stateService.GetState().Tick();
+            
             for (let i = 0; i < this.gameEntities.length; i++) {
                 this.gameEntities[i].Tick();
             }
@@ -140,8 +145,9 @@ export class Game {
 
     Render() {
         if (this.stateService.GetState() !== null) {
+            this.graphicsService.Render();
             this.stateService.GetState().Render();
-            this.canvasManager.Draw();
+            // this.canvasManager.Draw();
         }
     }
 
