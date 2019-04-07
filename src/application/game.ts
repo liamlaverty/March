@@ -8,6 +8,7 @@ import { Vector2 } from "../numerics/models/Vector2.model";
 import { BaseState } from "./states/_BaseState";
 import { GameState } from "./states/GameState";
 import { StateService } from "./states/state.service";
+import { MenuState } from "./states/MenuState";
 
 export class Game {
     private canvasManager: CanvasManager;
@@ -18,7 +19,8 @@ export class Game {
     private running: boolean = false;
     private readonly launchMessage: string = 'Start';
 
-    private gameState: BaseState;
+    private gameState: GameState;
+    private menuState: MenuState;
     gameEntities: IEntity[];
 
     fps: number;
@@ -49,11 +51,15 @@ export class Game {
         this.ticks = 0;
     }
 
+    Run() {
+        console.log('Run called in game.ts');
+        this.Init();
+        this.running = true;
+        this.Loop();
+    }
 
-    Start(): string {
+    Init(): string {
         console.log(this.launchMessage + ' will now be posted to the document ');
-        this.gameState = new GameState();
-        this.stateService.setState(this.gameState);
         
         this.inputManager.InitInputManager();
         this.gameEntities = this.registerEntities();
@@ -65,14 +71,17 @@ export class Game {
         return this.launchMessage;
     }
 
-    Run() {
-        console.log('Run called in game.ts');
-        this.Start();
-        this.running = true;
-        this.Loop();
+    private SetupStates() {
+        this.gameState = new GameState();
+        this.menuState = new MenuState();
+
+        
+        this.stateService.setState(this.gameState);
     }
 
+
     Loop() {
+        
         requestAnimationFrame(() => {
             if (this.running) {
 
@@ -116,11 +125,18 @@ export class Game {
     }
 
     Update() {
-        this.inputManager.NewInputLoopCheck();
+        if (this.stateService.GetState() !== null) {
+            this.stateService.GetState().Tick();
+            this.inputManager.NewInputLoopCheck();
+
+        }
     }
 
     Render() {
-        this.canvasManager.Draw();
+        if (this.stateService.GetState() !== null) {
+            this.stateService.GetState().Render();
+            this.canvasManager.Draw();
+        }
     }
 
     checkDebugModeFromQueryString(): boolean {
