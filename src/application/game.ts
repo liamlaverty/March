@@ -1,5 +1,4 @@
 import { InputManager } from "./input/InputManager";
-import { CanvasManager } from "./viewport/canvas/CanvasManager";
 import { IDebugService, DebugService } from './_debug/debug.service';
 import { DebugComponent } from "./_debug/debug.component";
 import { Entity } from "./Entities/_base-entity";
@@ -15,7 +14,6 @@ import { GraphicsService } from "./viewport/graphics/graphics.service";
 
 export class Game {
     private graphicsService: GraphicsService;
-    private canvasManager: CanvasManager;
     private inputManager: InputManager;
     private debugService: IDebugService;
     private stateService: StateService;
@@ -43,7 +41,6 @@ export class Game {
         this.graphicsService = new GraphicsService();
         this.stateService = new StateService();
         this.debugService = new DebugService(loadedInDebugMode);
-        this.canvasManager = new CanvasManager(this.debugService);
         this.debugComponent = new DebugComponent(this.debugService);
         this.inputManager = new InputManager();
 
@@ -145,8 +142,15 @@ export class Game {
 
     Render() {
         if (this.stateService.GetState() !== null) {
-            this.graphicsService.Render();
+            for (let i = 0; i < this.gameEntities.length; i++) {
+                //prepares for rendering
+                this.gameEntities[i].Render();
+            }
             this.stateService.GetState().Render();
+            // actually renders
+            this.graphicsService.Render();
+            
+            
             // this.canvasManager.Draw();
         }
     }
@@ -164,7 +168,8 @@ export class Game {
             new Vector2(10, 10),
             new Vector2(25, 25),
             'player',
-            this.inputManager));
+            this.inputManager,
+            this.graphicsService));
         return entities;
     }
 }

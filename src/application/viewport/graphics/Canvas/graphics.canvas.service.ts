@@ -1,6 +1,7 @@
 import { HtmlService } from "../html/graphics.html.service";
 import { DrawableCanvas } from "../models/graphics.drawable-canvas";
 import { ViewportHelper } from "../../Viewport.Helper";
+import { GuidGenerator } from "../../../Tools/random_generators/random_guid.generator";
 
 export class CanvasService {
     private htmlService: HtmlService;
@@ -33,11 +34,15 @@ export class CanvasService {
         this.drawableAreas = new Array<DrawableCanvas>();
     }
 
-    RegisterNewCanvas(id: string) {
+    RegisterNewCanvas(id: string = null): string {
         console.log(`registering a new canvas with id ${id}`);
+        if (id === null) {
+            id = GuidGenerator.NewGuid();
+        }
         const canvas = this.htmlService.createCanvas(id, this.mainCanvas.id, 
             this.viewportWidth, this.viewportHeight);
         this.drawableAreas.push(new DrawableCanvas(canvas, id, this.viewportWidth, this.viewportHeight));
+        return id;
     }
 
     GetMainCanvas() {
@@ -52,13 +57,5 @@ export class CanvasService {
         }
         console.error(`failed to get a canvas of id ${id}`);
     }
-
-    paintToScreen() {
-        
-        for (let i = 0; i < this.drawableAreas.length; i++) {
-            this.drawableAreas[i].PaintImmediately();
-        }
-    }
-
 }
 

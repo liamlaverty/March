@@ -19,6 +19,11 @@ export class DrawableCanvas extends Vector2 {
         return this.getValueY();
     }
 
+    public ClearCanvas() {
+        this.ctx.clearRect(0, 0, this.getValueX(), this.getValueY());
+
+    }
+
     public PaintImmediately() {
         this.ctx.drawImage(this.canvas, 0, 0);
     }
