@@ -1,7 +1,7 @@
 import { Vector2 } from "../../../../numerics/models/Vector2.model";
 
 export class DrawableCanvas extends Vector2 {
-    private canvas: HTMLCanvasElement;
+    public canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D;
     public id: string;
     constructor(canvas: HTMLCanvasElement, id: string,
@@ -17,6 +17,10 @@ export class DrawableCanvas extends Vector2 {
     }
     protected GetHeight() {
         return this.getValueY();
+    }
+
+    public PaintImmediately() {
+        this.ctx.drawImage(this.canvas, 0, 0);
     }
 
 }

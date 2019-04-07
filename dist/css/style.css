@@ -83,7 +83,7 @@ canvas {
   display: block;
   margin: 0 auto;
   box-sizing: border-box; }
-  canvas#parent {
+  canvas.parent {
     background: black; }
 
 #details_div {

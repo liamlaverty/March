@@ -20,12 +20,18 @@ export class GraphicsService {
 
     drawTestCanvas() {
         const canv = this.canvasService.GetCanvas('1');
-        canv.ctx.fillStyle = 'white';
-        canv.ctx.fillRect(0, 0, 10, 10);
+        canv.ctx.fillStyle = '#ff0ff0';
+        canv.ctx.fillRect(20, 30, 10, 10);
     }
 
     Render() {
         console.log('rendering in graphics service');
         this.drawTestCanvas();
+        this.canvasService.mainCanvasCtx.clearRect(0, 0, 
+            this.canvasService.mainCanvas.width, this.canvasService.mainCanvas.height);
+        for (let i = 0; i < this.canvasService.drawableAreas.length; i++) {
+            this.canvasService.mainCanvasCtx.drawImage(
+                this.canvasService.drawableAreas[i].canvas, 0, 0);
+        }
     }
 }

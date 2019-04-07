@@ -5,8 +5,9 @@ import { ViewportHelper } from "../../Viewport.Helper";
 export class CanvasService {
     private htmlService: HtmlService;
 
-    private mainCanvas: HTMLCanvasElement;
-    private drawableAreas: Array<DrawableCanvas>;
+    public mainCanvas: HTMLCanvasElement;
+    public mainCanvasCtx: CanvasRenderingContext2D;
+    public drawableAreas: Array<DrawableCanvas>;
 
     viewportWidth: number;
     viewportHeight: number;
@@ -20,16 +21,22 @@ export class CanvasService {
 
     Init() {
         const viewportSize = ViewportHelper.GetWindowInAspectRatio();
-        this.viewportHeight = viewportSize.x;
-        this.viewportWidth = viewportSize.y;
+        this.viewportHeight = viewportSize.y;
+        this.viewportWidth = viewportSize.x;
 
-        this.mainCanvas = this.htmlService.createCanvas('main_canvas', this.htmlService.GetMainDiv().id);
+        this.mainCanvas = this.htmlService.createCanvas('main_canvas', 
+            this.htmlService.GetMainDiv().id,
+            this.viewportWidth,
+            this.viewportHeight,
+            ['parent']);
+        this.mainCanvasCtx = this.mainCanvas.getContext('2d');
         this.drawableAreas = new Array<DrawableCanvas>();
     }
 
     RegisterNewCanvas(id: string) {
         console.log(`registering a new canvas with id ${id}`);
-        const canvas = this.htmlService.createCanvas(id, this.mainCanvas.id);
+        const canvas = this.htmlService.createCanvas(id, this.mainCanvas.id, 
+            this.viewportWidth, this.viewportHeight);
         this.drawableAreas.push(new DrawableCanvas(canvas, id, this.viewportWidth, this.viewportHeight));
     }
 
@@ -44,6 +51,13 @@ export class CanvasService {
             }
         }
         console.error(`failed to get a canvas of id ${id}`);
+    }
+
+    paintToScreen() {
+        
+        for (let i = 0; i < this.drawableAreas.length; i++) {
+            this.drawableAreas[i].PaintImmediately();
+        }
     }
 
 }
