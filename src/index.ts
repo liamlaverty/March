@@ -1,9 +1,9 @@
-import { Main } from './application/_main';
+import { Game } from './application/game';
 
 export class App {
     start() {
-        const main = new Main();     
-        main.Run(50);
+        const game = new Game();     
+        game.Run();
     }
 }
 

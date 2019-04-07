@@ -70,7 +70,7 @@ body, html {
   width: 100%; }
 
 body {
-  background: #0f0f0f; }
+  background: #2F4F4F; }
 
 #main_div {
   width: 100%;
@@ -83,7 +83,7 @@ canvas {
   display: block;
   margin: 0 auto;
   box-sizing: border-box; }
-  canvas#parent {
+  canvas.parent {
     background: black; }
 
 #details_div {

@@ -7,7 +7,7 @@
 body{
     background: $bodyBg;
 }
- 
+
 
 
 
@@ -17,7 +17,7 @@ body, html {
 	width:100%;
 }
 body {    
-	background:$darkBackground;
+	background:$midBackground;
 }
 #main_div {
 	width:100%;
@@ -26,12 +26,12 @@ body {
 align-items:center;
 }
 canvas {
-    background:transparent;
+	background:transparent;
     display:block;
 	margin: 0 auto;
 	// border:1px dashed white;
 	box-sizing: border-box;
-	&#parent {
+	&.parent {
 		background:black;
 	}
 }
