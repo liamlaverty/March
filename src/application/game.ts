@@ -37,7 +37,8 @@ export class Game {
         this.debugService = new DebugService(loadedInDebugMode);
         this.debugComponent = new DebugComponent(this.debugService);
         this.inputManager = new InputManager();
-        this.fpsService = new FpsService(60);    }
+        this.fpsService = new FpsService(60);    
+    }
 
     Run() {
         console.log('Run called in game.ts');
@@ -106,9 +107,6 @@ export class Game {
             this.stateService.GetState().Render();
             // actually renders
             this.graphicsService.Render();
-            
-            
-            // this.canvasManager.Draw();
         }
     }
 
