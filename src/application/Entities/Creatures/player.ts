@@ -1,8 +1,7 @@
 import { Creature } from "./creature";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
-import { InputManager } from "../../input/InputManager";
-import { Paintable } from "../../viewport/paintable";
-import { GraphicsService } from "../../viewport/graphics/graphics.service";
+import { InputManager } from "../../Input/InputManager";
+import { GraphicsService } from "../../Graphics/graphics.service";
 
 export class Player extends Creature {
     inputManager: InputManager;

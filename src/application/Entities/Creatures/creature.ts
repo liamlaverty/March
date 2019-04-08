@@ -1,8 +1,7 @@
 import { Entity } from "../_base-entity";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
-import { Paintable } from "../../viewport/paintable";
 
-export abstract class Creature extends Entity implements Paintable {
+export abstract class Creature extends Entity {
 
     public static readonly DEFAULT_HEALTH: number = 100;
     public static readonly DEFAULT_MOVEMENT_SPEED: number = 3.0;
