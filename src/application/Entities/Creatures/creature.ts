@@ -1,8 +1,8 @@
 import { Entity } from "../_base-entity";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
+import { GraphicsService } from "../../Graphics/graphics.service";
 
-export abstract class Creature extends Entity {
-
+export class CreatureDefaultSettings {
     public static readonly DEFAULT_HEALTH: number = 100;
     public static readonly DEFAULT_MOVEMENT_SPEED: Vector2 = new Vector2(3.0, 3.0);
     public static readonly DEFAULT_MOVEMENT_SPEED_MAX: Vector2 = new Vector2(5.0, 5.0);
@@ -11,23 +11,39 @@ export abstract class Creature extends Entity {
     public static readonly DEFAULT_SIZE: Vector2 = new Vector2(20, 20)
     public static readonly DEFAULT_FRICTION: Vector2 = new Vector2(.25, .25)
 
+}
+
+export abstract class Creature extends Entity {
+    graphicsService: GraphicsService;
+
+
     protected health: number;
     protected speed: Vector2;
     protected maxSpeed: Vector2;
     protected movement: Vector2;
     protected acceleration: Vector2;
-
     protected friction: Vector2;
 
 
-    constructor(position: Vector2, size: Vector2, name: string) {
+    protected canvasId: string;
+
+
+
+
+    constructor(position: Vector2, size: Vector2, name: string,
+        graphicsService: GraphicsService) {
         super(position, size, name);
-        this.health = Creature.DEFAULT_HEALTH;
-        this.speed = Creature.DEFAULT_MOVEMENT_SPEED;
+        this.graphicsService = graphicsService;
+
+        this.health = CreatureDefaultSettings.DEFAULT_HEALTH;
+        this.speed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED;
         this.movement = new Vector2(0, 0);
-        this.maxSpeed = Creature.DEFAULT_MOVEMENT_SPEED_MAX;
-        this.acceleration = Creature.DEFAULT_MOVEMENT_ACCELERATION;
-        this.friction = Creature.DEFAULT_FRICTION;
+        this.maxSpeed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED_MAX;
+        this.acceleration = CreatureDefaultSettings.DEFAULT_MOVEMENT_ACCELERATION;
+        this.friction = CreatureDefaultSettings.DEFAULT_FRICTION;
+
+        this.canvasId = this.graphicsService.RegisterDrawableEntity();
+
     }
 
     public Move(): void {
@@ -81,9 +97,17 @@ export abstract class Creature extends Entity {
         }
     }
 
-    Draw(): CanvasRenderingContext2D {
-        throw new Error('not implemented');
-        return null;
+    Draw(colour: string): CanvasRenderingContext2D {
+        const canv = this.graphicsService.GetCanvas(this.canvasId);
+        canv.ClearCanvas();
+        canv.ctx.fillStyle = colour;
+        canv.ctx.fillRect(
+            this.getPosition().x,
+            this.getPosition().y,
+            this.getSize().x,
+            this.getSize().y
+        );
+        return canv.ctx;
     }
 
 

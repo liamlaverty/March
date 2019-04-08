@@ -16,6 +16,7 @@ export abstract class Entity  {
 
     constructor(position: Vector2, size: Vector2, name: string) {
         this.position = position;
+        // console.log('setting size to ' + JSON.stringify(size))
         this.size = size;
         this.id = GuidGenerator.NewGuid();
         this.name = name;
