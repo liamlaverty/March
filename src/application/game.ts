@@ -73,8 +73,6 @@ export class Game {
 
         requestAnimationFrame(() => {
             if (this.running) {
-
-
                 if (this.fpsService.CheckShouldRunLoop()) {
                     this.Update();
                     this.Render();
