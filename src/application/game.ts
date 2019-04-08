@@ -12,6 +12,10 @@ import { SettingsState } from "./States/SettingsState";
 import { Player } from "./Entities/Creatures/player";
 import { GraphicsService } from "./Graphics/graphics.service";
 import { FpsService } from "./Graphics/Fps/graphics.fps.service";
+import { Baddy } from "./Entities/Creatures/baddy";
+import { RandomStringGenerator } from "./Tools/random_generators/random_string.generator";
+import { RandomNumberGenerator } from "./Tools/random_generators/random_number.generators";
+import { ViewportHelper } from "./Graphics/Viewport/Viewport.Helper";
 
 export class Game {
     private graphicsService: GraphicsService;
@@ -37,7 +41,7 @@ export class Game {
         this.debugService = new DebugService(loadedInDebugMode);
         this.debugComponent = new DebugComponent(this.debugService);
         this.inputManager = new InputManager();
-        this.fpsService = new FpsService(60);    
+        this.fpsService = new FpsService(60);
     }
 
     Run() {
@@ -90,7 +94,7 @@ export class Game {
             this.inputManager.NewInputLoopCheck();
 
             this.stateService.GetState().Tick();
-            
+
             for (let i = 0; i < this.gameEntities.length; i++) {
                 this.gameEntities[i].Tick();
             }
@@ -117,8 +121,25 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(): Array<Entity> {
+    registerEntities(baddyCount: number = 50): Array<Entity> {
         const entities = new Array<Entity>();
+
+
+        const entitySize: Vector2 = new Vector2(5, 5);
+        for (let i = 0; i < baddyCount; i++) {
+            entities.push(new Baddy(
+                RandomNumberGenerator.GetRandomVector2(
+                    0, ViewportHelper.GetBrowserWidth(),
+                    0, ViewportHelper.GetBrowserHeight()),
+                RandomNumberGenerator.GetRandomVector2(
+                    5, 15,
+                    5, 15),
+                'baddy' + i.toString(),
+                this.graphicsService,
+                RandomStringGenerator.GetRandomHexColour()
+            ));
+        }
+
         entities.push(new Player(
             new Vector2(10, 10),
             new Vector2(25, 25),

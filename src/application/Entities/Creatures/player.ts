@@ -1,21 +1,16 @@
-import { Creature } from "./creature";
+import { Creature, CreatureDefaultSettings } from "./creature";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { InputManager } from "../../Input/InputManager";
 import { GraphicsService } from "../../Graphics/graphics.service";
 
 export class Player extends Creature {
     inputManager: InputManager;
-    graphicsService: GraphicsService;
-    private canvasId: string;
-
+    
     constructor(position: Vector2, size: Vector2, name: string,
         inputManager: InputManager, graphicsService: GraphicsService) {
-        super(position, Creature.DEFAULT_SIZE, name);
+        super(position, size, name, graphicsService);
         this.inputManager = inputManager;
         this.health = 100;
-        this.graphicsService = graphicsService;
-
-        this.canvasId = this.graphicsService.RegisterDrawableEntity();
     }
 
     public Tick(): void {

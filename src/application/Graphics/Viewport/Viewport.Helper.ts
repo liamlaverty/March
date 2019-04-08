@@ -53,7 +53,7 @@ export class ViewportHelper {
         return new Vector2(displayWidth, displayHeight);
     }
 
-    private static GetBrowserWidth(element: HTMLElement = null) {
+    public static GetBrowserWidth(element: HTMLElement = null) {
         if (!element) {
             return window.innerWidth;
         } else {
@@ -61,7 +61,7 @@ export class ViewportHelper {
 
         }
     }
-    private static GetBrowserHeight(element: HTMLElement = null) {
+    public static GetBrowserHeight(element: HTMLElement = null) {
         if (!element) {
             return window.innerHeight;
         } else {
