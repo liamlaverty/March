@@ -1,17 +1,17 @@
-import { InputManager } from "./input/InputManager";
+import { InputManager } from "./Input/InputManager";
 import { IDebugService, DebugService } from './_debug/debug.service';
 import { DebugComponent } from "./_debug/debug.component";
 import { Entity } from "./Entities/_base-entity";
 import { Creature } from "./Entities/Creatures/creature";
 import { Vector2 } from "../numerics/models/Vector2.model";
-import { BaseState } from "./states/_BaseState";
-import { GameState } from "./states/GameState";
-import { StateService } from "./states/state.service";
-import { MenuState } from "./states/MenuState";
-import { SettingsState } from "./states/SettingsState";
+import { BaseState } from "./States/_BaseState";
+import { GameState } from "./States/GameState";
+import { StateService } from "./States/state.service";
+import { MenuState } from "./States/MenuState";
+import { SettingsState } from "./States/SettingsState";
 import { Player } from "./Entities/Creatures/player";
-import { GraphicsService } from "./viewport/graphics/graphics.service";
-import { FpsService } from "./viewport/graphics/Fps/graphics.fps.service";
+import { GraphicsService } from "./Graphics/graphics.service";
+import { FpsService } from "./Graphics/Fps/graphics.fps.service";
 
 export class Game {
     private graphicsService: GraphicsService;

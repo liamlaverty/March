@@ -1,7 +1,7 @@
-import { HtmlService } from "../html/graphics.html.service";
-import { DrawableCanvas } from "../models/graphics.drawable-canvas";
-import { ViewportHelper } from "../../Viewport.Helper";
-import { GuidGenerator } from "../../../Tools/random_generators/random_guid.generator";
+import { HtmlService } from "../Html/graphics.html.service";
+import { DrawableCanvas } from "../Models/graphics.drawable-canvas";
+import { ViewportHelper } from "../Viewport/Viewport.Helper";
+import { GuidGenerator } from "../../Tools/random_generators/random_guid.generator";
 
 export class CanvasService {
     private htmlService: HtmlService;

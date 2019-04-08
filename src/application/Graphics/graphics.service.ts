@@ -1,4 +1,4 @@
-import { HtmlService } from "./html/graphics.html.service";
+import { HtmlService } from "./Html/graphics.html.service";
 import { CanvasService } from "./Canvas/graphics.canvas.service";
 
 export class GraphicsService { 
