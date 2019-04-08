@@ -2,6 +2,7 @@ import { Creature, CreatureDefaultSettings } from "./creature";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { InputManager } from "../../Input/InputManager";
 import { GraphicsService } from "../../Graphics/graphics.service";
+import { RandomStringGenerator } from "../../Tools/random_generators/random_string.generator";
 
 export class Player extends Creature {
     inputManager: InputManager;
@@ -41,7 +42,7 @@ export class Player extends Creature {
     public Render(): void {
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
-        canv.ctx.fillStyle = '#ff0ff0';
+        canv.ctx.fillStyle = RandomStringGenerator.GetRandomHexColour();
         canv.ctx.fillRect(
             this.getPosition().x,
             this.getPosition().y,

@@ -74,8 +74,13 @@ export class Game {
     }
 
 
+    /**
+     * loops continuously whenever the browser is ready
+     * for a new frame
+     *
+     * @memberof Game
+     */
     Loop() {
-
         requestAnimationFrame(() => {
             if (this.running) {
                 if (this.fpsService.CheckShouldRunLoop()) {
@@ -132,8 +137,8 @@ export class Game {
                     0, ViewportHelper.GetBrowserWidth(),
                     0, ViewportHelper.GetBrowserHeight()),
                 RandomNumberGenerator.GetRandomVector2(
-                    5, 15,
-                    5, 15),
+                    5, 10,
+                    5, 10),
                 'baddy' + i.toString(),
                 this.graphicsService,
                 RandomStringGenerator.GetRandomHexColour()

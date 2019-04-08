@@ -13,7 +13,7 @@ export class Baddy extends Creature {
     }
 
     public Tick(): void {
-        console.info(`ticking on baddy`)
+        // console.info(`ticking on baddy`)
         // super.Tick();
     }
     public Render(): void {
