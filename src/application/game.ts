@@ -11,6 +11,7 @@ import { MenuState } from "./states/MenuState";
 import { SettingsState } from "./states/SettingsState";
 import { Player } from "./Entities/Creatures/player";
 import { GraphicsService } from "./viewport/graphics/graphics.service";
+import { FpsService } from "./viewport/graphics/Fps/graphics.fps.service";
 
 export class Game {
     private graphicsService: GraphicsService;
@@ -18,6 +19,7 @@ export class Game {
     private debugService: IDebugService;
     private stateService: StateService;
     private debugComponent: DebugComponent;
+    private fpsService: FpsService;
     private running: boolean = false;
     private readonly launchMessage: string = 'Start';
 
@@ -27,14 +29,6 @@ export class Game {
 
     gameEntities: Entity[];
 
-    fps: number;
-    timePerTick: number;
-    delta: number;
-    lastTime: number;
-    now: number;
-    timer: number;
-    ticks: number;
-    loopCount: number;
 
     constructor() {
         const loadedInDebugMode = this.checkDebugModeFromQueryString();
@@ -43,16 +37,7 @@ export class Game {
         this.debugService = new DebugService(loadedInDebugMode);
         this.debugComponent = new DebugComponent(this.debugService);
         this.inputManager = new InputManager();
-
-        this.loopCount = 0;
-        this.fps = 60;
-        this.timePerTick = 1000 / this.fps; // 1k / fps
-        this.delta = 0;
-        this.now = 0;
-        this.lastTime = performance.now();
-        this.timer = 0;
-        this.ticks = 0;
-    }
+        this.fpsService = new FpsService(60);    }
 
     Run() {
         console.log('Run called in game.ts');
@@ -90,41 +75,15 @@ export class Game {
             if (this.running) {
 
 
-                if (this.CheckShouldRunLoop()) {
+                if (this.fpsService.CheckShouldRunLoop()) {
                     this.Update();
                     this.Render();
-                    this.UpdateTicksAndRenderAfterLoop();
+                    this.fpsService.UpdateTicksAndRenderAfterLoop();
                 }
-                this.PrintCurrentFpsToConsole()
+                this.fpsService.PrintCurrentFpsToConsole()
             }
-            this.loopCount++;
             this.Loop();
         });
-    }
-
-    PrintCurrentFpsToConsole() {
-        if (this.timer > 1000) {
-            console.info(`ticks and frames: ${this.ticks}`);
-            this.ticks = 0;
-            this.timer = 0;
-        }
-    }
-
-    CheckShouldRunLoop(): boolean {
-        this.now = performance.now();
-        this.delta += (this.now - this.lastTime) / this.timePerTick;
-        this.timer += this.now - this.lastTime;
-        this.lastTime = this.now;
-
-        if (this.delta >= 1) {
-            return true
-        }
-        console.log(`RUNNING SLOWLY. did not render. Delta [${this.delta}]`)
-        return false;
-    }
-    UpdateTicksAndRenderAfterLoop() {
-        this.delta--;
-        this.ticks++;
     }
 
     Update() {
