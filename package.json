@@ -6,6 +6,7 @@
   "main": "index.ts",
   "dependencies": {
     "concurrently": "^4.1.0",
+    "copy-webpack-plugin": "^5.0.2",
     "tsyringe": "^3.0.1"
   },
   "devDependencies": {
@@ -19,6 +20,7 @@
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.4.1",
+    "url-loader": "^1.1.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"

@@ -1,17 +1,22 @@
-import { Creature, CreatureDefaultSettings } from "./creature";
+import { Creature } from "./creature";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { InputManager } from "../../Input/InputManager";
 import { GraphicsService } from "../../Graphics/graphics.service";
 import { RandomStringGenerator } from "../../Tools/random_generators/random_string.generator";
+import { Texture2D } from "../../Graphics/Textures/Texture2d";
+import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
 
 export class Player extends Creature {
     inputManager: InputManager;
     
+
     constructor(position: Vector2, size: Vector2, name: string,
+        texturePath: string,
         inputManager: InputManager, graphicsService: GraphicsService) {
-        super(position, size, name, graphicsService);
+        super(position, size, name, texturePath, graphicsService);
         this.inputManager = inputManager;
         this.health = 100;
+        
     }
 
     public Tick(): void {
@@ -42,7 +47,24 @@ export class Player extends Creature {
     public Render(): void {
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
-        canv.ctx.fillStyle = RandomStringGenerator.GetRandomHexColour();
+
+        this.DrawToCanvasAsTexture2D(canv);
+    }
+    DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
+        if (this.texture.GetCanRender()) {
+            canv.ctx.drawImage(this.texture.GetImage(), this.getPosition().x,
+                this.getPosition().y,
+                this.getSize().x,
+                this.getSize().y);
+        } else {
+            // console.log('will draw as canv')
+            const colour = RandomStringGenerator.GetRandomHexColour();
+            this.DrawToCanvasAsRect(canv, colour);
+        }
+    }
+
+    protected DrawToCanvasAsRect(canv: DrawableCanvas, colour: string) {
+        canv.ctx.fillStyle = colour;
         canv.ctx.fillRect(
             this.getPosition().x,
             this.getPosition().y,
