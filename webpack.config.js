@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -14,14 +15,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.(png|jp(e*)g|svg)$/,  
-                use: [ {
-                    loader: 'url-loader',
-                    options: limit: 100,
-                    name: images/[hash]-[name].[ext]
-                }]
-            },
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
@@ -64,5 +57,10 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
-    }
+    },
+    plugins: [
+        new CopyPlugin([
+            { from: 'src/assets/_dist', to: 'assets/_dist'}
+        ]) 
+    ]
 };

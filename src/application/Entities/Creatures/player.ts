@@ -60,23 +60,13 @@ export class Player extends Creature {
         // }
     }
     DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
-        const image = new Image(this.getSize().x, this.getSize().y);
-        image.src = this.texture.GetUrl();
-        let drawAsImage = false;
-        image.onload = ((event) => {
-            drawAsImage = true;
-        });
-        image.onerror = ((event) => {
-            drawAsImage = false;
-        });
-
-
-        if (drawAsImage) {
-            canv.ctx.drawImage(image, this.getPosition().x,
+        if (this.texture.GetCanRender()) {
+            canv.ctx.drawImage(this.texture.GetImage(), this.getPosition().x,
                 this.getPosition().y,
                 this.getSize().x,
                 this.getSize().y);
         } else {
+            console.log('will draw as canv')
             this.DrawToCanvasAsRect(canv);
         }
     }
@@ -89,12 +79,5 @@ export class Player extends Creature {
             this.getSize().x,
             this.getSize().y
         );
-    }
-
-    private hasTexture(): boolean {
-        if (!this.texture) {
-            return false;
-        }
-        return true;
     }
 }

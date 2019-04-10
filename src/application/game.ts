@@ -145,11 +145,12 @@ export class Game {
             ));
         }
 
+
         entities.push(new Player(
             new Vector2(10, 10),
-            new Vector2(25, 25),
+            new Vector2(50, 50), 
             'player',
-            '/assets/_game-assets/Ships/large_purple_01.png',
+            '/assets/_dist/Ships/large_purple_01.png',
             this.inputManager,
             this.graphicsService));
         return entities;
