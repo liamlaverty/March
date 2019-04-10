@@ -1,4 +1,4 @@
-import { Creature, CreatureDefaultSettings } from "./creature";
+import { Creature } from "./creature";
 import { GraphicsService } from "../../Graphics/graphics.service";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 

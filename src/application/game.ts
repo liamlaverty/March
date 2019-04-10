@@ -149,6 +149,7 @@ export class Game {
             new Vector2(10, 10),
             new Vector2(25, 25),
             'player',
+            '/assets/_game-assets/Ships/large_purple_01.png',
             this.inputManager,
             this.graphicsService));
         return entities;
