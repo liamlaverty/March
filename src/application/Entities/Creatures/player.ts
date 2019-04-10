@@ -8,17 +8,15 @@ import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
 
 export class Player extends Creature {
     inputManager: InputManager;
-    texture: Texture2D;
+    
 
     constructor(position: Vector2, size: Vector2, name: string,
         texturePath: string,
         inputManager: InputManager, graphicsService: GraphicsService) {
-        super(position, size, name, graphicsService);
+        super(position, size, name, texturePath, graphicsService);
         this.inputManager = inputManager;
         this.health = 100;
-        if (texturePath !== undefined && texturePath !== null && texturePath.length) {
-            this.texture = new Texture2D(texturePath);
-        }
+        
     }
 
     public Tick(): void {
@@ -47,17 +45,10 @@ export class Player extends Creature {
     }
 
     public Render(): void {
-
-
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
 
         this.DrawToCanvasAsTexture2D(canv);
-        // if (this.hasTexture()) {
-        //     this.DrawToCanvasAsTexture2D(canv);
-        // } else {
-        //     this.DrawToCanvasAsRect(canv);
-        // }
     }
     DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
         if (this.texture.GetCanRender()) {
@@ -66,13 +57,14 @@ export class Player extends Creature {
                 this.getSize().x,
                 this.getSize().y);
         } else {
-            console.log('will draw as canv')
-            this.DrawToCanvasAsRect(canv);
+            // console.log('will draw as canv')
+            const colour = RandomStringGenerator.GetRandomHexColour();
+            this.DrawToCanvasAsRect(canv, colour);
         }
     }
 
-    private DrawToCanvasAsRect(canv: DrawableCanvas) {
-        canv.ctx.fillStyle = RandomStringGenerator.GetRandomHexColour();
+    protected DrawToCanvasAsRect(canv: DrawableCanvas, colour: string) {
+        canv.ctx.fillStyle = colour;
         canv.ctx.fillRect(
             this.getPosition().x,
             this.getPosition().y,

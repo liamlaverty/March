@@ -6,8 +6,9 @@ export class Baddy extends Creature {
     private colour: string;
 
     constructor(position: Vector2, size: Vector2, name: string,
+        texturePath: string,
         graphicsService: GraphicsService, colour: string) {
-        super(position, size, name, graphicsService);
+        super(position, size, name, texturePath, graphicsService);
         this.colour = colour;
 
     }

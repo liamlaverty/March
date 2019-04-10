@@ -126,20 +126,34 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 50): Array<Entity> {
+    registerEntities(baddyCount: number = 15): Array<Entity> {
         const entities = new Array<Entity>();
 
-
-        const entitySize: Vector2 = new Vector2(5, 5);
+        const ships = [
+            'metalic_01.png', 
+            'metalic_02.png', 
+            'metalic_03.png', 
+            'metalic_04.png', 
+            'metalic_05.png', 
+            'metalic_06.png', 
+            'orange_01.png',
+            'orange_02.png',
+            'orange_03.png',
+            'orange_04.png',
+            'orange_05.png',
+            'orange_06.png'
+        ];
+        const entitySize: Vector2 = new Vector2(30, 30);
         for (let i = 0; i < baddyCount; i++) {
+            const imageLoc = RandomNumberGenerator.GetRandomNumber(0, 6);
+            console.log('image loc will be ' + imageLoc);
             entities.push(new Baddy(
                 RandomNumberGenerator.GetRandomVector2(
                     0, ViewportHelper.GetBrowserWidth(),
                     0, ViewportHelper.GetBrowserHeight()),
-                RandomNumberGenerator.GetRandomVector2(
-                    5, 10,
-                    5, 10),
+                entitySize,
                 'baddy' + i.toString(),
+                '/Ships/' + ships[imageLoc],
                 this.graphicsService,
                 RandomStringGenerator.GetRandomHexColour()
             ));
@@ -150,7 +164,7 @@ export class Game {
             new Vector2(10, 10),
             new Vector2(50, 50), 
             'player',
-            '/assets/_dist/Ships/large_purple_01.png',
+            'Ships/large_purple_01.png',
             this.inputManager,
             this.graphicsService));
         return entities;

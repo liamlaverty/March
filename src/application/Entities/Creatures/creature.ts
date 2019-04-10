@@ -3,12 +3,12 @@ import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { GraphicsService } from "../../Graphics/graphics.service";
 import { CreatureDefaultSettings } from "./creature-default-settings";
 import { Texture2D } from "../../Graphics/Textures/Texture2d";
+import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
 
 
 
 export abstract class Creature extends Entity {
     graphicsService: GraphicsService;
-
 
     protected health: number;
     protected speed: Vector2;
@@ -17,13 +17,13 @@ export abstract class Creature extends Entity {
     protected acceleration: Vector2;
     protected friction: Vector2;
 
-
     protected canvasId: string;
 
     protected texture: Texture2D;
 
 
     constructor(position: Vector2, size: Vector2, name: string,
+        texturePath: string,
         graphicsService: GraphicsService) {
         super(position, size, name);
         this.graphicsService = graphicsService;
@@ -36,6 +36,10 @@ export abstract class Creature extends Entity {
         this.friction = CreatureDefaultSettings.DEFAULT_FRICTION;
 
         this.canvasId = this.graphicsService.RegisterDrawableEntity();
+
+        if (texturePath !== undefined && texturePath !== null && texturePath.length) {
+            this.texture = new Texture2D(texturePath);
+        }
 
     }
 
@@ -93,6 +97,14 @@ export abstract class Creature extends Entity {
     Draw(colour: string): CanvasRenderingContext2D {
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
+        this.DrawToCanvasAsTexture2D(canv, colour);
+        
+        
+        
+        return canv.ctx;
+    }
+
+    protected DrawToCanvasAsRect(canv: DrawableCanvas, colour: string) {
         canv.ctx.fillStyle = colour;
         canv.ctx.fillRect(
             this.getPosition().x,
@@ -100,7 +112,18 @@ export abstract class Creature extends Entity {
             this.getSize().x,
             this.getSize().y
         );
-        return canv.ctx;
+    }
+
+    DrawToCanvasAsTexture2D(canv: DrawableCanvas, colour: string) {      
+        
+        if (this.texture.GetCanRender()) {
+            canv.ctx.drawImage(this.texture.GetImage(), this.getPosition().x,
+                this.getPosition().y,
+                this.getSize().x,
+                this.getSize().y);
+        } else {
+            this.DrawToCanvasAsRect(canv, colour);
+        }
     }
 
 
