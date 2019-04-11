@@ -1,27 +1,68 @@
-import { Tile } from "./_base-tile";
+import { TileType } from "./_base-tiletype";
 import { CanvasService } from "../Canvas/graphics.canvas.service";
-import { SpaceTile } from "./space.tile";
+import { SpaceTileType } from "./space.tiletype";
+import { GraphicsService } from "../graphics.service";
+import { Vector2 } from "../../../numerics/models/Vector2.model";
+import { TileDefaultSettings } from "./tile.default.settings";
+import { DrawableTile } from "./drawable-tile";
 
 export class TileService {
 
-    public tiles: Tile[] = new Array<Tile>(256);
-    public spaceTile: Tile;
+    public tileTypes: TileType[] = new Array<TileType>(256);
+    private spaceTile: TileType;
+
+    private tiles: Array<DrawableTile> = new Array<DrawableTile>();
 
     private canvasService: CanvasService;
+    private graphicsService: GraphicsService;
 
-    constructor(canvasService: CanvasService) {
+    private tileCanvasId: string;
+
+    constructor(canvasService: CanvasService,
+        graphicsService: GraphicsService) {
+        this.graphicsService = graphicsService;
         this.canvasService = canvasService;
     }
 
     Init() {
-        const spaceTilecanvasId = this.canvasService.RegisterNewCanvas();
-        this.spaceTile = new SpaceTile(0, spaceTilecanvasId);
-        this.tiles[this.spaceTile.GetId()] = this.spaceTile; 
-
+        this.tileCanvasId = this.canvasService.RegisterNewCanvas();
+        this.spaceTile = new SpaceTileType(0);
+        this.setupTileTypes();
+        this.setupTiles();
     }
 
-    // public getTiles() {
-    //     return this.tiles;
-    // }
 
+    setupTileTypes() {
+        this.tileTypes[this.spaceTile.GetId()] = this.spaceTile;
+    }
+
+    setupTiles() {
+        for (let x = 0; x < 10; x++) {
+            for (let y = 0; y < 10; y++) {
+                this.tiles.push(new DrawableTile(this.spaceTile.GetId(),
+                    new Vector2(
+                        x * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
+                        y * TileDefaultSettings.DEFAULT_SIZE.getValueY()),
+                    TileDefaultSettings.DEFAULT_SIZE));
+            }
+        }
+    }
+
+    Redner() {
+        const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
+        
+        canv.ClearCanvas();
+        for (let tile of this.tiles) {
+            const text = this.GetTextureFromTileType(tile.getTileTypeId());
+            canv.ctx.drawImage(text.GetImage(),
+                tile.getPosition().x,
+                tile.getPosition().y);
+
+        }
+    }
+
+    GetTextureFromTileType(id: number) {
+        return this.tileTypes[id].GetTexture();
+    }
 }
+

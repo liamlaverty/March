@@ -12,7 +12,7 @@ export class GraphicsService {
         console.log('starting graphics service');
         this.htmlService = new HtmlService();
         this.canvasService = new CanvasService(this.htmlService);
-        this.tileService = new TileService(this.canvasService);
+        this.tileService = new TileService(this.canvasService, this);
         this.ticks = 0;
     }
 

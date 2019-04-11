@@ -1,8 +1,8 @@
-import { Tile } from "./_base-tile";
+import { TileType } from "./_base-tiletype";
 
-export class BackgroundTile extends Tile {
+export class BackgroundTile extends TileType {
 
-    constructor() {
-        super();
-    }
+    // constructor() {
+    //     super();
+    // }
 }
