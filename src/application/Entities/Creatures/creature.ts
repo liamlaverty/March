@@ -1,7 +1,7 @@
 import { Entity } from "../_base-entity";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { GraphicsService } from "../../Graphics/graphics.service";
-import { CreatureDefaultSettings } from "./creature-default-settings";
+import { CreatureDefaultSettings } from "./creature.default.settings";
 import { Texture2D } from "../../Graphics/Textures/Texture2d";
 import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
 
@@ -98,8 +98,6 @@ export abstract class Creature extends Entity {
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
         this.DrawToCanvasAsTexture2D(canv, colour);
-        
-        
         
         return canv.ctx;
     }
