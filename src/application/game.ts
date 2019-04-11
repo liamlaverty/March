@@ -109,6 +109,9 @@ export class Game {
 
     Render() {
         if (this.stateService.GetState() !== null) {
+            
+            this.graphicsService.GetTileService().Redner();
+
             for (let i = 0; i < this.gameEntities.length; i++) {
                 //prepares for rendering
                 this.gameEntities[i].Render();
@@ -130,12 +133,12 @@ export class Game {
         const entities = new Array<Entity>();
 
         const ships = [
-            'metalic_01.png', 
-            'metalic_02.png', 
-            'metalic_03.png', 
-            'metalic_04.png', 
-            'metalic_05.png', 
-            'metalic_06.png', 
+            'metalic_01.png',
+            'metalic_02.png',
+            'metalic_03.png',
+            'metalic_04.png',
+            'metalic_05.png',
+            'metalic_06.png',
             'orange_01.png',
             'orange_02.png',
             'orange_03.png',
@@ -162,7 +165,7 @@ export class Game {
 
         entities.push(new Player(
             new Vector2(10, 10),
-            new Vector2(50, 50), 
+            new Vector2(50, 50),
             'player',
             'Ships/large_purple_01.png',
             this.inputManager,
