@@ -11,8 +11,10 @@ export class Texture2D {
         this.url = path;
         this.id = GuidGenerator.NewGuid();
         this.image = ImageHelper.NewImage(this.url);
+        // console.error('loading image')
         this.image.onload = (() => {
             this.imageCanRender = true;
+            // console.error('this image width is ' + this.image.width);
         })
         this.image.onerror = (() => {
             this.imageCanRender = false;

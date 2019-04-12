@@ -16,12 +16,14 @@ import { Baddy } from "./Entities/Creatures/baddy";
 import { RandomStringGenerator } from "./Tools/random_generators/random_string.generator";
 import { RandomNumberGenerator } from "./Tools/random_generators/random_number.generators";
 import { ViewportHelper } from "./Graphics/Viewport/Viewport.Helper";
+import { WorldService } from "./World/world.service";
 
 export class Game {
     private graphicsService: GraphicsService;
     private inputManager: InputManager;
     private debugService: IDebugService;
     private stateService: StateService;
+    private worldService: WorldService;
     private debugComponent: DebugComponent;
     private fpsService: FpsService;
     private running: boolean = false;
@@ -42,6 +44,7 @@ export class Game {
         this.debugComponent = new DebugComponent(this.debugService);
         this.inputManager = new InputManager();
         this.fpsService = new FpsService(60);
+        this.worldService = new WorldService(this.graphicsService.GetTileService());
     }
 
     Run() {
