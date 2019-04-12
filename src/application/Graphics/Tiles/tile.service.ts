@@ -1,15 +1,19 @@
 import { TileType } from "./_base-tiletype";
 import { CanvasService } from "../Canvas/graphics.canvas.service";
-import { SpaceTileType } from "./space.tiletype";
+import { SpaceTileType, SpaceTileWithStarType } from "./space.tiletype";
 import { GraphicsService } from "../graphics.service";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { TileDefaultSettings } from "./tile.default.settings";
 import { DrawableTile } from "./drawable-tile";
+import { GrassTileType } from "./grass.tiletype";
+import { DrawableCanvas } from "../Models/graphics.drawable-canvas";
 
 export class TileService {
 
     public tileTypes: TileType[] = new Array<TileType>(256);
     private spaceTile: TileType;
+    private spaceTileWithStar: TileType;
+    private grassTile: TileType;
 
     private tiles: Array<DrawableTile> = new Array<DrawableTile>();
 
@@ -27,6 +31,8 @@ export class TileService {
     Init() {
         this.tileCanvasId = this.canvasService.RegisterNewCanvas();
         this.spaceTile = new SpaceTileType(0);
+        this.spaceTileWithStar = new SpaceTileWithStarType(1);
+        this.grassTile = new GrassTileType(2);
         this.setupTileTypes();
         // this.setupTiles();
     }
@@ -34,9 +40,11 @@ export class TileService {
 
     setupTileTypes() {
         this.tileTypes[this.spaceTile.GetId()] = this.spaceTile;
+        this.tileTypes[this.spaceTileWithStar.GetId()] = this.spaceTileWithStar;
+        this.tileTypes[this.grassTile.GetId()] = this.grassTile;
     }
 
-    setupTilesFromArray(tiles: number[][]) {
+    public setupTilesFromArray(tiles: number[][]) {
         for (let x = 0; x < tiles.length; x++) {
             for (let y = 0; y < tiles[x].length; y++) {
                 console.log(`loading tile at position x: ${x} , y:${y}`);
@@ -67,11 +75,24 @@ export class TileService {
         canv.ClearCanvas();
         for (let tile of this.tiles) {
             const text = this.GetTextureFromTileType(tile.getTileTypeId());
-            canv.ctx.drawImage(text.GetImage(),
-                tile.getPosition().x,
-                tile.getPosition().y);
-
+            if (text.GetCanRender()) {
+                canv.ctx.drawImage(text.GetImage(),
+                    tile.getPosition().x,
+                    tile.getPosition().y);
+            } else {
+                this.DrawToCanvasAsRect(canv, tile);
+            }
         }
+    }
+
+    protected DrawToCanvasAsRect(canv: DrawableCanvas, tile: DrawableTile) {
+        canv.ctx.strokeStyle = tile.GetFallbackColour();
+        canv.ctx.strokeRect(
+            tile.getPosition().x,
+            tile.getPosition().y,
+            tile.getSize().x,
+            tile.getSize().y
+        );
     }
 
     GetTextureFromTileType(id: number) {

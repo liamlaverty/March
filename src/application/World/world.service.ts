@@ -5,35 +5,34 @@ import { TileService } from '../Graphics/Tiles/tile.service';
 
 export class WorldService {
 
+    private currentWorldId: number = 0;
     private worlds: World[] = new Array<World>();
+    private tileService: TileService;
 
 
     constructor(tileService: TileService) {
-        this.LoadNewWorld(WorldJsonFileLoader.GetWorld1());
-        console.log(`this.worlds  = 
-        ${JSON.stringify(this.worlds)}
-        length is ${this.worlds.length}`);
+        this.tileService = tileService;
+        this.worlds = WorldJsonFileLoader.GetWorlds();
+        console.log(`this.worlds = ${JSON.stringify(this.worlds)} length is ${this.worlds.length}`);
 
-        for (const world of this.worlds) {
 
-            tileService.setupTilesFromArray(world.GetTiles());
-        }
+        console.info('setting current world to index 0');
+        this.SetWorld(0);
     }
+
+    public SetWorld(index: number) {
+        this.DeRegisterWorld();
+        this.tileService.setupTilesFromArray(this.GetWorld(index).GetTiles());
+    }
+
+
+    DeRegisterWorld() {
+        console.error(" DeRegisterWorld: Method not implemented.");
+    }
+
+
     public GetStartingPosition(worldIndex: number) {
         return this.worlds[worldIndex].GetStartingPosition();
-    }
-
-    private LoadNewWorld(world: any): World {
-        this.worlds.push(new World(
-            new Vector2(
-                world.tiles.length,
-                world.tiles[0].length),
-            new Vector2(
-                world.start.x,
-                world.start.y),
-            world.tiles
-        ));
-        return this.worlds[this.worlds.length];
     }
 
 
