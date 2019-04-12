@@ -17,6 +17,7 @@ import { RandomStringGenerator } from "./Tools/random_generators/random_string.g
 import { RandomNumberGenerator } from "./Tools/random_generators/random_number.generators";
 import { ViewportHelper } from "./Graphics/Viewport/Viewport.Helper";
 import { WorldService } from "./World/world.service";
+import { GameCameraService } from "./Graphics/Camera/game-camera.service";
 
 export class Game {
     private graphicsService: GraphicsService;
@@ -69,7 +70,7 @@ export class Game {
     }
 
     private SetupStates() {
-        this.gameState = new GameState();
+        this.gameState = new GameState(this.graphicsService);
         this.menuState = new MenuState();
         this.settingsState = new SettingsState();
 

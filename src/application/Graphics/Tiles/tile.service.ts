@@ -77,8 +77,8 @@ export class TileService {
             const text = this.GetTextureFromTileType(tile.getTileTypeId());
             if (text.GetCanRender()) {
                 canv.ctx.drawImage(text.GetImage(),
-                    tile.getPosition().x,
-                    tile.getPosition().y);
+                    tile.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
+                    tile.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY());
             } else {
                 this.DrawToCanvasAsRect(canv, tile);
             }
@@ -88,8 +88,8 @@ export class TileService {
     protected DrawToCanvasAsRect(canv: DrawableCanvas, tile: DrawableTile) {
         canv.ctx.strokeStyle = tile.GetFallbackColour();
         canv.ctx.strokeRect(
-            tile.getPosition().x,
-            tile.getPosition().y,
+            tile.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
+            tile.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
             tile.getSize().x,
             tile.getSize().y
         );
