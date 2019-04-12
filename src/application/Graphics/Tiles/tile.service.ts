@@ -28,7 +28,7 @@ export class TileService {
         this.tileCanvasId = this.canvasService.RegisterNewCanvas();
         this.spaceTile = new SpaceTileType(0);
         this.setupTileTypes();
-        this.setupTiles();
+        // this.setupTiles();
     }
 
 
@@ -36,21 +36,34 @@ export class TileService {
         this.tileTypes[this.spaceTile.GetId()] = this.spaceTile;
     }
 
-    setupTiles() {
-        for (let x = 0; x < 10; x++) {
-            for (let y = 0; y < 10; y++) {
-                this.tiles.push(new DrawableTile(this.spaceTile.GetId(),
+    setupTilesFromArray(tiles: number[][]) {
+        for (let x = 0; x < tiles.length; x++) {
+            for (let y = 0; y < tiles[x].length; y++) {
+                console.log(`loading tile at position x: ${x} , y:${y}`);
+                this.tiles.push(new DrawableTile(tiles[x][y],
                     new Vector2(
-                        x * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
-                        y * TileDefaultSettings.DEFAULT_SIZE.getValueY()),
+                        y * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
+                        x * TileDefaultSettings.DEFAULT_SIZE.getValueY()),
                     TileDefaultSettings.DEFAULT_SIZE));
             }
         }
     }
 
+    // setupTiles() {
+    //     for (let x = 0; x < 10; x++) {
+    //         for (let y = 0; y < 10; y++) {
+    //             this.tiles.push(new DrawableTile(this.spaceTile.GetId(),
+    //                 new Vector2(
+    //                     x * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
+    //                     y * TileDefaultSettings.DEFAULT_SIZE.getValueY()),
+    //                 TileDefaultSettings.DEFAULT_SIZE));
+    //         }
+    //     }
+    // }
+
     Redner() {
         const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
-        
+
         canv.ClearCanvas();
         for (let tile of this.tiles) {
             const text = this.GetTextureFromTileType(tile.getTileTypeId());
