@@ -104,12 +104,6 @@ export abstract class Creature extends Entity {
 
     protected DrawToCanvasAsRect(canv: DrawableCanvas, colour: string) {
         canv.ctx.strokeStyle = colour;
-        // canv.ctx.fillRect(
-        //     this.getPosition().x,
-        //     this.getPosition().y,
-        //     this.getSize().x,
-        //     this.getSize().y
-        // );
 
         canv.ctx.strokeRect(
             this.getPosition().x,

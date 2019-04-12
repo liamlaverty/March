@@ -25,7 +25,7 @@ export class DrawableTile {
     }
 
     public GetFallbackColour(): string {
-        console.warn('using fallback colour for tile ' + this.getTileTypeId());
+        // console.warn('using fallback colour for tile ' + this.getTileTypeId());
         return this.fallbackOutlineColour;
     }
 }
