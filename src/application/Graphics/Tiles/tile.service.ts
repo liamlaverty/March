@@ -94,7 +94,7 @@ export class TileService {
         this.tileTypes[this.starTileType.GetId()] = this.starTileType;
         this.tileTypes[this.grassTileType.GetId()] = this.grassTileType;
         this.tileTypes[this.grassTileTypeDirt.GetId()] = this.grassTileTypeDirt;
-
+  
         this.tileTypes[this.grassTileTypeDirtTop.GetId()] = this.grassTileTypeDirtTop;
         this.tileTypes[this.grassTileTypeDirtRight.GetId()] = this.grassTileTypeDirtRight;
         this.tileTypes[this.grassTileTypeBottom.GetId()] = this.grassTileTypeBottom;
@@ -110,7 +110,7 @@ export class TileService {
         this.tileTypes[this.sandTileTypeDirtRight.GetId()] = this.sandTileTypeDirtRight;
         this.tileTypes[this.sandTileTypeBottom.GetId()] = this.sandTileTypeBottom;
         this.tileTypes[this.sandTileTypeLeft.GetId()] = this.sandTileTypeLeft;
-        
+
         this.tileTypes[this.shallowWaterTileType.GetId()] = this.shallowWaterTileType;
         this.tileTypes[this.shallowWaterTileTypeDirtTop.GetId()] = this.shallowWaterTileTypeDirtTop;
         this.tileTypes[this.shallowWaterTileTypeDirtRight.GetId()] = this.shallowWaterTileTypeDirtRight;
