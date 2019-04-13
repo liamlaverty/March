@@ -44,7 +44,7 @@ export class Player extends Creature {
         if (this.inputManager.IsKeyPressed(' ')) {
             console.log('space pressed')
         }
-        console.log(`this.movement.x = ${this.movement.x}`)
+        // console.log(`this.movement.x = ${this.movement.x}`)
     }
 
     public Render(): void {

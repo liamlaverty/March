@@ -8,7 +8,7 @@ export class Vector2 {
     }
 
     concat() {
-        return 'x:[' + this.x + '], y:[' + this.y + ']';
+        return `x:[${this.x}], y:[${this.y}]`;
     }
 
     getValueX() {

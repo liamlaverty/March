@@ -109,8 +109,9 @@ export abstract class Creature extends Entity {
     Draw(colour: string): CanvasRenderingContext2D {
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
-        this.DrawToCanvasAsTexture2D(canv, colour);
-
+        if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.getPosition(), this.getSize())) {
+            this.DrawToCanvasAsTexture2D(canv, colour);
+        }
         return canv.ctx;
     }
 

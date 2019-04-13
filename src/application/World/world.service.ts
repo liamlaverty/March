@@ -12,9 +12,12 @@ export class WorldService {
 
     constructor(tileService: TileService) {
         this.tileService = tileService;
+        
+    }
+
+    Init() {
         this.worlds = WorldJsonFileLoader.GetWorlds();
         console.log(`this.worlds = ${JSON.stringify(this.worlds)} length is ${this.worlds.length}`);
-
 
         console.info('setting current world to index 0');
         this.SetWorld(0);

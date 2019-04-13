@@ -64,6 +64,7 @@ export class Game {
         this.SetupStates();
         this.inputManager.InitInputManager();
         this.graphicsService.InitGraphicsService();
+        this.worldService.Init();
         this.gameEntities = this.registerEntities();
         // this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
         if (this.debugService.IsInDebugMode()) {
@@ -96,10 +97,34 @@ export class Game {
                     this.Render();
                     this.fpsService.UpdateTicksAndRenderAfterLoop();
                 }
-                this.fpsService.PrintCurrentFpsToConsole();
+
+                this.PrintDebugInfoToConsole();
+                this.fpsService.ResetTimers();
             }
             this.Loop();
         });
+    }
+
+    /**
+     * prints debug info from various places in the 
+     * application
+     *
+     * @private
+     * @memberof Game
+     */
+    private PrintDebugInfoToConsole() {
+        if (this.fpsService.ShouldPrintDebugData()) {
+
+            let debugInformation: string[] = new Array<string>();
+            debugInformation.push('FPS Serv: ' + this.fpsService.PrintCurrentFpsToConsole());
+            debugInformation.push('Cam Serv: ' + this.graphicsService.getGameCameraService().GetDebugInfo());
+            for (let line of debugInformation) {
+                if (line.length > 0) {
+                    console.log('%c ' + line + ' ', 'background: #000; color:white; ');
+                }
+            }
+            debugInformation = Array<string>(0);
+        }
     }
 
     Update() {
@@ -117,7 +142,7 @@ export class Game {
 
     Render() {
         if (this.stateService.GetState() !== null) {
-            
+
             this.graphicsService.GetTileService().Redner();
 
             for (let i = 0; i < this.gameEntities.length; i++) {
@@ -169,12 +194,12 @@ export class Game {
         }
 
 
-        
+
 
         entities.push(new Player(
-              new Vector2(
-                 ViewportHelper.GetBrowserWidth() / 2, 
-                  ViewportHelper.GetBrowserHeight() / 2),
+            new Vector2(
+                ViewportHelper.GetBrowserWidth() / 2,
+                ViewportHelper.GetBrowserHeight() / 2),
             // new Vector2(0, 0),
             new Vector2(50, 50),
             'player',
