@@ -1,6 +1,7 @@
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 
 export class ViewportHelper {
+
     public static GetSquareInBrowser(): Vector2 {
         const h = this.GetBrowserHeight() - 5;
         const w = this.GetBrowserWidth() - 5;
@@ -20,7 +21,7 @@ export class ViewportHelper {
 
         const displayWidth = Math.min(adjustedWindowWidth, (adjustedWindowHeight * aspectRatio));
         const displayHeight = Math.min(adjustedWindowHeight, (adjustedWindowWidth / aspectRatio));
-
+        
         return new Vector2(displayWidth, displayHeight);
     }
 
@@ -66,7 +67,7 @@ export class ViewportHelper {
         return new Vector2(displayWidth, displayHeight);
     }
 
-    public static GetBrowserWidth(element: HTMLElement = null) {
+    private static GetBrowserWidth(element: HTMLElement = null) {
         if (!element) {
             return window.innerWidth;
         } else {
@@ -74,7 +75,7 @@ export class ViewportHelper {
 
         }
     }
-    public static GetBrowserHeight(element: HTMLElement = null) {
+    private static GetBrowserHeight(element: HTMLElement = null) {
         if (!element) {
             return window.innerHeight;
         } else {

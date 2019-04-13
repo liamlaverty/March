@@ -57,6 +57,7 @@ export class GameCameraService {
      * @memberof GameCameraService
      */
     public LookAt(entityPosition: Vector2, entitySize: Vector2): void {
+                
         const vieportWidth = ViewportHelper.GetWindowInAspectRatio().getValueX();
         const vieportHeight = ViewportHelper.GetWindowInAspectRatio().getValueY();
 

@@ -15,6 +15,8 @@ import { StoneTileType } from "./TileTypes/GroundTileTypes/stone.tiletype";
 
 export class TileService {
 
+    private tileSize: Vector2 = TileDefaultSettings.DEFAULT_SIZE;
+
     public tileTypes: TileType[] = new Array<TileType>(256);
     private spaceTileType: TileType;
     private starTileType: TileType;
@@ -120,18 +122,30 @@ export class TileService {
 
     }
 
-    public setupTilesFromArray(tiles: number[][]) {
+
+    /**
+     * returns a Vector 2 containing a size
+     *
+     * @param {number[][]} tiles
+     * @returns {Vector2}
+     * @memberof TileService
+     */
+    public setupTilesFromArray(tiles: number[][]): Vector2 {
+        const size: Vector2 = new Vector2(0, 0)
         for (let x = 0; x < tiles.length; x++) {
             for (let y = 0; y < tiles[x].length; y++) {
                 this.tiles.push(new DrawableTile(tiles[x][y],
                     new Vector2(
-                        y * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
-                        x * TileDefaultSettings.DEFAULT_SIZE.getValueY()),
+                        y * this.GetTileSize().getValueX(),
+                        x * this.GetTileSize().getValueY()),
                     TileDefaultSettings.DEFAULT_SIZE,
                     this.tileTypes[tiles[x][y]].GetFallbackColour()));
             }
         }
+        return size;
     }
+
+    
 
     Redner() {
         const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
@@ -170,6 +184,10 @@ export class TileService {
         catch (ex) {
             console.warn('failed to get texture for tile type at ' + id);
         }
+    }
+
+    public GetTileSize() {
+        return this.tileSize;
     }
 }
 
