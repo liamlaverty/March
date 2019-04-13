@@ -1,12 +1,13 @@
-import { TileType } from "./_base-tiletype";
+import { TileType } from "./TileTypes/_base-tiletype";
 import { CanvasService } from "../Canvas/graphics.canvas.service";
-import { SpaceTileType, SpaceTileWithStarType } from "./space.tiletype";
+import { SpaceTileType } from "./TileTypes/SpaceTileTypes/space.tiletype";
 import { GraphicsService } from "../graphics.service";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { TileDefaultSettings } from "./tile.default.settings";
 import { DrawableTile } from "./drawable-tile";
-import { GrassTileType } from "./grass.tiletype";
+import { GrassTileType } from "./TileTypes/GroundTileTypes/grass.tiletype";
 import { DrawableCanvas } from "../Models/graphics.drawable-canvas";
+import { StarTileType } from "./TileTypes/SpaceTileTypes/star.tiletype";
 
 export class TileService {
 
@@ -31,7 +32,7 @@ export class TileService {
     Init() {
         this.tileCanvasId = this.canvasService.RegisterNewCanvas();
         this.spaceTile = new SpaceTileType(0);
-        this.spaceTileWithStar = new SpaceTileWithStarType(1);
+        this.spaceTileWithStar = new StarTileType(1);
         this.grassTile = new GrassTileType(2);
         this.setupTileTypes();
         // this.setupTiles();
@@ -75,10 +76,16 @@ export class TileService {
         canv.ClearCanvas();
         for (let tile of this.tiles) {
             const text = this.GetTextureFromTileType(tile.getTileTypeId());
+            const cameraOffset = this.graphicsService.getGameCameraService().GetOffsetVector();
+            // console.log('tiles camera offset is ' + JSON.stringify(cameraOffset));
             if (text.GetCanRender()) {
+                // canv.ctx.drawImage(text.GetImage(),
+                //     tile.getPosition().x,
+                //     tile.getPosition().y);
+
                 canv.ctx.drawImage(text.GetImage(),
-                    tile.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
-                    tile.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY());
+                    tile.getPosition().x - cameraOffset.getValueX(),
+                    tile.getPosition().y - cameraOffset.getValueY());
             } else {
                 this.DrawToCanvasAsRect(canv, tile);
             }

@@ -9,7 +9,7 @@ export class World {
     constructor(area: Vector2, spawn: Vector2, 
         tiles: number[][], id: number) {
             this.area = area;
-            this.spawn = spawn;
+            this.spawn = spawn; 
             this.tiles = tiles;
             this.id = id;
     }

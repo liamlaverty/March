@@ -1,4 +1,4 @@
-import { Texture2D } from "../Textures/Texture2d";
+import { Texture2D } from "../../Textures/Texture2d";
 
 
 export class TileType {

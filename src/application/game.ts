@@ -92,7 +92,7 @@ export class Game {
                     this.Render();
                     this.fpsService.UpdateTicksAndRenderAfterLoop();
                 }
-                this.fpsService.PrintCurrentFpsToConsole()
+                this.fpsService.PrintCurrentFpsToConsole();
             }
             this.Loop();
         });
@@ -167,8 +167,13 @@ export class Game {
         }
 
 
+        
+
         entities.push(new Player(
-            new Vector2(10, 10),
+            // new Vector2(
+            //     ViewportHelper.GetBrowserWidth() / 2, 
+            //     ViewportHelper.GetBrowserHeight() / 2),
+            new Vector2(0, 0),
             new Vector2(50, 50),
             'player',
             'Ships/large_purple_01.png',
