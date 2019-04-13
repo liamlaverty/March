@@ -22,8 +22,9 @@ export class Player extends Creature {
     public Tick(): void {
         this.GetInput();
         this.Move();
-        this.graphicsService.getGameCameraService().centerOnVector(this.position, this.size);
+        this.graphicsService.getGameCameraService().LookAt(this.position, this.size);
     }
+
 
     private GetInput(): void {
         // this.setMove(new Vector2(0, 0));
@@ -43,18 +44,21 @@ export class Player extends Creature {
         if (this.inputManager.IsKeyPressed(' ')) {
             console.log('space pressed')
         }
+        // console.log(`this.movement.x = ${this.movement.x}`)
     }
 
     public Render(): void {
-        const canv = this.graphicsService.GetCanvas(this.canvasId);
-        canv.ClearCanvas();
+        if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.position, this.size)) {
+            const canv = this.graphicsService.GetCanvas(this.canvasId);
+            canv.ClearCanvas();
 
-        this.DrawToCanvasAsTexture2D(canv);
+            this.DrawToCanvasAsTexture2D(canv);
+        }
     }
     DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
         if (this.texture.GetCanRender()) {
             canv.ctx.drawImage(this.texture.GetImage(),
-                this.getPosition().x -  this.graphicsService.getGameCameraService().GetOffsetX(),
+                this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
                 this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
                 this.getSize().x,
                 this.getSize().y);

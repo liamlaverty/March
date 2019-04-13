@@ -5,10 +5,12 @@ export class TileType {
 
     protected readonly id: number;
     protected readonly texture: Texture2D;
+    protected readonly fallbackOutlineColour: string;
 
-    constructor(texturePath: string, id: number) {
+    constructor(texturePath: string, id: number, fallbackOutlineColour: string) {
         this.texture = new Texture2D(texturePath);
         this.id = id;
+        this.fallbackOutlineColour = fallbackOutlineColour;
     }
 
     public Tick(): void {
@@ -21,5 +23,9 @@ export class TileType {
 
     public GetId(): number {
         return this.id;
+    }
+
+    public GetFallbackColour() {
+        return this.fallbackOutlineColour;
     }
 }

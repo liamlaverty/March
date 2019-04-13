@@ -15,6 +15,8 @@ import { StoneTileType } from "./TileTypes/GroundTileTypes/stone.tiletype";
 
 export class TileService {
 
+    private tileSize: Vector2 = TileDefaultSettings.DEFAULT_SIZE;
+
     public tileTypes: TileType[] = new Array<TileType>(256);
     private spaceTileType: TileType;
     private starTileType: TileType;
@@ -94,7 +96,7 @@ export class TileService {
         this.tileTypes[this.starTileType.GetId()] = this.starTileType;
         this.tileTypes[this.grassTileType.GetId()] = this.grassTileType;
         this.tileTypes[this.grassTileTypeDirt.GetId()] = this.grassTileTypeDirt;
-  
+
         this.tileTypes[this.grassTileTypeDirtTop.GetId()] = this.grassTileTypeDirtTop;
         this.tileTypes[this.grassTileTypeDirtRight.GetId()] = this.grassTileTypeDirtRight;
         this.tileTypes[this.grassTileTypeBottom.GetId()] = this.grassTileTypeBottom;
@@ -120,48 +122,47 @@ export class TileService {
 
     }
 
-    public setupTilesFromArray(tiles: number[][]) {
+
+    /**
+     * returns a Vector 2 containing a size
+     *
+     * @param {number[][]} tiles
+     * @returns {Vector2}
+     * @memberof TileService
+     */
+    public setupTilesFromArray(tiles: number[][]): Vector2 {
+        const size: Vector2 = new Vector2(0, 0)
         for (let x = 0; x < tiles.length; x++) {
             for (let y = 0; y < tiles[x].length; y++) {
                 this.tiles.push(new DrawableTile(tiles[x][y],
                     new Vector2(
-                        y * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
-                        x * TileDefaultSettings.DEFAULT_SIZE.getValueY()),
-                    TileDefaultSettings.DEFAULT_SIZE));
+                        y * this.GetTileSize().getValueX(),
+                        x * this.GetTileSize().getValueY()),
+                    TileDefaultSettings.DEFAULT_SIZE,
+                    this.tileTypes[tiles[x][y]].GetFallbackColour()));
             }
         }
+        return size;
     }
 
-    // setupTiles() {
-    //     for (let x = 0; x < 10; x++) {
-    //         for (let y = 0; y < 10; y++) {
-    //             this.tiles.push(new DrawableTile(this.spaceTile.GetId(),
-    //                 new Vector2(
-    //                     x * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
-    //                     y * TileDefaultSettings.DEFAULT_SIZE.getValueY()),
-    //                 TileDefaultSettings.DEFAULT_SIZE));
-    //         }
-    //     }
-    // }
+    
 
     Redner() {
         const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
 
         canv.ClearCanvas();
         for (let tile of this.tiles) {
-            const text = this.GetTextureFromTileType(tile.getTileTypeId());
-            const cameraOffset = this.graphicsService.getGameCameraService().GetOffsetVector();
-            // console.log('tiles camera offset is ' + JSON.stringify(cameraOffset));
-            if (text.GetCanRender()) {
-                // canv.ctx.drawImage(text.GetImage(),
-                //     tile.getPosition().x,
-                //     tile.getPosition().y);
+            if (this.graphicsService.getGameCameraService().IsObectOnScreen(tile.getPosition(), tile.getSize())) {
+                const text = this.GetTextureFromTileType(tile.getTileTypeId());
+                const cameraOffset = this.graphicsService.getGameCameraService().GetOffsetVector();
+                if (text.GetCanRender()) {
 
-                canv.ctx.drawImage(text.GetImage(),
-                    tile.getPosition().x - cameraOffset.getValueX(),
-                    tile.getPosition().y - cameraOffset.getValueY());
-            } else {
-                this.DrawToCanvasAsRect(canv, tile);
+                    canv.ctx.drawImage(text.GetImage(),
+                        tile.getPosition().x - cameraOffset.getValueX(),
+                        tile.getPosition().y - cameraOffset.getValueY());
+                } else {
+                    this.DrawToCanvasAsRect(canv, tile);
+                }
             }
         }
     }
@@ -183,6 +184,10 @@ export class TileService {
         catch (ex) {
             console.warn('failed to get texture for tile type at ' + id);
         }
+    }
+
+    public GetTileSize() {
+        return this.tileSize;
     }
 }
 

@@ -30,15 +30,34 @@ export class FpsService {
         return false;
     }
 
-    UpdateTicksAndRenderAfterLoop() {
+    public UpdateTicksAndRenderAfterLoop() {
         this.delta--;
         this.ticks++;
     }
 
-    PrintCurrentFpsToConsole() {
+    /**
+     * returns true if it's a good time to print to 
+     * the console
+     *
+     * @returns {boolean}
+     * @memberof FpsService
+     */
+    public ShouldPrintDebugData(): boolean {
+        return this.timer > 1000;
+    }
+
+    /**
+     * prints debug data from this class
+     * to the console
+     *
+     * @memberof FpsService
+     */
+    public PrintCurrentFpsToConsole() {
+        return `ticks and frames: ${this.ticks}`;
+    }
+
+    public ResetTimers() {
         if (this.timer > 1000) {
-            // console.clear();
-            console.info(`ticks and frames: ${this.ticks}`);
             this.ticks = 0;
             this.timer = 0;
         }

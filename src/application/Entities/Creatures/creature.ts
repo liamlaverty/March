@@ -52,14 +52,26 @@ export abstract class Creature extends Entity {
     private ReduceSpeed() {
         if (this.movement.y > 0) {
             this.movement.y -= this.friction.y;
+            if (this.movement.y < 0) {
+                this.movement.y = 0;
+            }
         } else if (this.movement.y < 0) {
             this.movement.y += this.friction.y;
+            if (this.movement.y > 0) {
+                this.movement.y = 0;
+            }
         }
 
         if (this.movement.x > 0) {
             this.movement.x -= this.friction.x;
+            if (this.movement.x < 0) {
+                this.movement.x = 0;
+            }
         } else if (this.movement.x < 0) {
             this.movement.x += this.friction.x;
+            if (this.movement.x > 0) {
+                this.movement.x = 0;
+            }
         }
     }
 
@@ -97,8 +109,9 @@ export abstract class Creature extends Entity {
     Draw(colour: string): CanvasRenderingContext2D {
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
-        this.DrawToCanvasAsTexture2D(canv, colour);
-
+        if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.getPosition(), this.getSize())) {
+            this.DrawToCanvasAsTexture2D(canv, colour);
+        }
         return canv.ctx;
     }
 

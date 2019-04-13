@@ -6,10 +6,11 @@ export class DrawableTile {
     private readonly size: Vector2;
     private readonly fallbackOutlineColour: string = '#fafafa';
 
-    constructor(tileTypeId: number, position: Vector2, size: Vector2) {
+    constructor(tileTypeId: number, position: Vector2, size: Vector2, fallbackOutlineColour: string) {
         this.tileTypeId = tileTypeId;
         this.position = position;
         this.size = size;
+        this.fallbackOutlineColour = fallbackOutlineColour;
     }
 
     public getTileTypeId(): number {

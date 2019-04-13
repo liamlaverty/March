@@ -15,11 +15,12 @@ import { FpsService } from "./Graphics/Fps/graphics.fps.service";
 import { Baddy } from "./Entities/Creatures/baddy";
 import { RandomStringGenerator } from "./Tools/random_generators/random_string.generator";
 import { RandomNumberGenerator } from "./Tools/random_generators/random_number.generators";
-import { ViewportHelper } from "./Graphics/Viewport/Viewport.Helper";
 import { WorldService } from "./World/world.service";
 import { GameCameraService } from "./Graphics/Camera/game-camera.service";
+import { ViewportService } from "./Graphics/Viewport/viewport.service";
 
 export class Game {
+    private viewportService: ViewportService;
     private graphicsService: GraphicsService;
     private inputManager: InputManager;
     private debugService: IDebugService;
@@ -38,6 +39,7 @@ export class Game {
 
 
     constructor() {
+        this.viewportService = new ViewportService();
         const loadedInDebugMode = this.checkDebugModeFromQueryString();
         this.graphicsService = new GraphicsService();
         this.stateService = new StateService();
@@ -64,6 +66,7 @@ export class Game {
         this.SetupStates();
         this.inputManager.InitInputManager();
         this.graphicsService.InitGraphicsService();
+        this.worldService.Init();
         this.gameEntities = this.registerEntities();
         // this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
         if (this.debugService.IsInDebugMode()) {
@@ -96,10 +99,34 @@ export class Game {
                     this.Render();
                     this.fpsService.UpdateTicksAndRenderAfterLoop();
                 }
-                this.fpsService.PrintCurrentFpsToConsole();
+
+                this.PrintDebugInfoToConsole();
+                this.fpsService.ResetTimers();
             }
             this.Loop();
         });
+    }
+
+    /**
+     * prints debug info from various places in the 
+     * application
+     *
+     * @private
+     * @memberof Game
+     */
+    private PrintDebugInfoToConsole() {
+        if (this.fpsService.ShouldPrintDebugData()) {
+
+            let debugInformation: string[] = new Array<string>();
+            debugInformation.push('FPS Serv: ' + this.fpsService.PrintCurrentFpsToConsole());
+            debugInformation.push('Cam Serv: ' + this.graphicsService.getGameCameraService().GetDebugInfo());
+            for (let line of debugInformation) {
+                if (line.length > 0) {
+                    console.log('%c ' + line + ' ', 'background: #000; color:white; ');
+                }
+            }
+            debugInformation = Array<string>(0);
+        }
     }
 
     Update() {
@@ -117,7 +144,7 @@ export class Game {
 
     Render() {
         if (this.stateService.GetState() !== null) {
-            
+
             this.graphicsService.GetTileService().Redner();
 
             for (let i = 0; i < this.gameEntities.length; i++) {
@@ -158,8 +185,8 @@ export class Game {
             console.log('image loc will be ' + imageLoc);
             entities.push(new Baddy(
                 RandomNumberGenerator.GetRandomVector2(
-                    0, ViewportHelper.GetBrowserWidth(),
-                    0, ViewportHelper.GetBrowserHeight()),
+                    0, this.viewportService.GetBrowserWidth(),
+                    0, this.viewportService.GetBrowserHeight()),
                 entitySize,
                 'baddy' + i.toString(),
                 '/Ships/' + ships[imageLoc],
@@ -169,12 +196,12 @@ export class Game {
         }
 
 
-        
+
 
         entities.push(new Player(
-              new Vector2(
-                 ViewportHelper.GetBrowserWidth() / 2, 
-                  ViewportHelper.GetBrowserHeight() / 2),
+            new Vector2(
+                this.viewportService.GetBrowserWidth() / 2,
+                this.viewportService.GetBrowserHeight() / 2),
             // new Vector2(0, 0),
             new Vector2(50, 50),
             'player',
