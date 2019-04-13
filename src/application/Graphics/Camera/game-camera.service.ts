@@ -8,26 +8,39 @@ export class GameCameraService {
         this.offset = new Vector2(xOffset, yOffset);
     }
 
+    public IsObectOnScreen(position: Vector2, size: Vector2): boolean {
+        const displayableSize: Vector2 = ViewportHelper.GetWindowInAspectRatio();
+
+        const displayablePosition: Vector2 = new Vector2(
+            this.GetOffsetX() / 2,
+            this.GetOffsetY() / 2);
+
+
+        return true;
+    }
+
     public MoveCamera(xAmount: number, yAmount: number): void {
         this.offset.x += xAmount;
         this.offset.y += yAmount;
     }
 
-    public centerOnVector(entityPosition: Vector2, entitySize: Vector2): void {
-        const vieportWidth = ViewportHelper.GetWindowInAspectRatio().getValueX();
-        const vieportHeight = ViewportHelper.GetWindowInAspectRatio().getValueY();
-        
-        const centerX = entityPosition.getValueX() - (vieportWidth / 2) + (entitySize.getValueX() / 2);
-        const centerY = entityPosition.getValueY() - (vieportHeight / 2) + (entitySize.getValueY() / 2);
+    public LookAt(entityPosition: Vector2, entitySize: Vector2): void {
+        const attachCamera = true;
+        if (attachCamera) {
 
-        // console.log(`centering on vec x[${centerX}], y[${centerY}]`)
+            const vieportWidth = ViewportHelper.GetWindowInAspectRatio().getValueX();
+            const vieportHeight = ViewportHelper.GetWindowInAspectRatio().getValueY();
 
-        this.SetOffset(new Vector2(
-            centerX,
-            centerY
-        ));
+            const centerX = entityPosition.getValueX() - (vieportWidth / 2) + (entitySize.getValueX() / 2);
+            const centerY = entityPosition.getValueY() - (vieportHeight / 2) + (entitySize.getValueY() / 2);
 
-        // this.SetOffset(entityPosition);
+            // console.log(`centering on vec x[${centerX}], y[${centerY}]`)
+
+            this.SetOffset(new Vector2(
+                centerX,
+                centerY
+            ));
+        }
     }
     private SetOffset(positionVector: Vector2) {
         this.offset = positionVector;
@@ -39,7 +52,7 @@ export class GameCameraService {
     public GetOffsetY(): number {
         return this.offset.getValueY();
     }
-    public GetOffsetVector(): Vector2 { 
+    public GetOffsetVector(): Vector2 {
         return this.offset;
     }
 }

@@ -11,7 +11,7 @@ export class GameState extends BaseState {
 
     public Tick(): void {
         // console.error("Method not implemented.");
-        this.graphicsService.getGameCameraService().MoveCamera(1, 0);
+        // this.graphicsService.getGameCameraService().MoveCamera(1, 0);
 
     }
 

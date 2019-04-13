@@ -52,14 +52,26 @@ export abstract class Creature extends Entity {
     private ReduceSpeed() {
         if (this.movement.y > 0) {
             this.movement.y -= this.friction.y;
+            if (this.movement.y < 0) {
+                this.movement.y = 0;
+            }
         } else if (this.movement.y < 0) {
             this.movement.y += this.friction.y;
+            if (this.movement.y > 0) {
+                this.movement.y = 0;
+            }
         }
 
         if (this.movement.x > 0) {
             this.movement.x -= this.friction.x;
+            if (this.movement.x < 0) {
+                this.movement.x = 0;
+            }
         } else if (this.movement.x < 0) {
             this.movement.x += this.friction.x;
+            if (this.movement.x > 0) {
+                this.movement.x = 0;
+            }
         }
     }
 
