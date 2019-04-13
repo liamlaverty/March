@@ -79,4 +79,3 @@ TEST-results.xml
 package-lock.json
 
 **/assets/*
-!**/dist/assets/*
