@@ -54,8 +54,8 @@ export class Player extends Creature {
     DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
         if (this.texture.GetCanRender()) {
             canv.ctx.drawImage(this.texture.GetImage(),
-                this.getPosition().x, // - this.graphicsService.getGameCameraService().GetOffsetX(),
-                this.getPosition().y, // - this.graphicsService.getGameCameraService().GetOffsetY(),
+                this.getPosition().x -  this.graphicsService.getGameCameraService().GetOffsetX(),
+                this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
                 this.getSize().x,
                 this.getSize().y);
         } else {

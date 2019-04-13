@@ -14,16 +14,20 @@ export class GameCameraService {
     }
 
     public centerOnVector(entityPosition: Vector2, entitySize: Vector2): void {
-        const vieportWidth = ViewportHelper.GetBrowserWidth();
-        const vieportHeight = ViewportHelper.GetBrowserHeight();
+        const vieportWidth = ViewportHelper.GetWindowInAspectRatio().getValueX();
+        const vieportHeight = ViewportHelper.GetWindowInAspectRatio().getValueY();
         
-        this.SetOffset(new Vector2(
-            entityPosition.getValueX() - vieportWidth / 2 + entitySize.getValueX() / 2,
-            entityPosition.getValueY() - vieportHeight / 2 + entitySize.getValueY() / 2,
+        const centerX = entityPosition.getValueX() - (vieportWidth / 2) + (entitySize.getValueX() / 2);
+        const centerY = entityPosition.getValueY() - (vieportHeight / 2) + (entitySize.getValueY() / 2);
 
+        // console.log(`centering on vec x[${centerX}], y[${centerY}]`)
+
+        this.SetOffset(new Vector2(
+            centerX,
+            centerY
         ));
 
-        this.SetOffset(entityPosition);
+        // this.SetOffset(entityPosition);
     }
     private SetOffset(positionVector: Vector2) {
         this.offset = positionVector;

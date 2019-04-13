@@ -11,6 +11,19 @@ export class ViewportHelper {
         }
     }
 
+    public static GetWindowInAspectRatio(aspectRatioWidth: number = 16, aspectRatioHeight: number = 9,
+        widthPercent: number = 1, heightPercent: number = 1) {
+        const aspectRatio = aspectRatioWidth / aspectRatioHeight;
+
+        const adjustedWindowHeight = this.GetBrowserHeight() * heightPercent;
+        const adjustedWindowWidth = this.GetBrowserWidth() * widthPercent;
+
+        const displayWidth = Math.min(adjustedWindowWidth, (adjustedWindowHeight * aspectRatio));
+        const displayHeight = Math.min(adjustedWindowHeight, (adjustedWindowWidth / aspectRatio));
+
+        return new Vector2(displayWidth, displayHeight);
+    }
+
     /**
      * Gets a window in a given aspect ratio. 
      *
@@ -25,7 +38,7 @@ export class ViewportHelper {
      * @returns {Vector2}
      * @memberof ViewportHelper
      */
-    public static GetWindowInAspectRatio(aspectRatioWidth: number = 16, aspectRatioHeight: number = 9,
+    public static GetWindowInAspectRatioForCanvas(aspectRatioWidth: number = 16, aspectRatioHeight: number = 9,
         widthPercent: number = 1, heightPercent: number = 1, canvasableElement: HTMLElement = null): Vector2 {
 
         if (!canvasableElement) {

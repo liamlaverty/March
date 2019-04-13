@@ -117,11 +117,9 @@ export class Game {
             this.graphicsService.GetTileService().Redner();
 
             for (let i = 0; i < this.gameEntities.length; i++) {
-                //prepares for rendering
                 this.gameEntities[i].Render();
             }
             this.stateService.GetState().Render();
-            // actually renders
             this.graphicsService.Render();
         }
     }
@@ -170,10 +168,10 @@ export class Game {
         
 
         entities.push(new Player(
-            // new Vector2(
-            //     ViewportHelper.GetBrowserWidth() / 2, 
-            //     ViewportHelper.GetBrowserHeight() / 2),
-            new Vector2(0, 0),
+              new Vector2(
+                 ViewportHelper.GetBrowserWidth() / 2, 
+                  ViewportHelper.GetBrowserHeight() / 2),
+            // new Vector2(0, 0),
             new Vector2(50, 50),
             'player',
             'Ships/large_purple_01.png',

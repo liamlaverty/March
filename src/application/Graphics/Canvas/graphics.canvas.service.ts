@@ -21,7 +21,7 @@ export class CanvasService {
     }
 
     Init() {
-        const viewportSize = ViewportHelper.GetWindowInAspectRatio();
+        const viewportSize = ViewportHelper.GetWindowInAspectRatioForCanvas();
         this.viewportHeight = viewportSize.y;
         this.viewportWidth = viewportSize.x;
 
