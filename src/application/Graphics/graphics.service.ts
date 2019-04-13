@@ -1,11 +1,17 @@
 import { HtmlService } from "./Html/graphics.html.service";
 import { CanvasService } from "./Canvas/graphics.canvas.service";
 import { TileService } from "./Tiles/tile.service";
+import { GameCameraService } from "./Camera/game-camera.service";
 
 export class GraphicsService {
     private htmlService: HtmlService;
     private canvasService: CanvasService;
     private tileService: TileService;
+    private gameCameraService: GameCameraService;
+
+    
+
+
     private ticks: number;
 
     constructor() {
@@ -13,6 +19,7 @@ export class GraphicsService {
         this.htmlService = new HtmlService();
         this.canvasService = new CanvasService(this.htmlService);
         this.tileService = new TileService(this.canvasService, this);
+        this.gameCameraService = new GameCameraService(0, 0);
         this.ticks = 0;
     }
 
@@ -27,8 +34,11 @@ export class GraphicsService {
         // }
     }
 
-    GetTileService() {
+    GetTileService(): TileService {
         return this.tileService;
+    }
+    public getGameCameraService(): GameCameraService {
+        return this.gameCameraService;
     }
 
     RegisterDrawableEntity(id: string = null): string {

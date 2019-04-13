@@ -8,7 +8,7 @@ import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
 
 export class Player extends Creature {
     inputManager: InputManager;
-    
+
 
     constructor(position: Vector2, size: Vector2, name: string,
         texturePath: string,
@@ -16,12 +16,13 @@ export class Player extends Creature {
         super(position, size, name, texturePath, graphicsService);
         this.inputManager = inputManager;
         this.health = 100;
-        
+
     }
 
     public Tick(): void {
         this.GetInput();
         this.Move();
+        this.graphicsService.getGameCameraService().centerOnVector(this.position, this.size);
     }
 
     private GetInput(): void {
@@ -52,8 +53,9 @@ export class Player extends Creature {
     }
     DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
         if (this.texture.GetCanRender()) {
-            canv.ctx.drawImage(this.texture.GetImage(), this.getPosition().x,
-                this.getPosition().y,
+            canv.ctx.drawImage(this.texture.GetImage(),
+                this.getPosition().x -  this.graphicsService.getGameCameraService().GetOffsetX(),
+                this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
                 this.getSize().x,
                 this.getSize().y);
         } else {
@@ -66,8 +68,8 @@ export class Player extends Creature {
     protected DrawToCanvasAsRect(canv: DrawableCanvas, colour: string) {
         canv.ctx.fillStyle = colour;
         canv.ctx.fillRect(
-            this.getPosition().x,
-            this.getPosition().y,
+            this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
+            this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
             this.getSize().x,
             this.getSize().y
         );

@@ -17,6 +17,7 @@ import { RandomStringGenerator } from "./Tools/random_generators/random_string.g
 import { RandomNumberGenerator } from "./Tools/random_generators/random_number.generators";
 import { ViewportHelper } from "./Graphics/Viewport/Viewport.Helper";
 import { WorldService } from "./World/world.service";
+import { GameCameraService } from "./Graphics/Camera/game-camera.service";
 
 export class Game {
     private graphicsService: GraphicsService;
@@ -73,7 +74,7 @@ export class Game {
     }
 
     private SetupStates() {
-        this.gameState = new GameState();
+        this.gameState = new GameState(this.graphicsService);
         this.menuState = new MenuState();
         this.settingsState = new SettingsState();
 
@@ -95,7 +96,7 @@ export class Game {
                     this.Render();
                     this.fpsService.UpdateTicksAndRenderAfterLoop();
                 }
-                this.fpsService.PrintCurrentFpsToConsole()
+                this.fpsService.PrintCurrentFpsToConsole();
             }
             this.Loop();
         });
@@ -120,11 +121,9 @@ export class Game {
             this.graphicsService.GetTileService().Redner();
 
             for (let i = 0; i < this.gameEntities.length; i++) {
-                //prepares for rendering
                 this.gameEntities[i].Render();
             }
             this.stateService.GetState().Render();
-            // actually renders
             this.graphicsService.Render();
         }
     }
@@ -170,8 +169,13 @@ export class Game {
         }
 
 
+        
+
         entities.push(new Player(
-            new Vector2(10, 10),
+              new Vector2(
+                 ViewportHelper.GetBrowserWidth() / 2, 
+                  ViewportHelper.GetBrowserHeight() / 2),
+            // new Vector2(0, 0),
             new Vector2(50, 50),
             'player',
             'Ships/large_purple_01.png',

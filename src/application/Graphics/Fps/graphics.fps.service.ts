@@ -37,6 +37,7 @@ export class FpsService {
 
     PrintCurrentFpsToConsole() {
         if (this.timer > 1000) {
+            // console.clear();
             console.info(`ticks and frames: ${this.ticks}`);
             this.ticks = 0;
             this.timer = 0;

@@ -98,7 +98,7 @@ export abstract class Creature extends Entity {
         const canv = this.graphicsService.GetCanvas(this.canvasId);
         canv.ClearCanvas();
         this.DrawToCanvasAsTexture2D(canv, colour);
-        
+
         return canv.ctx;
     }
 
@@ -106,18 +106,19 @@ export abstract class Creature extends Entity {
         canv.ctx.strokeStyle = colour;
 
         canv.ctx.strokeRect(
-            this.getPosition().x,
-            this.getPosition().y,
+            this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
+            this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
             this.getSize().x,
             this.getSize().y
         );
     }
 
-    DrawToCanvasAsTexture2D(canv: DrawableCanvas, colour: string) {      
-        
+    DrawToCanvasAsTexture2D(canv: DrawableCanvas, colour: string) {
+
         if (this.texture.GetCanRender()) {
-            canv.ctx.drawImage(this.texture.GetImage(), this.getPosition().x,
-                this.getPosition().y,
+            canv.ctx.drawImage(this.texture.GetImage(),
+                this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
+                this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
                 this.getSize().x,
                 this.getSize().y);
         } else {
