@@ -8,7 +8,7 @@ export class GrassTileType extends TileType {
 }
 
 export class GrassTileTypeDirt extends TileType {
-    private static readonly texturePath: string = '/Tiles/ground/grass_with_dirt.png';
+    private static readonly texturePath: string = '/Tiles/ground/grass_with_dirt_middle.png';
     constructor(id: number) {
         super(GrassTileTypeDirt.texturePath, id);
     }
