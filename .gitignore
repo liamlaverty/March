@@ -78,9 +78,5 @@ tests/baselines/reference/dt
 TEST-results.xml
 package-lock.json
 
-<<<<<<< HEAD
-**/assets/*
-=======
 **/assets/*
 !**/assets/_dist/
->>>>>>> refs/remotes/origin/master
