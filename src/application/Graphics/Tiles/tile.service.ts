@@ -47,7 +47,6 @@ export class TileService {
     public setupTilesFromArray(tiles: number[][]) {
         for (let x = 0; x < tiles.length; x++) {
             for (let y = 0; y < tiles[x].length; y++) {
-                console.log(`loading tile at position x: ${x} , y:${y}`);
                 this.tiles.push(new DrawableTile(tiles[x][y],
                     new Vector2(
                         y * TileDefaultSettings.DEFAULT_SIZE.getValueX(),
