@@ -1,6 +1,9 @@
 import { Vector2 } from "../../numerics/models/Vector2.model";
 import { GuidGenerator } from "../Tools/random_generators/random_guid.generator";
 import { AABB } from "../../numerics/models/AABB.model";
+import { Drawable } from "../Graphics/Draw/drawable";
+import { DrawableCanvas } from "../Graphics/Models/graphics.drawable-canvas";
+import { Texture2D } from "../Graphics/Textures/Texture2d";
 
 // export interface IEntity {
 //     position: Vector2;
@@ -9,15 +12,15 @@ import { AABB } from "../../numerics/models/AABB.model";
 //     id: string;
 // }
 
-export abstract class Entity {
+export abstract class Entity extends Drawable {
     protected position: Vector2;
     protected size: Vector2;
-    protected AABB: AABB;
     protected name: string;
     protected id: string;
 
 
-    constructor(position: Vector2, size: Vector2, name: string) {
+    constructor(position: Vector2, size: Vector2, name: string, canvasId: string, texture: Texture2D = undefined) {
+        super(position, size, canvasId, texture);
         this.position = position;
         // console.log('setting size to ' + JSON.stringify(size))
 
@@ -27,7 +30,7 @@ export abstract class Entity {
     }
 
     public abstract Tick(): void;
-    public abstract Render(): void;
+    
 
     getName(): string {
         return this.name;
@@ -64,18 +67,18 @@ export abstract class Entity {
         return this.getSize();
     }
 
-    getAABB(): AABB {
-        if (this.AABB === undefined) {
-            this.UpdateAABB();
-        }
-        return this.AABB;
-    }
+    // getAABB(): AABB {
+    //     if (this.AABB === undefined) {
+    //         this.UpdateAABB();
+    //     }
+    //     return this.AABB;
+    // }
 
     protected SetAABB(AABB: AABB): void {
-        this.AABB = AABB;
+        this.setAABB(AABB);
     }
     protected UpdateAABB(): void {
-        this.AABB = new AABB(this.position, this.size);
+        this.setAABB(new AABB(this.position, this.size));
     }
 
 }

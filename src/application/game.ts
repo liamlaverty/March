@@ -19,6 +19,8 @@ import { WorldService } from "./World/world.service";
 import { GameCameraService } from "./Graphics/Camera/game-camera.service";
 import { ViewportService } from "./Graphics/Viewport/viewport.service";
 import { PlayerService } from "./Entities/player.service";
+import { EntityService } from "./Entities/entity.service";
+import { DrawingService } from "./Graphics/Draw/drawing.service";
 
 export class Game {
     private viewportService: ViewportService;
@@ -30,6 +32,7 @@ export class Game {
     private worldService: WorldService;
     private debugComponent: DebugComponent;
     private fpsService: FpsService;
+    private entityService: EntityService;
     private running: boolean = false;
     private readonly launchMessage: string = 'Start';
 
@@ -51,6 +54,7 @@ export class Game {
         this.inputManager = new InputManager();
         this.fpsService = new FpsService(60);
         this.worldService = new WorldService(this.graphicsService.GetTileService());
+        this.entityService = new EntityService();
         this.playerService = new PlayerService();
     }
 
@@ -71,7 +75,7 @@ export class Game {
         this.inputManager.InitInputManager();
         this.graphicsService.InitGraphicsService();
         this.worldService.Init();
-        this.gameEntities = this.registerEntities();
+        this.registerEntities();
         // this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
         if (this.debugService.IsInDebugMode()) {
             console.log('setting up with debug info');
@@ -139,21 +143,20 @@ export class Game {
 
             this.stateService.GetState().Tick();
 
-            for (let i = 0; i < this.gameEntities.length; i++) {
-                this.gameEntities[i].Tick();
-            }
+            this.entityService.TickAllEntities();
+            //  for (let i = 0; i < this.gameEntities.length; i++) {
+            //      this.gameEntities[i].Tick();
+            //  }
+
 
         }
     }
 
     Render() {
         if (this.stateService.GetState() !== null) {
-
             this.graphicsService.GetTileService().Redner();
 
-            for (let i = 0; i < this.gameEntities.length; i++) {
-                this.gameEntities[i].Render();
-            }
+            this.entityService.RenderAllEntities(this.graphicsService);
             this.stateService.GetState().Render();
             this.graphicsService.Render();
         }
@@ -166,8 +169,7 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 50): Array<Entity> {
-        const entities = new Array<Entity>();
+    registerEntities(baddyCount: number = 50): void {
 
         this.playerService.SetPlayer(new Player(
             new Vector2(
@@ -200,24 +202,28 @@ export class Game {
         for (let i = 0; i < baddyCount; i++) {
             const imageLoc = RandomNumberGenerator.GetRandomNumber(0, 6);
             console.log('image loc will be ' + imageLoc);
-            entities.push(new Baddy(
+            const entity = new Baddy(
                 // new Vector2(500, 300),
                 RandomNumberGenerator.GetRandomVector2(
-                     0, this.viewportService.GetBrowserWidth(),
-                     0, this.viewportService.GetBrowserHeight()),
+                    0, this.viewportService.GetBrowserWidth(),
+                    0, this.viewportService.GetBrowserHeight()),
                 entitySize,
                 'baddy' + i.toString(),
                 '/Ships/' + ships[imageLoc],
                 this.graphicsService,
                 RandomStringGenerator.GetRandomHexColour(),
                 this.playerService
-            ));
-        }
+            );
+
+            // entities.push(entity);
+
+            this.entityService.RegisterEntity(entity);
+            }
 
 
-        entities.push(this.playerService.GetPlayer());
+        // entities.push(this.playerService.GetPlayer());
+        this.entityService.RegisterEntity(this.playerService.GetPlayer());
 
-
-        return entities;
+        // return entities;
     }
 }

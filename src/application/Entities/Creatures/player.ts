@@ -17,6 +17,8 @@ export class Player extends Creature {
         this.inputManager = inputManager;
         this.health = 100;
 
+        this.colour = '#fff';
+
     }
 
     public Tick(): void {
@@ -45,37 +47,5 @@ export class Player extends Creature {
             console.log('space pressed')
         }
         // console.log(`this.movement.x = ${this.movement.x}`)
-    }
-
-    public Render(): void {
-        if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.position, this.size)) {
-            const canv = this.graphicsService.GetCanvas(this.canvasId);
-            canv.ClearCanvas();
-
-            this.DrawToCanvasAsTexture2D(canv);
-        }
-    }
-    DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
-        if (this.texture.GetCanRender()) {
-            canv.ctx.drawImage(this.texture.GetImage(),
-                this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
-                this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
-                this.getSize().x,
-                this.getSize().y);
-        } else {
-            // console.log('will draw as canv')
-            const colour = RandomStringGenerator.GetRandomHexColour();
-            this.DrawToCanvasAsRect(canv, colour);
-        }
-    }
-
-    protected DrawToCanvasAsRect(canv: DrawableCanvas, colour: string) {
-        canv.ctx.fillStyle = colour;
-        canv.ctx.fillRect(
-            this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
-            this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
-            this.getSize().x,
-            this.getSize().y
-        );
     }
 }
