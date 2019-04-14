@@ -10,6 +10,7 @@ export class DrawingService {
     private cameraService: GameCameraService;
     private canvasService: CanvasService;
     private allowTextureDrawing: boolean = true;
+    private drawAsStroke = true;
 
     constructor(
         cameraService: GameCameraService,
@@ -26,7 +27,7 @@ export class DrawingService {
             if (this.allowTextureDrawing && drawable.getTexture().GetCanRender()) {
                 this.DrawAsTexture(drawable, canv);
             } else {
-                this.drawAsRect(drawable);
+                this.DrawAsRect(drawable, canv);
             }
         }
     }
@@ -39,8 +40,23 @@ export class DrawingService {
             drawable.GetSizeY());
     }
 
-    private drawAsRect(drawable: Drawable) {
-
+    private DrawAsRect(drawable: Drawable, canv: DrawableCanvas) {
+        if (this.drawAsStroke) {
+            canv.ctx.strokeRect(
+                drawable.GetPositionX() - this.cameraService.GetOffsetX(),
+                drawable.GetPositionY() - this.cameraService.GetOffsetY(),
+                drawable.GetSizeX(),
+                drawable.GetSizeY()
+            );
+        } else {
+            canv.ctx.fillStyle = drawable.GetColour();
+            canv.ctx.fillRect(
+                drawable.GetPositionX() - this.cameraService.GetOffsetX(),
+                drawable.GetPositionY() - this.cameraService.GetOffsetY(),
+                drawable.GetSizeX(),
+                drawable.GetSizeY()
+            );
+        }
     }
 }
 

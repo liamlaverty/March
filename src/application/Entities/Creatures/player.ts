@@ -20,7 +20,6 @@ export class Player extends Creature {
     }
 
     public Tick(): void {
-        console.log('ticking player')
         this.GetInput();
         this.Move();
         this.graphicsService.getGameCameraService().LookAt(this.position, this.size);

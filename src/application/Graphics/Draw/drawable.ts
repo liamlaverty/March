@@ -10,6 +10,7 @@ export abstract class Drawable {
     private canvasId: string;
     private texture: Texture2D;
     private AABB: AABB;
+    protected colour: string;
 
     protected position: Vector2;
     protected size: Vector2;
@@ -101,5 +102,9 @@ export abstract class Drawable {
     }
     public GetSizeY() {
         return this.size.y;
+    }
+
+    public GetColour() {
+        return this.colour;
     }
 }

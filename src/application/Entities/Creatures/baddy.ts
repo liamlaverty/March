@@ -7,7 +7,6 @@ import { IntersectionHelper } from "../../../numerics/helpers/intersection.helpe
 
 export class Baddy extends Creature {
     private playerService: PlayerService;
-    private colour: string;
 
     constructor(position: Vector2, size: Vector2, name: string,
         texturePath: string,

@@ -108,7 +108,7 @@ export class Game {
                     this.fpsService.UpdateTicksAndRenderAfterLoop();
                 }
 
-                // this.PrintDebugInfoToConsole();
+                this.PrintDebugInfoToConsole();
                 this.fpsService.ResetTimers();
             }
             this.Loop();
@@ -170,7 +170,6 @@ export class Game {
     }
 
     registerEntities(baddyCount: number = 50): void {
-        const entities = new Array<Entity>();
 
         this.playerService.SetPlayer(new Player(
             new Vector2(
