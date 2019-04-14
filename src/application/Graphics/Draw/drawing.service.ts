@@ -42,6 +42,7 @@ export class DrawingService {
 
     private DrawAsRect(drawable: Drawable, canv: DrawableCanvas) {
         if (this.drawAsStroke) {
+            canv.ctx.strokeStyle = drawable.GetColour();
             canv.ctx.strokeRect(
                 drawable.GetPositionX() - this.cameraService.GetOffsetX(),
                 drawable.GetPositionY() - this.cameraService.GetOffsetY(),

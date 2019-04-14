@@ -24,41 +24,6 @@ export abstract class Drawable {
         this.texture = texture;
     }
 
-    public Render(graphicsService: GraphicsService): void {
-        if (graphicsService.getGameCameraService().IsObectOnScreen(this.position, this.size)) {
-            const canv = graphicsService.GetCanvas(this.getCanvasId());
-            canv.ClearCanvas();
-
-            if (this.texture.GetCanRender()) {
-                this._DrawToCanvasAsTexture2D(canv, graphicsService);
-            } else {
-                const colour = RandomStringGenerator.GetRandomHexColour();
-                this._DrawToCanvasAsRect(canv, colour, graphicsService);
-            }
-        }
-    }
-
-    private _DrawToCanvasAsTexture2D(canv: DrawableCanvas, graphicsService: GraphicsService) {
-        canv.ctx.drawImage(this.texture.GetImage(),
-            this.position.x - graphicsService.getGameCameraService().GetOffsetX(),
-            this.position.y - graphicsService.getGameCameraService().GetOffsetY(),
-            this.size.x,
-            this.size.y);
-    }
-
-    private _DrawToCanvasAsRect(canv: DrawableCanvas,
-        colour: string,
-        graphicsService: GraphicsService) {
-        canv.ctx.fillStyle = colour;
-        canv.ctx.fillRect(
-            this.position.x - graphicsService.getGameCameraService().GetOffsetX(),
-            this.position.y - graphicsService.getGameCameraService().GetOffsetY(),
-            this.size.x,
-            this.size.y
-        );
-    }
-
-
     public getCanvasId(): string {
         return this.canvasId;
     }
