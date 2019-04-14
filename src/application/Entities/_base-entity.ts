@@ -1,5 +1,6 @@
 import { Vector2 } from "../../numerics/models/Vector2.model";
 import { GuidGenerator } from "../Tools/random_generators/random_guid.generator";
+import { AABB } from "../../numerics/models/AABB.model";
 
 // export interface IEntity {
 //     position: Vector2;
@@ -8,9 +9,10 @@ import { GuidGenerator } from "../Tools/random_generators/random_guid.generator"
 //     id: string;
 // }
 
-export abstract class Entity  {
+export abstract class Entity {
     protected position: Vector2;
     protected size: Vector2;
+    protected AABB: AABB;
     protected name: string;
     protected id: string;
 
@@ -53,7 +55,7 @@ export abstract class Entity  {
         return this.getPosition();
     }
 
-    
+
     getSize(): Vector2 {
         return this.size;
     }
@@ -61,5 +63,19 @@ export abstract class Entity  {
         this.size = newSize;
         return this.getSize();
     }
-    
+
+    getAABB(): AABB {
+        if (this.AABB === undefined) {
+            this.UpdateAABB();
+        }
+        return this.AABB;
+    }
+
+    protected SetAABB(AABB: AABB): void {
+        this.AABB = AABB;
+    }
+    protected UpdateAABB(): void {
+        this.AABB = new AABB(this.position, this.size);
+    }
+
 }

@@ -18,10 +18,12 @@ import { RandomNumberGenerator } from "./Tools/random_generators/random_number.g
 import { WorldService } from "./World/world.service";
 import { GameCameraService } from "./Graphics/Camera/game-camera.service";
 import { ViewportService } from "./Graphics/Viewport/viewport.service";
+import { PlayerService } from "./Entities/player.service";
 
 export class Game {
     private viewportService: ViewportService;
     private graphicsService: GraphicsService;
+    private playerService: PlayerService;
     private inputManager: InputManager;
     private debugService: IDebugService;
     private stateService: StateService;
@@ -34,6 +36,7 @@ export class Game {
     private gameState: GameState;
     private menuState: MenuState;
     private settingsState: SettingsState;
+
 
     gameEntities: Entity[];
 
@@ -48,6 +51,7 @@ export class Game {
         this.inputManager = new InputManager();
         this.fpsService = new FpsService(60);
         this.worldService = new WorldService(this.graphicsService.GetTileService());
+        this.playerService = new PlayerService();
     }
 
     Run() {
@@ -162,8 +166,21 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 15): Array<Entity> {
+    registerEntities(baddyCount: number = 50): Array<Entity> {
         const entities = new Array<Entity>();
+
+        this.playerService.SetPlayer(new Player(
+            new Vector2(
+                this.viewportService.GetBrowserWidth() / 2,
+                this.viewportService.GetBrowserHeight() / 2),
+            // new Vector2(0, 0),
+            new Vector2(50, 50),
+            'player',
+            'Ships/large_purple_01.png',
+            this.inputManager,
+            this.graphicsService));
+
+
 
         const ships = [
             'metalic_01.png',
@@ -184,30 +201,23 @@ export class Game {
             const imageLoc = RandomNumberGenerator.GetRandomNumber(0, 6);
             console.log('image loc will be ' + imageLoc);
             entities.push(new Baddy(
+                // new Vector2(500, 300),
                 RandomNumberGenerator.GetRandomVector2(
-                    0, this.viewportService.GetBrowserWidth(),
-                    0, this.viewportService.GetBrowserHeight()),
+                     0, this.viewportService.GetBrowserWidth(),
+                     0, this.viewportService.GetBrowserHeight()),
                 entitySize,
                 'baddy' + i.toString(),
                 '/Ships/' + ships[imageLoc],
                 this.graphicsService,
-                RandomStringGenerator.GetRandomHexColour()
+                RandomStringGenerator.GetRandomHexColour(),
+                this.playerService
             ));
         }
 
 
+        entities.push(this.playerService.GetPlayer());
 
 
-        entities.push(new Player(
-            new Vector2(
-                this.viewportService.GetBrowserWidth() / 2,
-                this.viewportService.GetBrowserHeight() / 2),
-            // new Vector2(0, 0),
-            new Vector2(50, 50),
-            'player',
-            'Ships/large_purple_01.png',
-            this.inputManager,
-            this.graphicsService));
         return entities;
     }
 }

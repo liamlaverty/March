@@ -4,6 +4,7 @@ import { GraphicsService } from "../../Graphics/graphics.service";
 import { CreatureDefaultSettings } from "./creature.default.settings";
 import { Texture2D } from "../../Graphics/Textures/Texture2d";
 import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
+import { AABB } from "../../../numerics/models/AABB.model";
 
 
 
@@ -16,6 +17,7 @@ export abstract class Creature extends Entity {
     protected movement: Vector2;
     protected acceleration: Vector2;
     protected friction: Vector2;
+
 
     protected canvasId: string;
 
@@ -47,6 +49,7 @@ export abstract class Creature extends Entity {
         this.CapMovementSpeed();
         this.UpdatePosition();
         this.ReduceSpeed();
+        this.UpdateAABB();
     }
 
     private ReduceSpeed() {
