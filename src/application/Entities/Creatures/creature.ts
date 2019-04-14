@@ -19,15 +19,15 @@ export abstract class Creature extends Entity {
     protected friction: Vector2;
 
 
-    protected canvasId: string;
+    // protected canvasId: string;
 
-    protected texture: Texture2D;
+    // protected texture: Texture2D;
 
 
     constructor(position: Vector2, size: Vector2, name: string,
         texturePath: string,
         graphicsService: GraphicsService) {
-        super(position, size, name);
+        super(position, size, name, '1');
         this.graphicsService = graphicsService;
 
         this.health = CreatureDefaultSettings.DEFAULT_HEALTH;
@@ -36,11 +36,11 @@ export abstract class Creature extends Entity {
         this.maxSpeed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED_MAX;
         this.acceleration = CreatureDefaultSettings.DEFAULT_MOVEMENT_ACCELERATION;
         this.friction = CreatureDefaultSettings.DEFAULT_FRICTION;
-
-        this.canvasId = this.graphicsService.RegisterDrawableEntity();
+        this.setCanvasId(this.graphicsService.RegisterDrawableEntity());
+        
 
         if (texturePath !== undefined && texturePath !== null && texturePath.length) {
-            this.texture = new Texture2D(texturePath);
+            this.setTexture(new Texture2D(texturePath));
         }
 
     }
@@ -110,7 +110,7 @@ export abstract class Creature extends Entity {
     }
 
     Draw(colour: string): CanvasRenderingContext2D {
-        const canv = this.graphicsService.GetCanvas(this.canvasId);
+        const canv = this.graphicsService.GetCanvas(this.getCanvasId());
         canv.ClearCanvas();
         if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.getPosition(), this.getSize())) {
             this.DrawToCanvasAsTexture2D(canv, colour);
@@ -131,8 +131,8 @@ export abstract class Creature extends Entity {
 
     DrawToCanvasAsTexture2D(canv: DrawableCanvas, colour: string) {
 
-        if (this.texture.GetCanRender()) {
-            canv.ctx.drawImage(this.texture.GetImage(),
+        if (this.getTexture().GetCanRender()) {
+            canv.ctx.drawImage(this.getTexture().GetImage(),
                 this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
                 this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
                 this.getSize().x,

@@ -151,17 +151,17 @@ export class TileService {
         const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
 
         canv.ClearCanvas();
-        for (let tile of this.tiles) {
-            if (this.graphicsService.getGameCameraService().IsObectOnScreen(tile.getPosition(), tile.getSize())) {
-                const text = this.GetTextureFromTileType(tile.getTileTypeId());
+        for (let i = 0; i < this.tiles.length; i++) {
+            if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.tiles[i].getPosition(), this.tiles[i].getSize())) {
+                const text = this.GetTextureFromTileType(this.tiles[i].getTileTypeId());
                 const cameraOffset = this.graphicsService.getGameCameraService().GetOffsetVector();
                 if (text.GetCanRender()) {
 
                     canv.ctx.drawImage(text.GetImage(),
-                        tile.getPosition().x - cameraOffset.getValueX(),
-                        tile.getPosition().y - cameraOffset.getValueY());
+                        this.tiles[i].getPosition().x - cameraOffset.getValueX(),
+                        this.tiles[i].getPosition().y - cameraOffset.getValueY());
                 } else {
-                    this.DrawToCanvasAsRect(canv, tile);
+                    this.DrawToCanvasAsRect(canv, this.tiles[i]);
                 }
             }
         }

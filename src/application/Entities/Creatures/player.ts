@@ -20,6 +20,7 @@ export class Player extends Creature {
     }
 
     public Tick(): void {
+        console.log('ticking player')
         this.GetInput();
         this.Move();
         this.graphicsService.getGameCameraService().LookAt(this.position, this.size);
@@ -47,17 +48,17 @@ export class Player extends Creature {
         // console.log(`this.movement.x = ${this.movement.x}`)
     }
 
-    public Render(): void {
-        if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.position, this.size)) {
-            const canv = this.graphicsService.GetCanvas(this.canvasId);
-            canv.ClearCanvas();
+     public Render(): void {
+         if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.position, this.size)) {
+             const canv = this.graphicsService.GetCanvas(this.getCanvasId());
+             canv.ClearCanvas();
 
-            this.DrawToCanvasAsTexture2D(canv);
-        }
-    }
+             this.DrawToCanvasAsTexture2D(canv);
+         }
+     }
     DrawToCanvasAsTexture2D(canv: DrawableCanvas) {
-        if (this.texture.GetCanRender()) {
-            canv.ctx.drawImage(this.texture.GetImage(),
+        if (this.getTexture() .GetCanRender()) {
+            canv.ctx.drawImage(this.getTexture().GetImage(),
                 this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
                 this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
                 this.getSize().x,
