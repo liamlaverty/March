@@ -169,7 +169,7 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 50): void {
+    registerEntities(baddyCount: number = 10): void {
 
         this.playerService.SetPlayer(new Player(
             new Vector2(

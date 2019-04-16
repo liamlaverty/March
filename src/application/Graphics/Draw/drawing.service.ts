@@ -32,12 +32,67 @@ export class DrawingService {
         }
     }
 
+    // private rotate(ctx) {
+    //     //Convert degrees to radian 
+    //     var rad = deg * Math.PI / 180;
+
+    //     //Set the origin to the center of the image
+    //     ctx.translate(x + width / 2, y + height / 2);
+
+    //     //Rotate the canvas around the origin
+    //     ctx.rotate(rad);
+
+    //     //draw the image    
+    //     ctx.drawImage(img, width / 2 * (-1), height / 2 * (-1), width, height);
+
+    //     //reset the canvas  
+    //     ctx.rotate(rad * (-1));
+    //     ctx.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
+
+    // }
+
     DrawAsTexture(drawable: Drawable, canv: DrawableCanvas) {
+        const deg: number = 20;
+
+
+        //Convert degrees to radian 
+        var rad = deg * (Math.PI / 180);
+        canv.ctx.save();
+        let translateX = (drawable.GetPositionX());//  + (drawable.GetSizeX() / 2));//  + this.cameraService.GetOffsetY();
+        let translateY = (drawable.GetPositionY());//  + (drawable.GetSizeY() / 2));//  + this.cameraService.GetOffsetY();
+        canv.ctx.translate(
+            translateX,
+            translateY);
+
+        canv.ctx.rotate(rad);
+
+
+        const drawLocationX = 0;//  - this.cameraService.GetOffsetX();
+        const drawLocationY = 0;//  - this.cameraService.GetOffsetY();
+        const drawSizeX = drawable.GetSizeX();
+        const drawSizeY = drawable.GetSizeY();
+
+        // console.log(`Xt: ${translateX}, Yt: ${translateY}`);
+
+
+
+        canv.ctx.strokeStyle = '#000';
+        canv.ctx.strokeRect(
+            drawLocationX,
+            drawLocationY,
+            drawSizeX,
+            drawSizeY
+        );
+
         canv.ctx.drawImage(drawable.getTexture().GetImage(),
-            drawable.GetPositionX() - this.cameraService.GetOffsetX(),
-            drawable.GetPositionY() - this.cameraService.GetOffsetY(),
-            drawable.GetSizeX(),
-            drawable.GetSizeY());
+            drawLocationX,
+            drawLocationY,
+            drawSizeX,
+            drawSizeY);
+
+        canv.ctx.translate(-(translateX), -(translateY));
+
+        canv.ctx.restore(); //Restore default 
     }
 
     private DrawAsRect(drawable: Drawable, canv: DrawableCanvas) {
