@@ -169,11 +169,11 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 50): void {
+    registerEntities(baddyCount: number = 20): void {
 
         this.playerService.SetPlayer(new Player(
             new Vector2(
-                this.viewportService.GetBrowserWidth() / 2,
+                 this.viewportService.GetBrowserWidth() / 2,
                 this.viewportService.GetBrowserHeight() / 2),
             // new Vector2(0, 0),
             new Vector2(50, 50),
