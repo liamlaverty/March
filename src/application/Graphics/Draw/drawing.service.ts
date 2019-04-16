@@ -52,14 +52,14 @@ export class DrawingService {
     // }
 
     DrawAsTexture(drawable: Drawable, canv: DrawableCanvas) {
-        const deg: number = 20;
-
+        const deg: number = drawable.GetRotation();
+        drawable.AddToRotation(10);
 
         //Convert degrees to radian 
         var rad = deg * (Math.PI / 180);
         canv.ctx.save();
-        let translateX = (drawable.GetPositionX()) - this.cameraService.GetOffsetX();//  + (drawable.GetSizeX() / 2));//  + this.cameraService.GetOffsetY();
-        let translateY = (drawable.GetPositionY()) - this.cameraService.GetOffsetY();//  + (drawable.GetSizeY() / 2));//  + this.cameraService.GetOffsetY();
+        const translateX = drawable.GetSizeX() + (drawable.GetPositionX() - (drawable.GetSizeX() / 2) - this.cameraService.GetOffsetX());//  + (drawable.GetSizeX() / 2));//  + this.cameraService.GetOffsetY();
+        const translateY = drawable.GetSizeX() + (drawable.GetPositionY() - (drawable.GetSizeX() / 2) - this.cameraService.GetOffsetY());//  + (drawable.GetSizeY() / 2));//  + this.cameraService.GetOffsetY();
         canv.ctx.translate(
             translateX,
             translateY);
@@ -67,8 +67,8 @@ export class DrawingService {
         canv.ctx.rotate(rad);
 
 
-        const drawLocationX = 0;//  ;
-        const drawLocationY = 0;//  - this.cameraService.GetOffsetY();
+        const drawLocationX = -drawable.GetSizeX() /2;//  / 2;//  ;
+        const drawLocationY = -drawable.GetSizeY() /2;//  / 2;//  - this.cameraService.GetOffsetY();
         const drawSizeX = drawable.GetSizeX();
         const drawSizeY = drawable.GetSizeY();
 
@@ -76,7 +76,7 @@ export class DrawingService {
 
 
 
-        canv.ctx.strokeStyle = '#000';
+        canv.ctx.strokeStyle = '#fff';
         canv.ctx.strokeRect(
             drawLocationX,
             drawLocationY,
