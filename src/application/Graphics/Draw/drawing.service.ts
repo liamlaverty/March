@@ -58,8 +58,8 @@ export class DrawingService {
         //Convert degrees to radian 
         var rad = deg * (Math.PI / 180);
         canv.ctx.save();
-        let translateX = (drawable.GetPositionX());//  + (drawable.GetSizeX() / 2));//  + this.cameraService.GetOffsetY();
-        let translateY = (drawable.GetPositionY());//  + (drawable.GetSizeY() / 2));//  + this.cameraService.GetOffsetY();
+        let translateX = (drawable.GetPositionX()) - this.cameraService.GetOffsetX();//  + (drawable.GetSizeX() / 2));//  + this.cameraService.GetOffsetY();
+        let translateY = (drawable.GetPositionY()) - this.cameraService.GetOffsetY();//  + (drawable.GetSizeY() / 2));//  + this.cameraService.GetOffsetY();
         canv.ctx.translate(
             translateX,
             translateY);
@@ -67,7 +67,7 @@ export class DrawingService {
         canv.ctx.rotate(rad);
 
 
-        const drawLocationX = 0;//  - this.cameraService.GetOffsetX();
+        const drawLocationX = 0;//  ;
         const drawLocationY = 0;//  - this.cameraService.GetOffsetY();
         const drawSizeX = drawable.GetSizeX();
         const drawSizeY = drawable.GetSizeY();
