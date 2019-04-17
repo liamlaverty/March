@@ -29,7 +29,7 @@ export abstract class Entity extends Drawable {
         this.name = name;
     }
 
-    public abstract Tick(): void;
+    public abstract Tick(lastDelta: number): void;
     
 
     getName(): string {

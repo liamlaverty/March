@@ -12,10 +12,10 @@ export class EntityService {
     }
 
 
-    public TickAllEntities() {
+    public TickAllEntities(lastDelta: number) {
         // console.log('ticking all entities');
         for (let i = 0; i < this.gameEntities.length; i++) {
-            this.gameEntities[i].Tick();
+            this.gameEntities[i].Tick(lastDelta);
         }
     }
 

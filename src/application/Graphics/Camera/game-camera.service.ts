@@ -74,6 +74,12 @@ export class GameCameraService {
     }
     private SetOffset(positionVector: Vector2) {
         this.offset = positionVector;
+        if (this.offset.getValueX() < 0) {
+            this.offset.setValueX(0);
+        }
+        if (this.offset.getValueY() < 0) {
+            this.offset.setValueY(0);
+        }
         this.UpdatePositionAndSize();
     }
     UpdatePositionAndSize() {

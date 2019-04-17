@@ -29,12 +29,12 @@ export class Baddy extends Creature {
 
     }
 
-    public Tick(): void {
+    public Tick(lastDelta: number): void {
         this.UpdateAABB();
         const playerAABB = this.playerService.GetPlayer().getAABB();
         this.MoveToPlayer(playerAABB);
 
-        this.Move();
+        this.Move(lastDelta);
     }
     public Render(): void {
         // super.Draw(this.colour);
@@ -45,27 +45,27 @@ export class Baddy extends Creature {
             this.getAABB(), playerAABB) === false) {
             if (this.getAABB().IsAbove(playerAABB)) {
                 this.setDirectionDown();
-                this.movement.y += this.acceleration.y;
+                this.velocity.y += this.acceleration.y;
                 // console.log('entity is above player')
             } else if (this.getAABB().IsBelow(playerAABB)) {
                 this.setDirectionUp();
                 // console.log('entity is above player')
-                this.movement.y -= this.acceleration.y;                // console.log('entity is below player')
+                this.velocity.y -= this.acceleration.y;                // console.log('entity is below player')
             }
 
             if (this.getAABB().IsRight(playerAABB)) {
                 this.setDirectionLeft();
                 // console.log('entity is right of the player');
-                this.movement.x += this.acceleration.x;
+                this.velocity.x += this.acceleration.x;
             } else if (this.getAABB().IsLeft(playerAABB)) {
                 this.setDirectionRigth();
                 // console.log('entity is left of the player')
-                this.movement.x -= this.acceleration.x;
+                this.velocity.x -= this.acceleration.x;
             }
         }
 
-        this.movement.x -= (this.getDirectionHorizontal() * this.acceleration.x) / 4;
-        this.movement.y += (this.getDirectionVertical() * this.acceleration.y) / 4;
+        this.velocity.x -= (this.getDirectionHorizontal() * this.acceleration.x) / 4;
+        this.velocity.y += (this.getDirectionVertical() * this.acceleration.y) / 4;
     }
 
     private setDirectionRigth(): void {
