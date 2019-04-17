@@ -103,8 +103,9 @@ export class Game {
         requestAnimationFrame(() => {
             if (this.running) {
                 if (this.timerService.CheckShouldRunLoop()) {
-                    this.Update();
-                    this.Render();
+                    const lastDelta = this.timerService.GetLastUpdateTimeTook();
+                    this.Update(lastDelta);
+                    this.Render(lastDelta);
                     this.timerService.UpdateTicksAndRenderAfterLoop();
                 }
 
@@ -137,13 +138,13 @@ export class Game {
         }
     }
 
-    Update() {
+    Update(lastDelta: number) {
         if (this.stateService.GetState() !== null) {
             this.inputManager.NewInputLoopCheck();
 
             this.stateService.GetState().Tick();
 
-            this.entityService.TickAllEntities();
+            this.entityService.TickAllEntities(lastDelta);
             //  for (let i = 0; i < this.gameEntities.length; i++) {
             //      this.gameEntities[i].Tick();
             //  }
@@ -152,7 +153,7 @@ export class Game {
         }
     }
 
-    Render() {
+    Render(lastDelta: number) {
         if (this.stateService.GetState() !== null) {
             this.graphicsService.GetTileService().Redner();
 

@@ -4,6 +4,7 @@ export class TimerService {
     private timer: number;
     private lastTime: number;
     private ticks: number;
+    private lastTimeTook: number;
 
     private timePerTick: number;
     private fps: number;
@@ -15,13 +16,14 @@ export class TimerService {
         this.lastTime = performance.now();
         this.timer = 0;
         this.ticks = 0;
+        this.lastTimeTook = 0;
     }
 
     public CheckShouldRunLoop(): boolean {
         this.now = performance.now();
         this.delta += (this.now - this.lastTime) / this.timePerTick;
         this.timer += this.now - this.lastTime;
-
+        this.lastTimeTook = this.now - this.lastTime;
         this.lastTime = this.now;
 
         if (this.delta >= 1) {
@@ -54,7 +56,11 @@ export class TimerService {
      * @memberof FpsService
      */
     public PrintCurrentFpsToConsole() {
-        return `ticks and frames: ${this.ticks}`;
+        return `
+        ticks and frames: ${this.ticks}
+        lastDelta: ${this.delta}
+        timer: ${this.timer}
+        lastTime Took: ${this.lastTimeTook}`;
     }
 
     public ResetTimers() {
@@ -64,7 +70,7 @@ export class TimerService {
         }
     }
 
-    public GetDelta() {
-        return this.delta;
+    public GetLastUpdateTimeTook() {
+        return this.lastTimeTook;
     }
 }

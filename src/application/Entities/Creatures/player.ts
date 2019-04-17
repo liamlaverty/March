@@ -21,9 +21,9 @@ export class Player extends Creature {
 
     }
 
-    public Tick(): void {
+    public Tick(lastDelta: number): void {
         this.GetInput();
-        this.Move();
+        this.Move(lastDelta);
         this.graphicsService.getGameCameraService().LookAt(this.position, this.size);
     }
 

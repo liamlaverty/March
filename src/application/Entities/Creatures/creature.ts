@@ -37,7 +37,7 @@ export abstract class Creature extends Entity {
         this.acceleration = CreatureDefaultSettings.DEFAULT_MOVEMENT_ACCELERATION;
         this.friction = CreatureDefaultSettings.DEFAULT_FRICTION;
         this.setCanvasId(this.graphicsService.RegisterDrawableEntity());
-        
+
 
         if (texturePath !== undefined && texturePath !== null && texturePath.length) {
             this.setTexture(new Texture2D(texturePath));
@@ -45,9 +45,9 @@ export abstract class Creature extends Entity {
 
     }
 
-    public Move(): void {
+    public Move(lastDelta: number): void {
         this.CapMovementSpeed();
-        this.UpdatePosition();
+        this.UpdatePosition(lastDelta);
         this.ReduceSpeed();
         this.UpdateAABB();
     }
@@ -84,11 +84,10 @@ export abstract class Creature extends Entity {
      * @private
      * @memberof Creature
      */
-    private UpdatePosition() {
-        this.position.x += this.movement.x;
-        this.position.y += this.movement.y;
+    private UpdatePosition(lastDelta: number) {
+        this.position.x += (this.movement.x * (lastDelta * .05));
+        this.position.y += (this.movement.y * (lastDelta * .05));
     }
-
     /**
      * caps the creature's movement speed at
      * this.maxSpeed

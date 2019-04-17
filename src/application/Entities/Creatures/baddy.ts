@@ -29,12 +29,12 @@ export class Baddy extends Creature {
 
     }
 
-    public Tick(): void {
+    public Tick(lastDelta: number): void {
         this.UpdateAABB();
         const playerAABB = this.playerService.GetPlayer().getAABB();
         this.MoveToPlayer(playerAABB);
 
-        this.Move();
+        this.Move(lastDelta);
     }
     public Render(): void {
         // super.Draw(this.colour);
