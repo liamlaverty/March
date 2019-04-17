@@ -171,17 +171,7 @@ export class Game {
 
     registerEntities(baddyCount: number = 20): void {
 
-        this.playerService.SetPlayer(new Player(
-            new Vector2(
-                 this.viewportService.GetBrowserWidth() / 2,
-                this.viewportService.GetBrowserHeight() / 2),
-            // new Vector2(0, 0),
-            new Vector2(50, 50),
-            'player',
-            'Ships/large_purple_01.png',
-            this.inputManager,
-            this.graphicsService));
-
+        
 
 
         const ships = [
@@ -215,13 +205,21 @@ export class Game {
                 this.playerService
             );
 
-            // entities.push(entity);
-
             this.entityService.RegisterEntity(entity);
-            }
+        }
+
+        this.playerService.SetPlayer(new Player(
+            new Vector2(
+                this.viewportService.GetBrowserWidth() / 2,
+                this.viewportService.GetBrowserHeight() / 2),
+            // new Vector2(0, 0),
+            new Vector2(50, 50),
+            'player',
+            'Ships/large_purple_01.png',
+            this.inputManager,
+            this.graphicsService));
 
 
-        // entities.push(this.playerService.GetPlayer());
         this.entityService.RegisterEntity(this.playerService.GetPlayer());
 
         // return entities;
