@@ -32,16 +32,16 @@ export class Player extends Creature {
         // this.setMove(new Vector2(0, 0));
 
         if (this.inputManager.IsKeyPressed('w')) {
-            this.movement.y -= this.acceleration.y;
+            this.velocity.y -= this.acceleration.y;
         }
         if (this.inputManager.IsKeyPressed('s')) {
-            this.movement.y += this.acceleration.y;
+            this.velocity.y += this.acceleration.y;
         }
         if (this.inputManager.IsKeyPressed('a')) {
-            this.movement.x -= this.acceleration.x;
+            this.velocity.x -= this.acceleration.x;
         }
         if (this.inputManager.IsKeyPressed('d')) {
-            this.movement.x += this.acceleration.x;
+            this.velocity.x += this.acceleration.x;
         }
         if (this.inputManager.IsKeyPressed(' ')) {
             console.log('space pressed')

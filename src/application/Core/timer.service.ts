@@ -71,6 +71,6 @@ export class TimerService {
     }
 
     public GetLastUpdateTimeTook() {
-        return this.lastTimeTook;
+        return this.lastTimeTook / 1000;
     }
 }

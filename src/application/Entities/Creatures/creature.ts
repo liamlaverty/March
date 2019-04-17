@@ -14,7 +14,7 @@ export abstract class Creature extends Entity {
     protected health: number;
     protected speed: Vector2;
     protected maxSpeed: Vector2;
-    protected movement: Vector2;
+    protected velocity: Vector2;
     protected acceleration: Vector2;
     protected friction: Vector2;
 
@@ -32,7 +32,7 @@ export abstract class Creature extends Entity {
 
         this.health = CreatureDefaultSettings.DEFAULT_HEALTH;
         this.speed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED;
-        this.movement = new Vector2(0, 0);
+        this.velocity = new Vector2(0, 0);
         this.maxSpeed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED_MAX;
         this.acceleration = CreatureDefaultSettings.DEFAULT_MOVEMENT_ACCELERATION;
         this.friction = CreatureDefaultSettings.DEFAULT_FRICTION;
@@ -53,27 +53,27 @@ export abstract class Creature extends Entity {
     }
 
     private ReduceSpeed() {
-        if (this.movement.y > 0) {
-            this.movement.y -= this.friction.y;
-            if (this.movement.y < 0) {
-                this.movement.y = 0;
+        if (this.velocity.y > 0) {
+            this.velocity.y -= this.friction.y;
+            if (this.velocity.y < 0) {
+                this.velocity.y = 0;
             }
-        } else if (this.movement.y < 0) {
-            this.movement.y += this.friction.y;
-            if (this.movement.y > 0) {
-                this.movement.y = 0;
+        } else if (this.velocity.y < 0) {
+            this.velocity.y += this.friction.y;
+            if (this.velocity.y > 0) {
+                this.velocity.y = 0;
             }
         }
 
-        if (this.movement.x > 0) {
-            this.movement.x -= this.friction.x;
-            if (this.movement.x < 0) {
-                this.movement.x = 0;
+        if (this.velocity.x > 0) {
+            this.velocity.x -= this.friction.x;
+            if (this.velocity.x < 0) {
+                this.velocity.x = 0;
             }
-        } else if (this.movement.x < 0) {
-            this.movement.x += this.friction.x;
-            if (this.movement.x > 0) {
-                this.movement.x = 0;
+        } else if (this.velocity.x < 0) {
+            this.velocity.x += this.friction.x;
+            if (this.velocity.x > 0) {
+                this.velocity.x = 0;
             }
         }
     }
@@ -85,8 +85,8 @@ export abstract class Creature extends Entity {
      * @memberof Creature
      */
     private UpdatePosition(lastDelta: number) {
-        this.position.x += (this.movement.x * (lastDelta * .05));
-        this.position.y += (this.movement.y * (lastDelta * .05));
+        this.position.x += (this.velocity.x * (lastDelta * 50));
+        this.position.y += (this.velocity.y * (lastDelta * 50));
     }
     /**
      * caps the creature's movement speed at
@@ -96,15 +96,15 @@ export abstract class Creature extends Entity {
      * @memberof Creature
      */
     private CapMovementSpeed() {
-        if (this.movement.x > this.maxSpeed.x) {
-            this.movement.x = this.maxSpeed.x;
-        } else if (this.movement.x < -this.maxSpeed.x) {
-            this.movement.x = -this.maxSpeed.x;
+        if (this.velocity.x > this.maxSpeed.x) {
+            this.velocity.x = this.maxSpeed.x;
+        } else if (this.velocity.x < -this.maxSpeed.x) {
+            this.velocity.x = -this.maxSpeed.x;
         }
-        if (this.movement.y > this.maxSpeed.y) {
-            this.movement.y = this.maxSpeed.y;
-        } else if (this.movement.y < -this.maxSpeed.y) {
-            this.movement.y = -this.maxSpeed.y;
+        if (this.velocity.y > this.maxSpeed.y) {
+            this.velocity.y = this.maxSpeed.y;
+        } else if (this.velocity.y < -this.maxSpeed.y) {
+            this.velocity.y = -this.maxSpeed.y;
         }
     }
 
@@ -159,11 +159,11 @@ export abstract class Creature extends Entity {
     }
 
     public getMove(): Vector2 {
-        return this.movement;
+        return this.velocity;
     }
 
     public setMove(move: Vector2): void {
-        this.movement = move;
+        this.velocity = move;
     }
 
 }
