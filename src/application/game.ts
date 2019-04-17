@@ -11,7 +11,6 @@ import { MenuState } from "./States/MenuState";
 import { SettingsState } from "./States/SettingsState";
 import { Player } from "./Entities/Creatures/player";
 import { GraphicsService } from "./Graphics/graphics.service";
-import { FpsService } from "./Graphics/Fps/graphics.fps.service";
 import { Baddy } from "./Entities/Creatures/baddy";
 import { RandomStringGenerator } from "./Tools/random_generators/random_string.generator";
 import { RandomNumberGenerator } from "./Tools/random_generators/random_number.generators";
@@ -21,6 +20,7 @@ import { ViewportService } from "./Graphics/Viewport/viewport.service";
 import { PlayerService } from "./Entities/player.service";
 import { EntityService } from "./Entities/entity.service";
 import { DrawingService } from "./Graphics/Draw/drawing.service";
+import { TimerService } from "./Core/timer.service";
 
 export class Game {
     private viewportService: ViewportService;
@@ -31,7 +31,7 @@ export class Game {
     private stateService: StateService;
     private worldService: WorldService;
     private debugComponent: DebugComponent;
-    private fpsService: FpsService;
+    private timerService: TimerService;
     private entityService: EntityService;
     private running: boolean = false;
     private readonly launchMessage: string = 'Start';
@@ -52,7 +52,7 @@ export class Game {
         this.debugService = new DebugService(loadedInDebugMode);
         this.debugComponent = new DebugComponent(this.debugService);
         this.inputManager = new InputManager();
-        this.fpsService = new FpsService(60);
+        this.timerService = new TimerService(60);
         this.worldService = new WorldService(this.graphicsService.GetTileService());
         this.entityService = new EntityService();
         this.playerService = new PlayerService();
@@ -102,14 +102,14 @@ export class Game {
     Loop() {
         requestAnimationFrame(() => {
             if (this.running) {
-                if (this.fpsService.CheckShouldRunLoop()) {
+                if (this.timerService.CheckShouldRunLoop()) {
                     this.Update();
                     this.Render();
-                    this.fpsService.UpdateTicksAndRenderAfterLoop();
+                    this.timerService.UpdateTicksAndRenderAfterLoop();
                 }
 
                 this.PrintDebugInfoToConsole();
-                this.fpsService.ResetTimers();
+                this.timerService.ResetTimers();
             }
             this.Loop();
         });
@@ -123,10 +123,10 @@ export class Game {
      * @memberof Game
      */
     private PrintDebugInfoToConsole() {
-        if (this.fpsService.ShouldPrintDebugData()) {
+        if (this.timerService.ShouldPrintDebugData()) {
 
             let debugInformation: string[] = new Array<string>();
-            debugInformation.push('FPS Serv: ' + this.fpsService.PrintCurrentFpsToConsole());
+            debugInformation.push('FPS Serv: ' + this.timerService.PrintCurrentFpsToConsole());
             debugInformation.push('Cam Serv: ' + this.graphicsService.getGameCameraService().GetDebugInfo());
             for (let line of debugInformation) {
                 if (line.length > 0) {

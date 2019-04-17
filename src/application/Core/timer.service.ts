@@ -1,4 +1,4 @@
-export class FpsService {
+export class TimerService {
     private now: number;
     private delta: number;
     private timer: number;
@@ -17,10 +17,11 @@ export class FpsService {
         this.ticks = 0;
     }
 
-    public CheckShouldRunLoop() {
+    public CheckShouldRunLoop(): boolean {
         this.now = performance.now();
         this.delta += (this.now - this.lastTime) / this.timePerTick;
         this.timer += this.now - this.lastTime;
+
         this.lastTime = this.now;
 
         if (this.delta >= 1) {
@@ -61,5 +62,9 @@ export class FpsService {
             this.ticks = 0;
             this.timer = 0;
         }
+    }
+
+    public GetDelta() {
+        return this.delta;
     }
 }
