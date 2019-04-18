@@ -1,9 +1,10 @@
-export class FpsService {
+export class TimerService {
     private now: number;
     private delta: number;
     private timer: number;
     private lastTime: number;
     private ticks: number;
+    private lastTimeTook: number;
 
     private timePerTick: number;
     private fps: number;
@@ -15,12 +16,14 @@ export class FpsService {
         this.lastTime = performance.now();
         this.timer = 0;
         this.ticks = 0;
+        this.lastTimeTook = 0;
     }
 
-    public CheckShouldRunLoop() {
+    public CheckShouldRunLoop(): boolean {
         this.now = performance.now();
         this.delta += (this.now - this.lastTime) / this.timePerTick;
         this.timer += this.now - this.lastTime;
+        this.lastTimeTook = this.now - this.lastTime;
         this.lastTime = this.now;
 
         if (this.delta >= 1) {
@@ -53,7 +56,11 @@ export class FpsService {
      * @memberof FpsService
      */
     public PrintCurrentFpsToConsole() {
-        return `ticks and frames: ${this.ticks}`;
+        return `
+        ticks and frames: ${this.ticks}
+        lastDelta: ${this.delta}
+        timer: ${this.timer}
+        lastTime Took: ${this.lastTimeTook}`;
     }
 
     public ResetTimers() {
@@ -61,5 +68,9 @@ export class FpsService {
             this.ticks = 0;
             this.timer = 0;
         }
+    }
+
+    public GetLastUpdateTimeTook() {
+        return this.lastTimeTook / 1000;
     }
 }

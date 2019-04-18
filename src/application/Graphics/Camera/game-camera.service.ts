@@ -34,12 +34,15 @@ export class GameCameraService {
      */
     public IsObectOnScreen(position: Vector2, size: Vector2): boolean {
         const objectAABB: AABB = new AABB(position, size);
-        if (IntersectionHelper.AabbVsAabb(this.cameraAABB, objectAABB)) {
+        return this.IsObjectOnScreenAABB(objectAABB);
+    }
+
+    public IsObjectOnScreenAABB(AABB: AABB) {
+        if (IntersectionHelper.AabbVsAabb(this.cameraAABB, AABB)) {
             return true;
         } else {
             return false;
         }
-
     }
 
     public MoveCamera(xAmount: number, yAmount: number): void {
@@ -71,6 +74,12 @@ export class GameCameraService {
     }
     private SetOffset(positionVector: Vector2) {
         this.offset = positionVector;
+        if (this.offset.getValueX() < 0) {
+            this.offset.setValueX(0);
+        }
+        if (this.offset.getValueY() < 0) {
+            this.offset.setValueY(0);
+        }
         this.UpdatePositionAndSize();
     }
     UpdatePositionAndSize() {

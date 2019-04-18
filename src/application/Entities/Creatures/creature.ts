@@ -14,66 +14,66 @@ export abstract class Creature extends Entity {
     protected health: number;
     protected speed: Vector2;
     protected maxSpeed: Vector2;
-    protected movement: Vector2;
+    protected velocity: Vector2;
     protected acceleration: Vector2;
     protected friction: Vector2;
 
 
-    protected canvasId: string;
+    // protected canvasId: string;
 
-    protected texture: Texture2D;
+    // protected texture: Texture2D;
 
 
     constructor(position: Vector2, size: Vector2, name: string,
         texturePath: string,
         graphicsService: GraphicsService) {
-        super(position, size, name);
+        super(position, size, name, '1');
         this.graphicsService = graphicsService;
 
         this.health = CreatureDefaultSettings.DEFAULT_HEALTH;
         this.speed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED;
-        this.movement = new Vector2(0, 0);
+        this.velocity = new Vector2(0, 0);
         this.maxSpeed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED_MAX;
         this.acceleration = CreatureDefaultSettings.DEFAULT_MOVEMENT_ACCELERATION;
         this.friction = CreatureDefaultSettings.DEFAULT_FRICTION;
+        this.setCanvasId(this.graphicsService.RegisterDrawableEntity());
 
-        this.canvasId = this.graphicsService.RegisterDrawableEntity();
 
         if (texturePath !== undefined && texturePath !== null && texturePath.length) {
-            this.texture = new Texture2D(texturePath);
+            this.setTexture(new Texture2D(texturePath));
         }
 
     }
 
-    public Move(): void {
+    public Move(lastDelta: number): void {
         this.CapMovementSpeed();
-        this.UpdatePosition();
+        this.UpdatePosition(lastDelta);
         this.ReduceSpeed();
         this.UpdateAABB();
     }
 
     private ReduceSpeed() {
-        if (this.movement.y > 0) {
-            this.movement.y -= this.friction.y;
-            if (this.movement.y < 0) {
-                this.movement.y = 0;
+        if (this.velocity.y > 0) {
+            this.velocity.y -= this.friction.y;
+            if (this.velocity.y < 0) {
+                this.velocity.y = 0;
             }
-        } else if (this.movement.y < 0) {
-            this.movement.y += this.friction.y;
-            if (this.movement.y > 0) {
-                this.movement.y = 0;
+        } else if (this.velocity.y < 0) {
+            this.velocity.y += this.friction.y;
+            if (this.velocity.y > 0) {
+                this.velocity.y = 0;
             }
         }
 
-        if (this.movement.x > 0) {
-            this.movement.x -= this.friction.x;
-            if (this.movement.x < 0) {
-                this.movement.x = 0;
+        if (this.velocity.x > 0) {
+            this.velocity.x -= this.friction.x;
+            if (this.velocity.x < 0) {
+                this.velocity.x = 0;
             }
-        } else if (this.movement.x < 0) {
-            this.movement.x += this.friction.x;
-            if (this.movement.x > 0) {
-                this.movement.x = 0;
+        } else if (this.velocity.x < 0) {
+            this.velocity.x += this.friction.x;
+            if (this.velocity.x > 0) {
+                this.velocity.x = 0;
             }
         }
     }
@@ -84,11 +84,10 @@ export abstract class Creature extends Entity {
      * @private
      * @memberof Creature
      */
-    private UpdatePosition() {
-        this.position.x += this.movement.x;
-        this.position.y += this.movement.y;
+    private UpdatePosition(lastDelta: number) {
+        this.position.x += (this.velocity.x * (lastDelta * 50));
+        this.position.y += (this.velocity.y * (lastDelta * 50));
     }
-
     /**
      * caps the creature's movement speed at
      * this.maxSpeed
@@ -97,20 +96,20 @@ export abstract class Creature extends Entity {
      * @memberof Creature
      */
     private CapMovementSpeed() {
-        if (this.movement.x > this.maxSpeed.x) {
-            this.movement.x = this.maxSpeed.x;
-        } else if (this.movement.x < -this.maxSpeed.x) {
-            this.movement.x = -this.maxSpeed.x;
+        if (this.velocity.x > this.maxSpeed.x) {
+            this.velocity.x = this.maxSpeed.x;
+        } else if (this.velocity.x < -this.maxSpeed.x) {
+            this.velocity.x = -this.maxSpeed.x;
         }
-        if (this.movement.y > this.maxSpeed.y) {
-            this.movement.y = this.maxSpeed.y;
-        } else if (this.movement.y < -this.maxSpeed.y) {
-            this.movement.y = -this.maxSpeed.y;
+        if (this.velocity.y > this.maxSpeed.y) {
+            this.velocity.y = this.maxSpeed.y;
+        } else if (this.velocity.y < -this.maxSpeed.y) {
+            this.velocity.y = -this.maxSpeed.y;
         }
     }
 
     Draw(colour: string): CanvasRenderingContext2D {
-        const canv = this.graphicsService.GetCanvas(this.canvasId);
+        const canv = this.graphicsService.GetCanvas(this.getCanvasId());
         canv.ClearCanvas();
         if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.getPosition(), this.getSize())) {
             this.DrawToCanvasAsTexture2D(canv, colour);
@@ -131,8 +130,8 @@ export abstract class Creature extends Entity {
 
     DrawToCanvasAsTexture2D(canv: DrawableCanvas, colour: string) {
 
-        if (this.texture.GetCanRender()) {
-            canv.ctx.drawImage(this.texture.GetImage(),
+        if (this.getTexture().GetCanRender()) {
+            canv.ctx.drawImage(this.getTexture().GetImage(),
                 this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
                 this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
                 this.getSize().x,
@@ -160,11 +159,11 @@ export abstract class Creature extends Entity {
     }
 
     public getMove(): Vector2 {
-        return this.movement;
+        return this.velocity;
     }
 
     public setMove(move: Vector2): void {
-        this.movement = move;
+        this.velocity = move;
     }
 
 }

@@ -11,7 +11,6 @@ import { MenuState } from "./States/MenuState";
 import { SettingsState } from "./States/SettingsState";
 import { Player } from "./Entities/Creatures/player";
 import { GraphicsService } from "./Graphics/graphics.service";
-import { FpsService } from "./Graphics/Fps/graphics.fps.service";
 import { Baddy } from "./Entities/Creatures/baddy";
 import { RandomStringGenerator } from "./Tools/random_generators/random_string.generator";
 import { RandomNumberGenerator } from "./Tools/random_generators/random_number.generators";
@@ -19,6 +18,9 @@ import { WorldService } from "./World/world.service";
 import { GameCameraService } from "./Graphics/Camera/game-camera.service";
 import { ViewportService } from "./Graphics/Viewport/viewport.service";
 import { PlayerService } from "./Entities/player.service";
+import { EntityService } from "./Entities/entity.service";
+import { DrawingService } from "./Graphics/Draw/drawing.service";
+import { TimerService } from "./Core/timer.service";
 
 export class Game {
     private viewportService: ViewportService;
@@ -29,7 +31,8 @@ export class Game {
     private stateService: StateService;
     private worldService: WorldService;
     private debugComponent: DebugComponent;
-    private fpsService: FpsService;
+    private timerService: TimerService;
+    private entityService: EntityService;
     private running: boolean = false;
     private readonly launchMessage: string = 'Start';
 
@@ -49,8 +52,9 @@ export class Game {
         this.debugService = new DebugService(loadedInDebugMode);
         this.debugComponent = new DebugComponent(this.debugService);
         this.inputManager = new InputManager();
-        this.fpsService = new FpsService(60);
+        this.timerService = new TimerService(60);
         this.worldService = new WorldService(this.graphicsService.GetTileService());
+        this.entityService = new EntityService();
         this.playerService = new PlayerService();
     }
 
@@ -71,7 +75,7 @@ export class Game {
         this.inputManager.InitInputManager();
         this.graphicsService.InitGraphicsService();
         this.worldService.Init();
-        this.gameEntities = this.registerEntities();
+        this.registerEntities();
         // this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
         if (this.debugService.IsInDebugMode()) {
             console.log('setting up with debug info');
@@ -98,14 +102,15 @@ export class Game {
     Loop() {
         requestAnimationFrame(() => {
             if (this.running) {
-                if (this.fpsService.CheckShouldRunLoop()) {
-                    this.Update();
-                    this.Render();
-                    this.fpsService.UpdateTicksAndRenderAfterLoop();
+                if (this.timerService.CheckShouldRunLoop()) {
+                    const lastDelta = this.timerService.GetLastUpdateTimeTook();
+                    this.Update(lastDelta);
+                    this.Render(lastDelta);
+                    this.timerService.UpdateTicksAndRenderAfterLoop();
                 }
 
                 this.PrintDebugInfoToConsole();
-                this.fpsService.ResetTimers();
+                this.timerService.ResetTimers();
             }
             this.Loop();
         });
@@ -119,10 +124,10 @@ export class Game {
      * @memberof Game
      */
     private PrintDebugInfoToConsole() {
-        if (this.fpsService.ShouldPrintDebugData()) {
+        if (this.timerService.ShouldPrintDebugData()) {
 
             let debugInformation: string[] = new Array<string>();
-            debugInformation.push('FPS Serv: ' + this.fpsService.PrintCurrentFpsToConsole());
+            debugInformation.push('FPS Serv: ' + this.timerService.PrintCurrentFpsToConsole());
             debugInformation.push('Cam Serv: ' + this.graphicsService.getGameCameraService().GetDebugInfo());
             for (let line of debugInformation) {
                 if (line.length > 0) {
@@ -133,27 +138,26 @@ export class Game {
         }
     }
 
-    Update() {
+    Update(lastDelta: number) {
         if (this.stateService.GetState() !== null) {
             this.inputManager.NewInputLoopCheck();
 
             this.stateService.GetState().Tick();
 
-            for (let i = 0; i < this.gameEntities.length; i++) {
-                this.gameEntities[i].Tick();
-            }
+            this.entityService.TickAllEntities(lastDelta);
+            //  for (let i = 0; i < this.gameEntities.length; i++) {
+            //      this.gameEntities[i].Tick();
+            //  }
+
 
         }
     }
 
-    Render() {
+    Render(lastDelta: number) {
         if (this.stateService.GetState() !== null) {
-
             this.graphicsService.GetTileService().Redner();
 
-            for (let i = 0; i < this.gameEntities.length; i++) {
-                this.gameEntities[i].Render();
-            }
+            this.entityService.RenderAllEntities(this.graphicsService);
             this.stateService.GetState().Render();
             this.graphicsService.Render();
         }
@@ -166,20 +170,9 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 50): Array<Entity> {
-        const entities = new Array<Entity>();
+    registerEntities(baddyCount: number = 20): void {
 
-        this.playerService.SetPlayer(new Player(
-            new Vector2(
-                this.viewportService.GetBrowserWidth() / 2,
-                this.viewportService.GetBrowserHeight() / 2),
-            // new Vector2(0, 0),
-            new Vector2(50, 50),
-            'player',
-            'Ships/large_purple_01.png',
-            this.inputManager,
-            this.graphicsService));
-
+        
 
 
         const ships = [
@@ -200,24 +193,36 @@ export class Game {
         for (let i = 0; i < baddyCount; i++) {
             const imageLoc = RandomNumberGenerator.GetRandomNumber(0, 6);
             console.log('image loc will be ' + imageLoc);
-            entities.push(new Baddy(
+            const entity = new Baddy(
                 // new Vector2(500, 300),
                 RandomNumberGenerator.GetRandomVector2(
-                     0, this.viewportService.GetBrowserWidth(),
-                     0, this.viewportService.GetBrowserHeight()),
+                    0, this.viewportService.GetBrowserWidth(),
+                    0, this.viewportService.GetBrowserHeight()),
                 entitySize,
                 'baddy' + i.toString(),
                 '/Ships/' + ships[imageLoc],
                 this.graphicsService,
                 RandomStringGenerator.GetRandomHexColour(),
                 this.playerService
-            ));
+            );
+
+            this.entityService.RegisterEntity(entity);
         }
 
+        this.playerService.SetPlayer(new Player(
+            new Vector2(
+                this.viewportService.GetBrowserWidth() / 2,
+                this.viewportService.GetBrowserHeight() / 2),
+            // new Vector2(0, 0),
+            new Vector2(50, 50),
+            'player',
+            'Ships/large_purple_01.png',
+            this.inputManager,
+            this.graphicsService));
 
-        entities.push(this.playerService.GetPlayer());
 
+        this.entityService.RegisterEntity(this.playerService.GetPlayer());
 
-        return entities;
+        // return entities;
     }
 }

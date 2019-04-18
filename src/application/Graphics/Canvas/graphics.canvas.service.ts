@@ -16,8 +16,6 @@ export class CanvasService {
     constructor(htmlService: HtmlService) {
         console.log('creating a canvas service');
         this.htmlService = htmlService;
-
-        
     }
 
     Init() {
