@@ -89,4 +89,7 @@ canvas {
 #details_div {
   width: 100%;
   clear: both;
-  background: #808080; }
+  background: #808080;
+  position: absolute;
+  right: 0;
+  top: 0; }

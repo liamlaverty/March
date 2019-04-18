@@ -63,10 +63,6 @@ export class Game {
         this.Init();
         this.running = true;
         this.Loop();
-
-        window.addEventListener('gamepadconnected', (e) => {
-            console.warn('gamepad connected')
-        });
     }
 
     Init(): string {
