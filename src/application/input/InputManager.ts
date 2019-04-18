@@ -159,10 +159,6 @@ export class InputManager {
             }
         }
         return false;
-        // if (InputManager.validInputs.includes(pressedKey)) {
-        //     return true;
-        // }
-        // return false;
     }
 
 
