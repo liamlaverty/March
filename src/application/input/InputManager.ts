@@ -12,16 +12,13 @@ export class InputManager {
 
 
     private gamePads: Array<Gamepad> = Array<Gamepad>();
-    private detailsDiv: HTMLElement;
 
     constructor() {
         this.inputState = new InputState();
-        
+
 
         this.currentInputs = new Array<string>();
         this.gamePads = new Array<Gamepad>();
-        this.detailsDiv = document.getElementById('details_div');
-        // this.detailsDiv.innerHTML = "unused div";
     }
 
     /**
@@ -41,6 +38,7 @@ export class InputManager {
      * @memberof InputManager
      */
     NewInputLoopCheck() {
+        this.inputState.UpdateInputs();
         // throw new Error("Method not implemented.");
     }
 
@@ -81,7 +79,7 @@ export class InputManager {
         return this.inputState.IsInputPressed(inputDescription);
     }
 
-    
+
     private gamePadButtonPressed(btn: GamepadButton) {
         // console.log(typeof(btn));
         if (typeof (btn) === 'object') {

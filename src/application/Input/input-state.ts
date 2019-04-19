@@ -1,13 +1,21 @@
 import { Input } from "./input.model";
 
 export class InputState {
-    
-    private static DEFAULT_MAX_INPUTS: number = 4;
 
+    private static DEFAULT_MAX_INPUTS: number = 4;
+    private detailsDiv: HTMLElement;
+
+    private registeredGamePads: Gamepad[];
     private gamePads: Gamepad[];
     private currentInputs: Array<Input>;
+
+    private controllingWithPad = false;
     constructor() {
         console.log('inputState: constructing input state');
+        this.detailsDiv = document.getElementById('details_div');
+        this.detailsDiv.innerHTML = `No gamepad connected`;
+        this.registeredGamePads = new Array<Gamepad>();
+        this.gamePads = new Array<Gamepad>();
     }
 
     Init() {
@@ -15,10 +23,19 @@ export class InputState {
         this.setupInputs();
         this.SetupGamePadRegistrationWatch();
         this.SetupKeyboardInputWatch();
-        requestAnimationFrame(() => {
+        this.SetGamePadMode(false);
+    }
 
-            console.log('inputstate: timer')
-        });
+    private SetGamePadMode(controllingWithPad: boolean): void {
+        this.controllingWithPad = controllingWithPad;
+        if (controllingWithPad) {
+            this.detailsDiv.innerHTML = 'controlling with gamepad. Press >> k << to use keyboard mode';
+        } else {
+            this.detailsDiv.innerHTML = 'controlling with keyboard. Press >> select << to use gamepad mode';
+        }
+    }
+    private GetGamePadMode() {
+        return this.controllingWithPad;
     }
 
 
@@ -45,8 +62,36 @@ export class InputState {
     }
 
 
-    private UpdateInputs() {
+    public UpdateInputs() {
+        // console.log('inputstate: updating inputs. There are ' + this.registeredGamePads.length + ' pads connected')
 
+        this.UpdateGamePadInputs();
+    }
+
+    private ResetInputsBeforeGamePadInput() {
+        for (let input of this.currentInputs) {
+            input.wasPressedPreviousCheck = input.pressed;
+            input.pressed = false;
+        }
+    }
+    private UpdateGamePadInputs() {
+        for (let i = 0; i < this.registeredGamePads.length; i++) {
+            const padToCheck = this.GetGamePad(i);
+            if (this.GetGamePadMode()) {
+                this.ResetInputsBeforeGamePadInput();
+                for (let btn = 0; btn < padToCheck.buttons.length; btn++) {
+                    if (this.gamePadButtonPressed(padToCheck.buttons[btn])) {
+                        this.pushToCurrentInputsFromGamePad(btn);
+                        console.log(`inputstate: btn ${btn} is pressed`)
+                    }
+                }
+            } else {
+                if (this.gamePadButtonPressed(padToCheck.buttons[8])) {
+                    console.warn('inputstate: in gamepad mode');
+                    this.SetGamePadMode(true);
+                }
+            }
+        }
     }
 
 
@@ -69,23 +114,51 @@ export class InputState {
         window.addEventListener('keyup', event => {
             event.preventDefault();
             this.popFromCurrentInputsFromKeyboard(event.key);
+            if (event.key === 'k') {
+                console.warn(`inputstate: controlling by keyboard`)
+                this.SetGamePadMode(false);
+            }
 
         });
     }
     pushToCurrentInputsFromKeyboard(key: string) {
+        if (this.GetGamePadMode() === false) {
+            for (let input of this.currentInputs) {
+                if (input.keyboardId === key) {
+                    input.pressed = true;
+                    console.log(`inputstate marked ${input.name} as pressed`)
+                    return;
+                }
+            }
+        }
+    }
+    popFromCurrentInputsFromKeyboard(key: string) {
+        if (this.GetGamePadMode() === false) {
+
+            for (let input of this.currentInputs) {
+                if (input.keyboardId === key) {
+                    input.pressed = false;
+                    console.log(`inputstate marked ${input.name} as pressed`)
+                    return;
+                }
+            }
+        }
+    }
+
+    pushToCurrentInputsFromGamePad(btnId: number) {
         for (let input of this.currentInputs) {
-            if (input.keyboardId === key) {
+            if (input.gamepadId === btnId) {
                 input.pressed = true;
                 console.log(`inputstate marked ${input.name} as pressed`)
                 return;
             }
         }
     }
-    popFromCurrentInputsFromKeyboard(key: string) {
+    popFromCurrentInputsFromGamePad(btnId: number) {
         for (let input of this.currentInputs) {
-            if (input.keyboardId === key) {
+            if (input.gamepadId === btnId) {
                 input.pressed = false;
-                console.log(`inputstate marked ${input.name} as pressed`)
+                // console.log(`inputstate marked ${input.name} as not`)
                 return;
             }
         }
@@ -114,19 +187,41 @@ export class InputState {
 
 
     private RegisterGamePad(gamePad: Gamepad) {
-        console.warn("Gamepad: connected at index %d: %s. %d buttons, %d axes.",
+        console.warn("inputstate: Gamepad: connected at index %d: %s. %d buttons, %d axes.",
             gamePad.index, gamePad.id,
             gamePad.buttons.length, gamePad.axes.length);
+        this.registeredGamePads[gamePad.index] = gamePad;
+        this.detailsDiv.innerHTML = 'Gamepad has been connected';
+
 
     }
     private DeRegisterGamePad(gamePad: Gamepad) {
-        console.error("Gamepad: connected at index %d: %s. %d buttons, %d axes.",
+        console.error("inputstate: Gamepad: connected at index %d: %s. %d buttons, %d axes.",
             gamePad.index, gamePad.id,
             gamePad.buttons.length, gamePad.axes.length);
+        this.GetGamePads();
+        this.detailsDiv.innerHTML = 'inputstate: Gamepad has been disconnected';
     }
 
-
+    private GetGamePads() {
+        this.gamePads = navigator.getGamepads();
+    }
     private GetGamePad(index: number) {
         return navigator.getGamepads()[index];
+    }
+
+    private gamePadButtonPressed(btn: GamepadButton) {
+        // console.log(typeof(btn));
+        if (typeof (btn) === 'object') {
+            // firefox
+            // console.log('gamepad: ff')
+            if (btn.pressed) {
+                console.log('inputstate: button is pressed')
+            }
+            return btn.pressed;
+        } else {
+            console.log('inputstate: gamepad: chrome')
+            return btn === 1.0;
+        }
     }
 }

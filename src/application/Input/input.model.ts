@@ -8,4 +8,6 @@ export class Input {
     keyboardId: string;
     gamepadId: number;
     pressed: boolean = false;
+
+    wasPressedPreviousCheck: boolean = false;
 }
