@@ -31,19 +31,19 @@ export class Player extends Creature {
     private GetInput(): void {
         // this.setMove(new Vector2(0, 0));
 
-        if (this.inputManager.IsKeyPressed('w')) {
+        if (this.inputManager.IsKeyPressed('direction_up')) {
             this.velocity.y -= this.acceleration.y;
         }
-        if (this.inputManager.IsKeyPressed('s')) {
+        if (this.inputManager.IsKeyPressed('direction_down')) {
             this.velocity.y += this.acceleration.y;
         }
-        if (this.inputManager.IsKeyPressed('a')) {
+        if (this.inputManager.IsKeyPressed('direction_left')) {
             this.velocity.x -= this.acceleration.x;
         }
-        if (this.inputManager.IsKeyPressed('d')) {
+        if (this.inputManager.IsKeyPressed('direction_right')) {
             this.velocity.x += this.acceleration.x;
         }
-        if (this.inputManager.IsKeyPressed(' ')) {
+        if (this.inputManager.IsKeyPressed('action_a')) {
             console.log('space pressed')
         }
         // console.log(`this.movement.x = ${this.movement.x}`)
