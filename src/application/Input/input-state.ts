@@ -19,7 +19,7 @@ export class InputState {
         this.gamePads = new Array<Gamepad>();
     }
 
-    Init() {
+    Init() { 
         console.log('inputState: init inputstate');
         this.setupInputs();
         this.SetupGamePadRegistrationWatch();
