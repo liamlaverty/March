@@ -3,6 +3,7 @@ import { Input } from "./input.model";
 export class InputState {
 
     private static DEFAULT_MAX_INPUTS: number = 4;
+    private static DEFAULT_MIN_JOYSTICK_SENSITIVITY: number = 0.1;
     private detailsDiv: HTMLElement;
 
     private registeredGamePads: Gamepad[];
@@ -47,17 +48,27 @@ export class InputState {
     setupInputs() {
         this.currentInputs = new Array<Input>();
         this.currentInputs.push(
-            new Input('direction_left', 'a', 14),
-            new Input('direction_right', 'd', 15),
-            new Input('direction_up', 'w', 12),
-            new Input('direction_down', 's', 13),
+            new Input('direction_left', 'a', 14, null),
+            new Input('direction_right', 'd', 15, null),
+            new Input('direction_up', 'w', 12, null),
+            new Input('direction_down', 's', 13, null),
+
+            new Input('axes_pad_left_horizontal', null, null, 0),
+            new Input('axes_pad_left_vertical', null, null, 1),
+            new Input('axes_pad_right_horizontal', null, null, 2),
+            new Input('axes_pad_right_vertical', null, null, 3),
+
+            new Input('trigger_one_left', null, 4, null),
+            new Input('trigger_two_left', null, 5, null),
+            new Input('trigger_one_right', null, 6, null),
+            new Input('trigger_two_right', null, 7, null),
 
             // 'action_{val}' where {val} is the 
             // name of the button on an XBox360 controller
-            new Input('action_a', ' ', 0),
-            new Input('action_y', 'z', 3),
-            new Input('action_x', 'x', 2),
-            new Input('action_b', 'c', 1),
+            new Input('action_a', ' ', 0, null),
+            new Input('action_y', 'z', 3, null),
+            new Input('action_x', 'x', 2, null),
+            new Input('action_b', 'c', 1, null),
         );
     }
 
@@ -79,10 +90,15 @@ export class InputState {
             const padToCheck = this.GetGamePad(i);
             if (this.GetGamePadMode()) {
                 this.ResetInputsBeforeGamePadInput();
-                for (let btn = 0; btn < padToCheck.buttons.length; btn++) {
-                    if (this.gamePadButtonPressed(padToCheck.buttons[btn])) {
-                        this.pushToCurrentInputsFromGamePad(btn);
-                        console.log(`inputstate: btn ${btn} is pressed`)
+                for (let btnIndex = 0; btnIndex < padToCheck.buttons.length; btnIndex++) {
+                    if (this.gamePadButtonPressed(padToCheck.buttons[btnIndex])) {
+                        this.pushToCurrentInputsFromGamePad(btnIndex, padToCheck.buttons[btnIndex].value);
+                        console.log(`inputstate: btn ${btnIndex} is pressed`)
+                    }
+                }
+                for (let axesIndex = 0; axesIndex < padToCheck.axes.length; axesIndex++){ 
+                    if (this.gamePadAxesPressed(padToCheck.axes[axesIndex])) {
+                        this.pushToCurrentInputsFromGamePadAxes(axesIndex, padToCheck.axes[axesIndex])
                     }
                 }
             } else {
@@ -123,10 +139,11 @@ export class InputState {
     }
     pushToCurrentInputsFromKeyboard(key: string) {
         if (this.GetGamePadMode() === false) {
-            for (let input of this.currentInputs) {
-                if (input.keyboardId === key) {
-                    input.pressed = true;
-                    console.log(`inputstate marked ${input.name} as pressed`)
+            for (let thisInput of this.currentInputs) {
+                if (thisInput.keyboardId === key) {
+                    thisInput.pressed = true;
+                    thisInput.force = 1;
+                    console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
                     return;
                 }
             }
@@ -145,11 +162,22 @@ export class InputState {
         }
     }
 
-    pushToCurrentInputsFromGamePad(btnId: number) {
-        for (let input of this.currentInputs) {
-            if (input.gamepadId === btnId) {
-                input.pressed = true;
-                console.log(`inputstate marked ${input.name} as pressed`)
+    pushToCurrentInputsFromGamePad(btnId: number, pushForce: number) {
+        for (let thisInput of this.currentInputs) {
+            if (thisInput.gamepadId === btnId) {
+                thisInput.pressed = true;
+                thisInput.force = pushForce;
+                console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
+                return;
+            }
+        }
+    }
+    pushToCurrentInputsFromGamePadAxes(axesIndex: number, pushForce: number) {
+        for (let thisInput of this.currentInputs) {
+            if (thisInput.gamePadAxesId === axesIndex) {
+                thisInput.pressed = true;
+                thisInput.force = pushForce;
+                console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
                 return;
             }
         }
@@ -210,6 +238,10 @@ export class InputState {
         return navigator.getGamepads()[index];
     }
 
+    private gamePadAxesPressed(axes: number) {
+        return (axes > InputState.DEFAULT_MIN_JOYSTICK_SENSITIVITY || axes < -InputState.DEFAULT_MIN_JOYSTICK_SENSITIVITY);
+    }
+
     private gamePadButtonPressed(btn: GamepadButton) {
         // console.log(typeof(btn));
         if (typeof (btn) === 'object') {
@@ -218,7 +250,7 @@ export class InputState {
             if (btn.pressed) {
                 console.log('inputstate: button is pressed')
             }
-            return btn.pressed;
+            return btn.value;
         } else {
             console.log('inputstate: gamepad: chrome')
             return btn === 1.0;
