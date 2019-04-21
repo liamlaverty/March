@@ -22,7 +22,7 @@ export class DrawingService {
 
     public Draw(drawable: Drawable) {
         const deg: number = drawable.GetRotation();
-        drawable.AddToRotation(10);
+        // drawable.AddToRotation(10);
         if (this.cameraService.IsObjectOnScreenAABB(drawable.getAABB())) {
 
             const canv = this.canvasService.GetCanvas(drawable.getCanvasId());

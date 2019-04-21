@@ -79,22 +79,18 @@ export class InputManager {
         return this.inputState.IsInputPressed(inputDescription);
     }
 
-
-    private gamePadButtonPressed(btn: GamepadButton) {
-        // console.log(typeof(btn));
-        if (typeof (btn) === 'object') {
-            // firefox
-            // console.log('gamepad: ff')
-            if (btn.pressed) {
-                console.log('button is pressed')
-            }
-            return btn.pressed;
-        } else {
-            console.log('gamepad: chrome')
-            return btn === 1.0;
-        }
+    /**
+     * gets the force value for a given input. If it's in 
+     * keyboard mode, then it just returns 0 or 1
+     * 
+     * If it's in keyboard mode, then it returns a value of -1.0 to +1.0
+     *
+     * @param {string} inputDescription
+     * @returns {number}
+     * @memberof InputManager
+     */
+    GetForceValue(inputDescription: string): number {
+        return this.inputState.GetForceValue(inputDescription);
     }
-
-
 
 }

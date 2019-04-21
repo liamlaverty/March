@@ -5,6 +5,7 @@ import { CreatureDefaultSettings } from "./creature.default.settings";
 import { Texture2D } from "../../Graphics/Textures/Texture2d";
 import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
 import { AABB } from "../../../numerics/models/AABB.model";
+import { Vector2Helpers } from "../../../numerics/helpers/vector2.helper";
 
 
 
@@ -16,6 +17,7 @@ export abstract class Creature extends Entity {
     protected maxSpeed: Vector2;
     protected velocity: Vector2;
     protected acceleration: Vector2;
+    protected deceleration: Vector2;
     protected friction: Vector2;
 
 
@@ -35,6 +37,7 @@ export abstract class Creature extends Entity {
         this.velocity = new Vector2(0, 0);
         this.maxSpeed = CreatureDefaultSettings.DEFAULT_MOVEMENT_SPEED_MAX;
         this.acceleration = CreatureDefaultSettings.DEFAULT_MOVEMENT_ACCELERATION;
+        this.deceleration = Vector2Helpers.DivideByScale(CreatureDefaultSettings.DEFAULT_MOVEMENT_ACCELERATION, 1);
         this.friction = CreatureDefaultSettings.DEFAULT_FRICTION;
         this.setCanvasId(this.graphicsService.RegisterDrawableEntity());
 

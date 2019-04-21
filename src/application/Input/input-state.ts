@@ -58,9 +58,9 @@ export class InputState {
             new Input('axes_pad_right_horizontal', null, null, 2),
             new Input('axes_pad_right_vertical', null, null, 3),
 
-            new Input('trigger_one_left', null, 4, null),
-            new Input('trigger_two_left', null, 5, null),
-            new Input('trigger_one_right', null, 6, null),
+            new Input('trigger_one_left', 'q', 4, null),
+            new Input('trigger_two_left', null, 6, null),
+            new Input('trigger_one_right', 'e', 5, null),
             new Input('trigger_two_right', null, 7, null),
 
             // 'action_{val}' where {val} is the 
@@ -118,6 +118,14 @@ export class InputState {
             }
         }
         return false;
+    }
+    GetForceValue(inputDescription: string): number {
+        for (let input of this.currentInputs) {
+            if (input.name === inputDescription) {
+                return input.force;
+            }
+        }
+        return 0;
     }
 
     private SetupKeyboardInputWatch() {
