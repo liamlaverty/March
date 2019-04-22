@@ -67,8 +67,6 @@ export class Baddy extends Creature {
         // }
 
 
-        console.clear();
-        console.log(`baddy: angle: ${angleDeg}`)
         // console.log(`baddy: 
         // angleRad ${angleRad}
         // angleDeg ${angleDeg} 
@@ -88,18 +86,6 @@ export class Baddy extends Creature {
          this.velocity.y -= (rotSin * this.thrust);
 
 
-
-
-        console.log(`
-        player: <br />
-        ve: ${this.velocity.concat(3)}<br />
-        ro: ${this.rotationDegrees.toFixed(3)}DEG<br />
-        ro: ${rotationAsRadians.toFixed(3)}RAD<br />
-        th: ${this.thrust.toFixed(3)}<br />
-        rS: ${rotSin.toFixed(3)}<br />
-        rC: ${rotCos.toFixed(3)}<br />
-
-        `);
         // const rotationAsRadians = this.rotationDegrees / Math.PI * 180;
         // const rotCos = Math.sin(rotationAsRadians);
         // const rotSin = Math.cos(rotationAsRadians);
