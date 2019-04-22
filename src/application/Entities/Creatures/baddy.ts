@@ -5,7 +5,8 @@ import { PlayerService } from "../player.service";
 import { AABB } from "../../../numerics/models/AABB.model";
 import { IntersectionHelper } from "../../../numerics/helpers/intersection.helper";
 import { RandomNumberGenerator } from "../../Tools/random_generators/random_number.generators";
-import { Radians, Degrees } from "../../../numerics/helpers/degrees.helper";
+import { Radians, Degrees, FartherRight } from "../../../numerics/helpers/degrees.helper";
+import { Between, Lerp } from "../../../numerics/helpers/number.helper";
 
 export class Baddy extends Creature {
     private playerService: PlayerService;
@@ -18,7 +19,7 @@ export class Baddy extends Creature {
         super(position, size, name, texturePath, graphicsService);
         this.playerService = playerService;
         this.colour = colour;
-        this.maxSpeed = new Vector2(11.9, 11.9);
+        this.maxSpeed = new Vector2(10,10);
         this.acceleration = new Vector2(.55, .6);
 
         // const friction = 0.85; // RandomNumberGenerator.GetRandomNumber(100, 200) / 1000;
@@ -30,7 +31,7 @@ export class Baddy extends Creature {
 
         // this.velocity = RandomNumberGenerator.GetRandomVector2(-10, 10, -10, 10);
         this.rotationDegrees = 0;// RandomNumberGenerator.GetRandomNumber(0, 359);
-        this.turnSpeed = 9;
+        this.turnSpeed = .5;
         this.thrust = 1;
 
     }
@@ -49,30 +50,22 @@ export class Baddy extends Creature {
 
 
     private turnToPlayer(playerAABB: AABB) {
+        let dx = playerAABB.GetCenter().getValueX() - this.getAABB().GetCenter().getValueX();
+        let dy = playerAABB.GetCenter().getValueY() - this.getAABB().GetCenter().getValueY();
+        const len = Math.sqrt(dx * dy + dy * dy);
+        dx /= len ? len : 0.1;
+        dy /= len ? len : 0.1;
 
-        const angleRad = Math.atan2(
-            playerAABB.GetCenter().getValueY() - this.getAABB().GetCenter().getValueY(), 
-            playerAABB.GetCenter().getValueX() - this.getAABB().GetCenter().getValueX()
-        )
-        let angleDeg = Degrees(angleRad) + 90;
-        if (angleDeg < 0) {
-            angleDeg = 360 - (-angleDeg);
-        }
-        this.rotationDegrees = angleDeg * .95;
+        let dirX = Math.cos(Radians(this.rotationDegrees));
+        let dirY = Math.sin(Radians(this.rotationDegrees));
 
-        // if (angleDeg > 180) {
-        //     this.rotationDegrees += this.turnSpeed;
-        // } else {
-        //     this.rotationDegrees -= this.turnSpeed;
-        // }
+        dirX += (dx - dirX) * 1;
+        dirY += (dy - dirY) * 1;
 
+        const rotateTo = Math.atan2(dirY, dirX);
 
-        // console.log(`baddy: 
-        // angleRad ${angleRad}
-        // angleDeg ${angleDeg} 
-        // `);
-        // this.rotationDegrees = this.rotationDegrees + this.turnSpeed;// this.turnSpeed;
-
+        // this.rotationDegrees = Degrees(rotateTo) + (90);
+        this.rotationDegrees = Lerp(this.rotationDegrees, Degrees(rotateTo) + (-this.angleAdjust), .5);
     }
 
     private MoveToPlayer(playerAABB: AABB) {
@@ -80,7 +73,6 @@ export class Baddy extends Creature {
         const rotationAsRadians = Radians(this.rotationDegrees - this.angleAdjust);
         const rotSin = Math.sin(rotationAsRadians);
         const rotCos = Math.cos(rotationAsRadians);
-
 
          this.velocity.x -= (rotCos * this.thrust);
          this.velocity.y -= (rotSin * this.thrust);
@@ -94,10 +86,10 @@ export class Baddy extends Creature {
         // this.velocity.y = (rotCos * thrust);
 
         // console.log(`baddy: 
-        // rotation: ${this.rotation}
-        // CosRotation: ${rotCos}
-        // SinRotation: ${rotSin}
-        // velocity: ${this.velocity.concat()}`);
+        //  rotation: ${this.rotationDegrees}
+        //  CosRotation: ${rotCos}
+        //  SinRotation: ${rotSin}
+        //  velocity: ${this.velocity.concat()}`);
 
 
 

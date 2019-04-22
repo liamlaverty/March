@@ -165,7 +165,7 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 150): void {
+    registerEntities(baddyCount: number = 5): void {
 
         
 

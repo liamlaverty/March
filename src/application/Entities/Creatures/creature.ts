@@ -6,6 +6,7 @@ import { Texture2D } from "../../Graphics/Textures/Texture2d";
 import { DrawableCanvas } from "../../Graphics/Models/graphics.drawable-canvas";
 import { AABB } from "../../../numerics/models/AABB.model";
 import { Vector2Helpers } from "../../../numerics/helpers/vector2.helper";
+import { Lerp } from "../../../numerics/helpers/number.helper";
 
 
 
@@ -97,11 +98,13 @@ export abstract class Creature extends Entity {
      * @memberof Creature
      */
     private UpdatePosition(lastDelta: number) {
-        this.position.x += (this.velocity.x * (lastDelta)  * 50);
-        this.position.y += (this.velocity.y * (lastDelta)  * 50);
+        // this.position.x += (this.velocity.x * (lastDelta) * 50);
+        // this.position.y += (this.velocity.y * (lastDelta) * 50);
 
-
+        this.position.x = Lerp(this.position.x, this.position.x + (this.velocity.x * (lastDelta) * 50), .8);
+        this.position.y = Lerp(this.position.y, this.position.y + (this.velocity.y * (lastDelta) * 50), .8);
     }
+
     /**
      * caps the creature's movement speed at
      * this.maxSpeed
@@ -130,11 +133,14 @@ export abstract class Creature extends Entity {
     }
 
     private CapRotation() {
-         if (this.rotationDegrees < 0) {
-             this.rotationDegrees = 359;
-         } else if (this.rotationDegrees > 360) {
-             this.rotationDegrees = 0;
-         }
+        // if (this.rotationDegrees < 0) {
+        //     this.rotationDegrees = 360 - (-this.rotationDegrees);
+        // }
+        // if (this.rotationDegrees < 0) {
+        //     this.rotationDegrees = 359;
+        // } if (this.rotationDegrees > 360) {
+        //     this.rotationDegrees = 0;
+        // }
     }
 
     Draw(colour: string): CanvasRenderingContext2D {

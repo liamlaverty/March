@@ -184,7 +184,7 @@ export class InputState {
                 if (thisInput.keyboardId === key) {
                     thisInput.pressed = true;
                     thisInput.force = 1;
-                    console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
+                    // console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
                     return;
                 }
             }
@@ -196,7 +196,7 @@ export class InputState {
             for (let input of this.currentInputs) {
                 if (input.keyboardId === key) {
                     input.pressed = false;
-                    console.log(`inputstate marked ${input.name} as pressed`)
+                    // console.log(`inputstate marked ${input.name} as pressed`)
                     return;
                 }
             }
@@ -208,7 +208,7 @@ export class InputState {
             if (thisInput.gamepadId === btnId) {
                 thisInput.pressed = true;
                 thisInput.force = pushForce;
-                console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
+                // console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
                 return;
             }
         }
@@ -218,7 +218,7 @@ export class InputState {
             if (thisInput.gamePadAxesId === axesIndex) {
                 thisInput.pressed = true;
                 thisInput.force = pushForce;
-                console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
+                // console.log(`inputstate marked ${thisInput.name} as pressed with force ${thisInput.force}`)
                 return;
             }
         }

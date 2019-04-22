@@ -25,3 +25,8 @@ export function Radians(degrees: number) {
 export function Degrees(radians: number) {
     return radians * 180 / Math.PI;
 }
+
+export function FartherRight(fromDegrees: number, toDegrees: number) {
+
+    return true;
+}
