@@ -13,7 +13,6 @@ export class Player extends Creature {
     private detailsDiv: HTMLElement;
     private rotationSpeed: number = 5;
 
-    private thrust = 1;
     private strafeThrust = 1.5;
     private readonly startingFriction: Vector2;
 
@@ -25,6 +24,7 @@ export class Player extends Creature {
         this.health = 100;
         this.detailsDiv = document.getElementById('details_div');
         this.colour = '#fff';
+        this.thrust = 1;
 
 
 
@@ -79,9 +79,7 @@ export class Player extends Creature {
     }
 
     private UpdatePlayerSpeedFromInput() {
-        const angleAdjust = -90;
-
-        const rotationAsRadians = Radians(this.rotationDegrees - angleAdjust);
+        const rotationAsRadians = Radians(this.rotationDegrees - this.angleAdjust);
         const rotSin = Math.sin(rotationAsRadians);
         const rotCos = Math.cos(rotationAsRadians);
 

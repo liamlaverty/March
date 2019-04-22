@@ -19,8 +19,10 @@ export abstract class Creature extends Entity {
     protected acceleration: Vector2;
     protected deceleration: Vector2;
     protected friction: Vector2;
+    protected thrust: number;
 
     protected turnSpeed: number = 1;
+    protected readonly angleAdjust: number = -90;
 
 
     // protected canvasId: string;

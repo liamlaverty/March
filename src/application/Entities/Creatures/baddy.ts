@@ -5,6 +5,7 @@ import { PlayerService } from "../player.service";
 import { AABB } from "../../../numerics/models/AABB.model";
 import { IntersectionHelper } from "../../../numerics/helpers/intersection.helper";
 import { RandomNumberGenerator } from "../../Tools/random_generators/random_number.generators";
+import { Radians, Degrees } from "../../../numerics/helpers/degrees.helper";
 
 export class Baddy extends Creature {
     private playerService: PlayerService;
@@ -29,7 +30,8 @@ export class Baddy extends Creature {
 
         // this.velocity = RandomNumberGenerator.GetRandomVector2(-10, 10, -10, 10);
         this.rotationDegrees = 0;// RandomNumberGenerator.GetRandomNumber(0, 359);
-        this.turnSpeed = 0.001;
+        this.turnSpeed = 9;
+        this.thrust = 1;
 
     }
 
@@ -46,21 +48,64 @@ export class Baddy extends Creature {
 
 
 
-    private turnToPlayer() {
-        this.rotationDegrees = this.rotationDegrees + this.turnSpeed;// this.turnSpeed;
-        
+    private turnToPlayer(playerAABB: AABB) {
+
+        const angleRad = Math.atan2(
+            playerAABB.GetCenter().getValueY() - this.getAABB().GetCenter().getValueY(), 
+            playerAABB.GetCenter().getValueX() - this.getAABB().GetCenter().getValueX()
+        )
+        let angleDeg = Degrees(angleRad) + 90;
+        if (angleDeg < 0) {
+            angleDeg = 360 - (-angleDeg);
+        }
+        this.rotationDegrees = angleDeg * .95;
+
+        // if (angleDeg > 180) {
+        //     this.rotationDegrees += this.turnSpeed;
+        // } else {
+        //     this.rotationDegrees -= this.turnSpeed;
+        // }
+
+
+        console.clear();
+        console.log(`baddy: angle: ${angleDeg}`)
+        // console.log(`baddy: 
+        // angleRad ${angleRad}
+        // angleDeg ${angleDeg} 
+        // `);
+        // this.rotationDegrees = this.rotationDegrees + this.turnSpeed;// this.turnSpeed;
+
     }
 
     private MoveToPlayer(playerAABB: AABB) {
-        this.turnToPlayer();
+        this.turnToPlayer(playerAABB);
+        const rotationAsRadians = Radians(this.rotationDegrees - this.angleAdjust);
+        const rotSin = Math.sin(rotationAsRadians);
+        const rotCos = Math.cos(rotationAsRadians);
 
-        const thrust = 1.5;
-        const rotationAsRadians = this.rotationDegrees / Math.PI * 180;
-        const rotCos = Math.sin(rotationAsRadians);
-        const rotSin = Math.cos(rotationAsRadians);
 
-        this.velocity.x = (rotSin * thrust);
-        this.velocity.y = (rotCos * thrust);
+         this.velocity.x -= (rotCos * this.thrust);
+         this.velocity.y -= (rotSin * this.thrust);
+
+
+
+
+        console.log(`
+        player: <br />
+        ve: ${this.velocity.concat(3)}<br />
+        ro: ${this.rotationDegrees.toFixed(3)}DEG<br />
+        ro: ${rotationAsRadians.toFixed(3)}RAD<br />
+        th: ${this.thrust.toFixed(3)}<br />
+        rS: ${rotSin.toFixed(3)}<br />
+        rC: ${rotCos.toFixed(3)}<br />
+
+        `);
+        // const rotationAsRadians = this.rotationDegrees / Math.PI * 180;
+        // const rotCos = Math.sin(rotationAsRadians);
+        // const rotSin = Math.cos(rotationAsRadians);
+
+        // this.velocity.x = (rotSin * thrust);
+        // this.velocity.y = (rotCos * thrust);
 
         // console.log(`baddy: 
         // rotation: ${this.rotation}
