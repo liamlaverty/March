@@ -107,7 +107,7 @@ export class InputState {
                 for (let btnIndex = 0; btnIndex < padToCheck.buttons.length; btnIndex++) {
                     if (this.gamePadButtonPressed(padToCheck.buttons[btnIndex])) {
                         this.pushToCurrentInputsFromGamePad(btnIndex, padToCheck.buttons[btnIndex].value);
-                        console.log(`inputstate: btn ${btnIndex} is pressed`)
+                        // console.log(`inputstate: btn ${btnIndex} is pressed`)
                     }
                 }
                 for (let axesIndex = 0; axesIndex < padToCheck.axes.length; axesIndex++) {
@@ -289,11 +289,11 @@ export class InputState {
             // firefox
             // console.log('gamepad: ff')
             if (btn.pressed) {
-                console.log('inputstate: button is pressed')
+                // console.log('inputstate: button is pressed')
             }
             return btn.value;
         } else {
-            console.log('inputstate: gamepad: chrome')
+            // console.log('inputstate: gamepad: chrome')
             return btn === 1.0;
         }
     }
