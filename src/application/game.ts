@@ -40,7 +40,6 @@ export class Game {
     private menuState: MenuState;
     private settingsState: SettingsState;
 
-
     gameEntities: Entity[];
 
 
@@ -121,7 +120,7 @@ export class Game {
      */
     private PrintDebugInfoToConsole() {
         if (this.timerService.ShouldPrintDebugData()) {
-
+            // console.clear();
             let debugInformation: string[] = new Array<string>();
             debugInformation.push('FPS Serv: ' + this.timerService.PrintCurrentFpsToConsole());
             debugInformation.push('Cam Serv: ' + this.graphicsService.getGameCameraService().GetDebugInfo());

@@ -7,7 +7,10 @@ export class Vector2 {
         this.y = y;
     }
 
-    concat() {
+    concat(decimalPlaces: number = -1) {
+        if (decimalPlaces > -1) {
+            return `x:[${this.x.toFixed(decimalPlaces)}], y:[${this.y.toFixed(decimalPlaces)}]`;
+        }
         return `x:[${this.x}], y:[${this.y}]`;
     }
 

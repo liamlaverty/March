@@ -10,17 +10,23 @@ import { Radians } from "../../../numerics/helpers/degrees.helper";
 export class Player extends Creature {
     inputManager: InputManager;
 
-    private rotationSpeed: number = 7.5;
+    private detailsDiv: HTMLElement;
+    private rotationSpeed: number = 5;
+
+    private thrust = 1;
+    private strafeThrust = 1.5;
+    private readonly startingFriction: Vector2;
 
     constructor(position: Vector2, size: Vector2, name: string,
-        texturePath: string,
-
-        inputManager: InputManager, graphicsService: GraphicsService) {
+        texturePath: string, inputManager: InputManager, graphicsService: GraphicsService) {
         super(position, size, name, texturePath, graphicsService);
+        this.startingFriction = this.friction;
         this.inputManager = inputManager;
         this.health = 100;
-
+        this.detailsDiv = document.getElementById('details_div');
         this.colour = '#fff';
+
+
 
     }
 
@@ -73,36 +79,60 @@ export class Player extends Creature {
     }
 
     private UpdatePlayerSpeedFromInput() {
-        
-        const rotationAsRadians = Radians(this.rotationDegrees);
+        const angleAdjust = -90;
+
+        const rotationAsRadians = Radians(this.rotationDegrees - angleAdjust);
         const rotSin = Math.sin(rotationAsRadians);
-        const rotCos = Math.sin(rotationAsRadians);
-        const thrust = 1.0;
+        const rotCos = Math.cos(rotationAsRadians);
 
 
-        if (this.inputManager.IsKeyPressed('trigger_two_right')) {
-            this.velocity.y -= (this.inputManager.GetForceValue('trigger_two_right') * this.acceleration.y);
+        if (this.inputManager.IsKeyPressed('trigger_two_right') ||
+            this.inputManager.IsKeyPressed('direction_up')) {
+            const triggerTwoRightForce =
+                Math.max(this.inputManager.GetForceValue('direction_up'),
+                    (this.inputManager.GetForceValue('trigger_two_right')));
+            this.velocity.x -= (rotCos * (this.thrust * triggerTwoRightForce));
+            this.velocity.y -= (rotSin * (this.thrust * triggerTwoRightForce));
         }
-        if (this.inputManager.IsKeyPressed('trigger_two_left')) {
-            this.velocity.y += (this.inputManager.GetForceValue('trigger_two_left') * this.deceleration.y);
+        if (this.inputManager.IsKeyPressed('trigger_two_left') ||
+            this.inputManager.IsKeyPressed('direction_down')) {
+            const triggerTwoLeftForce = Math.max(this.inputManager.GetForceValue('trigger_two_left'),
+                (this.inputManager.GetForceValue('direction_down')));
+            // this.velocity.x += (rotCos * (this.thrust * triggerTwoLeftForce));
+            // this.velocity.y += (rotSin * (this.thrust * triggerTwoLeftForce));
+            this.friction.x = 0.85;
+            this.friction.y = 0.85;
+        } else {
+            this.friction = new Vector2(this.startingFriction.getValueX(), this.startingFriction.getValueY());
         }
 
-        if (this.inputManager.IsKeyPressed('direction_up')) {
-            // this.velocity.y -= (this.inputManager.GetForceValue('direction_up') * this.acceleration.y) ;
-            this.velocity.y
-        }
-        if (this.inputManager.IsKeyPressed('direction_down')) {
-            // this.velocity.y += (this.inputManager.GetForceValue('direction_down') * this.deceleration.y) ;
-            
 
-        }
 
         if (this.inputManager.IsKeyPressed('trigger_one_right')) {
-            this.velocity.x -= (this.inputManager.GetForceValue('trigger_one_right') * this.acceleration.y);
+            const triggerOneRightForce = this.inputManager.GetForceValue('trigger_one_right');
+            this.velocity.x += (rotSin * triggerOneRightForce) * this.strafeThrust;
+            this.velocity.y -= (rotCos * triggerOneRightForce) * this.strafeThrust;
         }
         if (this.inputManager.IsKeyPressed('trigger_one_left')) {
-            this.velocity.x += (this.inputManager.GetForceValue('trigger_one_left') * this.acceleration.y);
+            const triggerOneLeftForce = this.inputManager.GetForceValue('trigger_one_right');
+            this.velocity.x -= rotSin * triggerOneLeftForce;
+            this.velocity.y += rotCos * triggerOneLeftForce;
         }
+
+
+
+
+
+        this.detailsDiv.innerHTML = `
+        player: <br />
+        ve: ${this.velocity.concat(3)}<br />
+        ro: ${this.rotationDegrees.toFixed(3)}DEG<br />
+        ro: ${rotationAsRadians.toFixed(3)}RAD<br />
+        th: ${this.thrust.toFixed(3)}<br />
+        rS: ${rotSin.toFixed(3)}<br />
+        rC: ${rotCos.toFixed(3)}<br />
+
+        `;
     }
 
     protected UpdatePlayerStrafeFromInput() {

@@ -118,14 +118,21 @@ export abstract class Creature extends Entity {
         } else if (this.velocity.y < -this.maxSpeed.y) {
             this.velocity.y = -this.maxSpeed.y;
         }
+
+        if (this.velocity.x < 0.1 && this.velocity.x > -0.1) {
+            this.velocity.x = 0;
+        }
+        if (this.velocity.y < 0.1 && this.velocity.y > -0.1) {
+            this.velocity.y = 0;
+        }
     }
 
     private CapRotation() {
-        if (this.rotationDegrees < 0) {
-            this.rotationDegrees = 359;
-        } else if (this.rotationDegrees > 360) {
-            this.rotationDegrees = 0;
-        }
+         if (this.rotationDegrees < 0) {
+             this.rotationDegrees = 359;
+         } else if (this.rotationDegrees > 360) {
+             this.rotationDegrees = 0;
+         }
     }
 
     Draw(colour: string): CanvasRenderingContext2D {
