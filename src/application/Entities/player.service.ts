@@ -18,7 +18,7 @@ export class PlayerService {
     }
     public GetPlayer() {
         return this.player;
-    }
+    }  
 
     
 }

@@ -40,7 +40,6 @@ export class Game {
     private menuState: MenuState;
     private settingsState: SettingsState;
 
-
     gameEntities: Entity[];
 
 
@@ -63,10 +62,6 @@ export class Game {
         this.Init();
         this.running = true;
         this.Loop();
-
-        window.addEventListener('gamepadconnected', (e) => {
-            console.warn('gamepad connected')
-        });
     }
 
     Init(): string {
@@ -125,7 +120,7 @@ export class Game {
      */
     private PrintDebugInfoToConsole() {
         if (this.timerService.ShouldPrintDebugData()) {
-
+            // console.clear();
             let debugInformation: string[] = new Array<string>();
             debugInformation.push('FPS Serv: ' + this.timerService.PrintCurrentFpsToConsole());
             debugInformation.push('Cam Serv: ' + this.graphicsService.getGameCameraService().GetDebugInfo());
@@ -170,13 +165,13 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 20): void {
+    registerEntities(baddyCount: number = 25): void {
 
         
 
 
         const ships = [
-            'metalic_01.png',
+            'metalic_01.png', 
             'metalic_02.png',
             'metalic_03.png',
             'metalic_04.png',
@@ -195,9 +190,9 @@ export class Game {
             console.log('image loc will be ' + imageLoc);
             const entity = new Baddy(
                 // new Vector2(500, 300),
-                RandomNumberGenerator.GetRandomVector2(
-                    0, this.viewportService.GetBrowserWidth(),
-                    0, this.viewportService.GetBrowserHeight()),
+                 RandomNumberGenerator.GetRandomVector2(
+                     0, this.viewportService.GetBrowserWidth(),
+                     0, this.viewportService.GetBrowserHeight()),
                 entitySize,
                 'baddy' + i.toString(),
                 '/Ships/' + ships[imageLoc],

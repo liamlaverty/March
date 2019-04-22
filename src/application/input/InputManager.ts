@@ -1,10 +1,35 @@
+import { InputState } from "./input-state";
+import { Vector2 } from "../../numerics/models/Vector2.model";
+
+
+
 export class InputManager {
+
+    private inputState: InputState;
 
     currentInputs: Array<string>;
     private static readonly validInputs: Array<string> = ['w', 'a', 's', 'd', ' '];
 
+
+    private gamePads: Array<Gamepad> = Array<Gamepad>();
+
     constructor() {
+        this.inputState = new InputState();
+
+
         this.currentInputs = new Array<string>();
+        this.gamePads = new Array<Gamepad>();
+    }
+
+    /**
+     * sets up the input manager
+     *
+     * @memberof InputManager
+     */
+    InitInputManager() {
+        this.inputState.Init();
+        // return;
+
     }
 
     /**
@@ -13,35 +38,34 @@ export class InputManager {
      * @memberof InputManager
      */
     NewInputLoopCheck() {
+        this.inputState.UpdateInputs();
         // throw new Error("Method not implemented.");
     }
 
+    // private RegisterGamePad(pad: Gamepad) {
+    //     console.warn('gamepad registered');
+    //     console.warn("Gamepad: connected at index %d: %s. %d buttons, %d axes.",
+    //         pad.index, pad.id,
+    //         pad.buttons.length, pad.axes.length);
+    //     this.gamePads = navigator.getGamepads();
+    //     // this.gamePads.push(pad); //  = navigator.getGamepads ? navigator.getGamepads() : (navigator.getGamepads ? navigator.getGamepads : []);
 
-    /**
-     * sets up the input manager
-     *
-     * @memberof InputManager
-     */
-    InitInputManager() {
-        document.addEventListener('keydown', event => {
+    //     for (let i = 0; i < this.gamePads.length; i++) {
+    //         const thisGp = this.gamePads[i];
+    //         if (thisGp) {
+    //             this.detailsDiv.innerHTML = "Gamepad connected at index " + thisGp.index + ": " + thisGp.id +
+    //                 ". It has " + thisGp.buttons.length + " buttons and " + thisGp.axes.length + " axes.";
 
-            if (this.checkKeyPressIsValid(event.key)) {
-                // console.log(`key [${event.key}] is pressed`);
-                event.preventDefault();
-                this.pushToCurrentInputs(event.key);
-            }
-        })
+    //         }
+    //     }
+    // }
+    // private DeRegisterGamePad(pad: Gamepad) {
+    //     console.warn('deregistering gamepad');
+    //     delete this.gamePads[pad.index];
+    //     this.ReportToHtml("gamepad DC");
+    // }
 
-        document.addEventListener('keyup', event => {
-            // console.log(`key [${event.key}] is up`);
-            event.preventDefault();
-            this.popFromCurrentInputs(event.key);
-        })
 
-        // setInterval(() => {
-        //     console.log('currently pressed keys are ' + this.currentInputs.toString())
-        // }, 100);
-    }
 
 
     /**
@@ -51,50 +75,22 @@ export class InputManager {
      * @returns
      * @memberof InputManager
      */
-    IsKeyPressed(key: string) {
-        return this.checkCurrentKeysForInput(key);
-    }
-
-    private pushToCurrentInputs(input: string) {
-        if (!this.checkCurrentKeysForInput(input)) {
-            this.currentInputs.push(input);
-        }
-    }
-    private popFromCurrentInputs(input: string) {
-        if (this.checkCurrentKeysForInput(input)) {
-            const locationInArr = this.currentInputs.indexOf(input);
-            this.currentInputs.splice(locationInArr, 1);
-        }
-    }
-
-    private checkCurrentKeysForInput(input: string): boolean {
-        const exists = this.currentInputs.indexOf(input) > -1;
-        return exists;
+    IsKeyPressed(inputDescription: string): boolean {
+        return this.inputState.IsInputPressed(inputDescription);
     }
 
     /**
-     * checks if a given key is in the list of valid keys
+     * gets the force value for a given input. If it's in 
+     * keyboard mode, then it just returns 0 or 1
      * 
-     * TODO: use `includes` instead of a for loop
+     * If it's in keyboard mode, then it returns a value of -1.0 to +1.0
      *
-     * @param {string} pressedKey
-     * @returns
+     * @param {string} inputDescription
+     * @returns {number}
      * @memberof InputManager
      */
-    private checkKeyPressIsValid(pressedKey: string) {
-        for (let i = 0; i < InputManager.validInputs.length; i++) {
-            if (InputManager.validInputs[i] === pressedKey) {
-                // console.log('key ' + pressedKey + ' is pressed');
-                return true;
-            }
-        }
-        return false;
-        // if (InputManager.validInputs.includes(pressedKey)) {
-        //     return true;
-        // }
-        // return false;
+    GetForceValue(inputDescription: string): number {
+        return this.inputState.GetForceValue(inputDescription);
     }
-
-
 
 }
