@@ -20,12 +20,16 @@ export class Baddy extends Creature {
         this.maxSpeed = new Vector2(11.9, 11.9);
         this.acceleration = new Vector2(.55, .6);
 
-        const friction = RandomNumberGenerator.GetRandomNumber(100, 200) / 1000;
-        this.friction = new Vector2(friction,
-            friction);
+        // const friction = 0.85; // RandomNumberGenerator.GetRandomNumber(100, 200) / 1000;
+        // this.friction = new Vector2(friction,
+        //     friction);
 
         this.direction = new Vector2(0, 0);
 
+
+        // this.velocity = RandomNumberGenerator.GetRandomVector2(-10, 10, -10, 10);
+        this.rotationDegrees = 0;// RandomNumberGenerator.GetRandomNumber(0, 359);
+        this.turnSpeed = 0.001;
 
     }
 
@@ -40,32 +44,57 @@ export class Baddy extends Creature {
         // super.Draw(this.colour);
     }
 
+
+
+    private turnToPlayer() {
+        this.rotationDegrees = this.rotationDegrees + this.turnSpeed;// this.turnSpeed;
+        
+    }
+
     private MoveToPlayer(playerAABB: AABB) {
-        if (IntersectionHelper.AabbVsAabb(
-            this.getAABB(), playerAABB) === false) {
-            if (this.getAABB().IsAbove(playerAABB)) {
-                this.setDirectionDown();
-                this.velocity.y += this.acceleration.y;
-                // console.log('entity is above player')
-            } else if (this.getAABB().IsBelow(playerAABB)) {
-                this.setDirectionUp();
-                // console.log('entity is above player')
-                this.velocity.y -= this.acceleration.y;                // console.log('entity is below player')
-            }
+        this.turnToPlayer();
 
-            if (this.getAABB().IsRight(playerAABB)) {
-                this.setDirectionLeft();
-                // console.log('entity is right of the player');
-                this.velocity.x += this.acceleration.x;
-            } else if (this.getAABB().IsLeft(playerAABB)) {
-                this.setDirectionRigth();
-                // console.log('entity is left of the player')
-                this.velocity.x -= this.acceleration.x;
-            }
-        }
+        const thrust = 1.5;
+        const rotationAsRadians = this.rotationDegrees / Math.PI * 180;
+        const rotCos = Math.sin(rotationAsRadians);
+        const rotSin = Math.cos(rotationAsRadians);
 
-        this.velocity.x -= (this.getDirectionHorizontal() * this.acceleration.x) / 4;
-        this.velocity.y += (this.getDirectionVertical() * this.acceleration.y) / 4;
+        this.velocity.x = (rotSin * thrust);
+        this.velocity.y = (rotCos * thrust);
+
+        // console.log(`baddy: 
+        // rotation: ${this.rotation}
+        // CosRotation: ${rotCos}
+        // SinRotation: ${rotSin}
+        // velocity: ${this.velocity.concat()}`);
+
+
+
+        // if (IntersectionHelper.AabbVsAabb(
+        //     this.getAABB(), playerAABB) === false) {
+        //     if (this.getAABB().IsAbove(playerAABB)) {
+        //         this.setDirectionDown();
+        //         this.velocity.y += this.acceleration.y;
+        //         // console.log('entity is above player')
+        //     } else if (this.getAABB().IsBelow(playerAABB)) {
+        //         this.setDirectionUp();
+        //         // console.log('entity is above player')
+        //         this.velocity.y -= this.acceleration.y;                // console.log('entity is below player')
+        //     }
+
+        //     if (this.getAABB().IsRight(playerAABB)) {
+        //         this.setDirectionLeft();
+        //         // console.log('entity is right of the player');
+        //         this.velocity.x += this.acceleration.x;
+        //     } else if (this.getAABB().IsLeft(playerAABB)) {
+        //         this.setDirectionRigth();
+        //         // console.log('entity is left of the player')
+        //         this.velocity.x -= this.acceleration.x;
+        //     }
+        // }
+
+        // this.velocity.x -= (this.getDirectionHorizontal() * this.acceleration.x) / 4;
+        // this.velocity.y += (this.getDirectionVertical() * this.acceleration.y) / 4;
     }
 
     private setDirectionRigth(): void {

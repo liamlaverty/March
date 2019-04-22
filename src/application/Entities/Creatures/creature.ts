@@ -20,6 +20,8 @@ export abstract class Creature extends Entity {
     protected deceleration: Vector2;
     protected friction: Vector2;
 
+    protected turnSpeed: number = 1;
+
 
     // protected canvasId: string;
 
@@ -50,35 +52,40 @@ export abstract class Creature extends Entity {
 
     public Move(lastDelta: number): void {
         this.CapMovementSpeed();
+        this.CapRotation();
         this.UpdatePosition(lastDelta);
         this.ReduceSpeed();
         this.UpdateAABB();
     }
 
     private ReduceSpeed() {
-        if (this.velocity.y > 0) {
-            this.velocity.y -= this.friction.y;
-            if (this.velocity.y < 0) {
-                this.velocity.y = 0;
-            }
-        } else if (this.velocity.y < 0) {
-            this.velocity.y += this.friction.y;
-            if (this.velocity.y > 0) {
-                this.velocity.y = 0;
-            }
-        }
 
-        if (this.velocity.x > 0) {
-            this.velocity.x -= this.friction.x;
-            if (this.velocity.x < 0) {
-                this.velocity.x = 0;
-            }
-        } else if (this.velocity.x < 0) {
-            this.velocity.x += this.friction.x;
-            if (this.velocity.x > 0) {
-                this.velocity.x = 0;
-            }
-        }
+        this.velocity.y *= this.friction.y;
+        this.velocity.x *= this.friction.x;
+
+        // if (this.velocity.y > 0) {
+        //     this.velocity.y -= this.friction.y;
+        //     if (this.velocity.y < 0) {
+        //         this.velocity.y = 0;
+        //     }
+        // } else if (this.velocity.y < 0) {
+        //     this.velocity.y += this.friction.y;
+        //     if (this.velocity.y > 0) {
+        //         this.velocity.y = 0;
+        //     }
+        // }
+
+        // if (this.velocity.x > 0) {
+        //     this.velocity.x -= this.friction.x;
+        //     if (this.velocity.x < 0) {
+        //         this.velocity.x = 0;
+        //     }
+        // } else if (this.velocity.x < 0) {
+        //     this.velocity.x += this.friction.x;
+        //     if (this.velocity.x > 0) {
+        //         this.velocity.x = 0;
+        //     }
+        // }
     }
 
     /**
@@ -88,8 +95,10 @@ export abstract class Creature extends Entity {
      * @memberof Creature
      */
     private UpdatePosition(lastDelta: number) {
-        this.position.x += (this.velocity.x * (lastDelta * 50));
-        this.position.y += (this.velocity.y * (lastDelta * 50));
+        this.position.x += (this.velocity.x * (lastDelta)  * 50);
+        this.position.y += (this.velocity.y * (lastDelta)  * 50);
+
+
     }
     /**
      * caps the creature's movement speed at
@@ -108,6 +117,14 @@ export abstract class Creature extends Entity {
             this.velocity.y = this.maxSpeed.y;
         } else if (this.velocity.y < -this.maxSpeed.y) {
             this.velocity.y = -this.maxSpeed.y;
+        }
+    }
+
+    private CapRotation() {
+        if (this.rotationDegrees < 0) {
+            this.rotationDegrees = 359;
+        } else if (this.rotationDegrees > 360) {
+            this.rotationDegrees = 0;
         }
     }
 

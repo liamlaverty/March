@@ -166,7 +166,7 @@ export class Game {
         return JSON.parse(debugModeParam);
     }
 
-    registerEntities(baddyCount: number = 20): void {
+    registerEntities(baddyCount: number = 1): void {
 
         
 
@@ -190,10 +190,10 @@ export class Game {
             const imageLoc = RandomNumberGenerator.GetRandomNumber(0, 6);
             console.log('image loc will be ' + imageLoc);
             const entity = new Baddy(
-                // new Vector2(500, 300),
-                RandomNumberGenerator.GetRandomVector2(
-                    0, this.viewportService.GetBrowserWidth(),
-                    0, this.viewportService.GetBrowserHeight()),
+                new Vector2(500, 300),
+                // RandomNumberGenerator.GetRandomVector2(
+                //     0, this.viewportService.GetBrowserWidth(),
+                //     0, this.viewportService.GetBrowserHeight()),
                 entitySize,
                 'baddy' + i.toString(),
                 '/Ships/' + ships[imageLoc],

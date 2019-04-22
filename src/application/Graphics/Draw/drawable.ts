@@ -14,7 +14,7 @@ export abstract class Drawable {
 
     protected position: Vector2;
     protected size: Vector2;
-    protected rotation: number;
+    protected rotationDegrees: number;
 
     constructor(position: Vector2, size: Vector2, canvasId: string = '', texture: Texture2D = undefined) {
         console.log(`drawable constructor`);
@@ -23,7 +23,7 @@ export abstract class Drawable {
         this.AABB = new AABB(this.position, this.size);
         this.canvasId = canvasId;
         this.texture = texture;
-        this.rotation = 0;
+        this.rotationDegrees = 0;
     }
 
     public getCanvasId(): string {
@@ -76,12 +76,14 @@ export abstract class Drawable {
     }
 
     public GetRotation() {
-        return this.rotation;
+        return this.rotationDegrees;
     }
     public AddToRotation(val: number) {
-        this.rotation += val;
-        if (this.rotation > 359) {
-            this.rotation = 0;
+        this.rotationDegrees += val;
+        if (this.rotationDegrees > 359) {
+            this.rotationDegrees = 0;
+        } else if (this.rotationDegrees < 0) {
+            this.rotationDegrees = 359;
         }
     }
 }

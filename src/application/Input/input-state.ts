@@ -2,6 +2,20 @@ import { Input } from "./input.model";
 
 export class InputState {
 
+    private static SYSTEM_KEYS: string[] = [
+        'F1',
+        'F2',
+        'F3',
+        'F4',
+        'F5',
+        'F6',
+        'F7',
+        'F8',
+        'F9',
+        'F10',
+        'F11',
+        'F12',
+    ];
     private static DEFAULT_MAX_INPUTS: number = 4;
     private static DEFAULT_MIN_JOYSTICK_SENSITIVITY: number = 0.1;
     private detailsDiv: HTMLElement;
@@ -19,7 +33,7 @@ export class InputState {
         this.gamePads = new Array<Gamepad>();
     }
 
-    Init() { 
+    Init() {
         console.log('inputState: init inputstate');
         this.setupInputs();
         this.SetupGamePadRegistrationWatch();
@@ -96,7 +110,7 @@ export class InputState {
                         console.log(`inputstate: btn ${btnIndex} is pressed`)
                     }
                 }
-                for (let axesIndex = 0; axesIndex < padToCheck.axes.length; axesIndex++){ 
+                for (let axesIndex = 0; axesIndex < padToCheck.axes.length; axesIndex++) {
                     if (this.gamePadAxesPressed(padToCheck.axes[axesIndex])) {
                         this.pushToCurrentInputsFromGamePadAxes(axesIndex, padToCheck.axes[axesIndex])
                     }
@@ -128,21 +142,40 @@ export class InputState {
         return 0;
     }
 
+    /**
+     * checks if this key is in the SYSTEM_KEYS array
+     * (includes keys like F1 - F12)
+     *
+     * @private
+     * @param {string} key
+     * @returns
+     * @memberof InputState
+     */
+    private isSystemKey(key: string) {
+        if (InputState.SYSTEM_KEYS.includes(key)) {
+            return true;
+        }
+        return false;
+    }
+
     private SetupKeyboardInputWatch() {
         window.addEventListener('keydown', event => {
-            event.preventDefault();
-            this.pushToCurrentInputsFromKeyboard(event.key);
-
+            if (!this.isSystemKey(event.key)) {
+                event.preventDefault();
+                this.pushToCurrentInputsFromKeyboard(event.key);
+            }
         });
 
         window.addEventListener('keyup', event => {
-            event.preventDefault();
-            this.popFromCurrentInputsFromKeyboard(event.key);
-            if (event.key === 'k') {
-                console.warn(`inputstate: controlling by keyboard`)
-                this.SetGamePadMode(false);
-            }
+            if (!this.isSystemKey(event.key)) {
 
+                event.preventDefault();
+                this.popFromCurrentInputsFromKeyboard(event.key);
+                if (event.key === 'k') {
+                    console.warn(`inputstate: controlling by keyboard`)
+                    this.SetGamePadMode(false);
+                }
+            }
         });
     }
     pushToCurrentInputsFromKeyboard(key: string) {
