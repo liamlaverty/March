@@ -11,7 +11,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - cd ./src/
   - ls 
-  - npm install
+  - npm install --verbose
 
 test_script:
   - node --version
