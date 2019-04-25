@@ -3,6 +3,6 @@ export function Between(x: number, min: number, max: number): boolean {
 }
 
 
-export function Lerp(start: number, end: number, amt: number) {
+export function Lerp(start: number, end: number, amt: number): number {
     return (1-amt) * start + amt * end;
 }
