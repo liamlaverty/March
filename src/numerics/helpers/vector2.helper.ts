@@ -12,8 +12,18 @@ export class Vector2Helpers {
         return new Vector2(vecX, vecY);
     }
 
+    /**
+     * compares two Vector 2s for equality
+     * If the vectors are identica, this returns true otherwise returns false
+     *
+     * @static
+     * @param {Vector2} left
+     * @param {Vector2} right
+     * @returns {boolean}
+     * @memberof Vector2Helpers
+     */
     public static CompareEquality(left: Vector2, right: Vector2): boolean {
-        return left.getValueX() !== right.getValueX() || left.getValueY() !== right.getValueY();
+        return !(left.getValueX() !== right.getValueX() || left.getValueY() !== right.getValueY());
     }
 
     /*

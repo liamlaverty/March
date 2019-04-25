@@ -16,6 +16,7 @@ install:
 test_script:
   - node --version
   - npm -- version
+  - npm run test
   - npm run build
   # - ps: ng test --single-run=true
   - ps: echo 'done test'
