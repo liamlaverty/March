@@ -23,7 +23,7 @@ export class WorldService {
         console.log(`this.worlds = ${JSON.stringify(this.worlds)} length is ${this.worlds.length}`);
 
         console.info('setting current world to index 0');
-        this.SetWorld(0);
+        this.SetWorld(2);
     }
 
     public SetWorld(index: number) {

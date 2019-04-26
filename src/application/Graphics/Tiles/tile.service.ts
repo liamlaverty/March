@@ -131,39 +131,49 @@ export class TileService {
      * @memberof TileService
      */
     public setupTilesFromArray(tiles: number[][]): Vector2 {
-        const size: Vector2 = new Vector2(0, 0)
+        const size: Vector2 = new Vector2(0, 0);
+        // const canvId = `${this.graphicsService.RegisterDrawableEntity('texts')}`;
         for (let x = 0; x < tiles.length; x++) {
             for (let y = 0; y < tiles[x].length; y++) {
+
                 this.tiles.push(new DrawableTile(tiles[x][y],
                     new Vector2(
                         y * this.GetTileSize().getValueX(),
                         x * this.GetTileSize().getValueY()),
                     TileDefaultSettings.DEFAULT_SIZE,
-                    this.tileTypes[tiles[x][y]].GetFallbackColour()));
+                    this.tileTypes[tiles[x][y]].GetFallbackColour(),
+                    this.tileCanvasId));
             }
         }
         return size;
     }
 
-    
 
-    Redner() {
+    private PreClearCanvas() {
         const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
-
         canv.ClearCanvas();
+    }
+    Redner() {
+        // const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
+        this.PreClearCanvas();
+        // canv.ClearCanvas();
         for (let i = 0; i < this.tiles.length; i++) {
-            if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.tiles[i].getPosition(), this.tiles[i].getSize())) {
-                const text = this.GetTextureFromTileType(this.tiles[i].getTileTypeId());
-                const cameraOffset = this.graphicsService.getGameCameraService().GetOffsetVector();
-                if (text.GetCanRender()) {
+            this.graphicsService.getDrawingService().Draw(
+                this.tiles[i], 
+                true);
 
-                    canv.ctx.drawImage(text.GetImage(),
-                        this.tiles[i].getPosition().x - cameraOffset.getValueX(),
-                        this.tiles[i].getPosition().y - cameraOffset.getValueY());
-                } else {
-                    this.DrawToCanvasAsRect(canv, this.tiles[i]);
-                }
-            }
+            // if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.tiles[i].getPosition(), this.tiles[i].getSize())) {
+            //     const text = this.GetTextureFromTileType(this.tiles[i].getTileTypeId());
+            //     const cameraOffset = this.graphicsService.getGameCameraService().GetOffsetVector();
+            //     if (text.GetCanRender()) {
+
+            //         canv.ctx.drawImage(text.GetImage(),
+            //             this.tiles[i].getPosition().x - cameraOffset.getValueX(),
+            //             this.tiles[i].getPosition().y - cameraOffset.getValueY());
+            //     } else {
+            //         this.DrawToCanvasAsRect(canv, this.tiles[i]);
+            //     }
+            // }
         }
     }
 

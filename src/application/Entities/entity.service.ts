@@ -13,17 +13,14 @@ export class EntityService {
 
 
     public TickAllEntities(lastDelta: number) {
-        // console.log('ticking all entities');
         for (let i = 0; i < this.gameEntities.length; i++) {
             this.gameEntities[i].Tick(lastDelta);
         }
     }
 
     public RenderAllEntities(graphicsService: GraphicsService) {
-        // console.log(`rendering all [${this.gameEntities.length}] entities`);
         for (let i = 0; i < this.gameEntities.length; i++) {
             graphicsService.getDrawingService().Draw(this.gameEntities[i]);
-            // this.gameEntities[i].Render(graphicsService);
         }
     }
 

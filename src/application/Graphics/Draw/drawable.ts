@@ -72,7 +72,11 @@ export abstract class Drawable {
     }
 
     public GetColour() {
-        return this.colour;
+        if (this.colour) {
+            return this.colour;
+        } else {
+            return '#f00';
+        }
     }
 
     public GetRotation() {

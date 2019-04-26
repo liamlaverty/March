@@ -5,6 +5,7 @@ import { Texture2D } from "../Textures/Texture2d";
 import { Drawable } from "./drawable";
 import { CanvasService } from "../Canvas/graphics.canvas.service";
 import { GameCameraService } from "../Camera/game-camera.service";
+import { DrawableTile } from "../Tiles/drawable-tile";
 
 export class DrawingService {
     private cameraService: GameCameraService;
@@ -20,18 +21,24 @@ export class DrawingService {
         console.log('constructing drawing service');
     }
 
-    public Draw(drawable: Drawable) {
+    public Draw(drawable: Drawable, skipCanvasClear: boolean = false) {
         const deg: number = drawable.GetRotation();
-        // drawable.AddToRotation(10);
+        if (drawable.getCanvasId() === 'texts') {
+            console.log(`tile: AABB is ${JSON.stringify(drawable.getAABB())}
+            onscreen = ${this.cameraService.IsObjectOnScreenAABB(drawable.getAABB())}`);
+        }
         if (this.cameraService.IsObjectOnScreenAABB(drawable.getAABB())) {
 
             const canv = this.canvasService.GetCanvas(drawable.getCanvasId());
 
             var rad = deg * (Math.PI / 180);
 
-            canv.ClearCanvas();
+            if (!skipCanvasClear) {
+                canv.ClearCanvas();
+            }
 
             canv.ctx.save();
+            // canv.ctx.scale(0.5, 0.5);
             const translateX = drawable.GetSizeX() + (drawable.GetPositionX() - (drawable.GetSizeX() / 2) - this.cameraService.GetOffsetX());//  + (drawable.GetSizeX() / 2));//  + this.cameraService.GetOffsetY();
             const translateY = drawable.GetSizeX() + (drawable.GetPositionY() - (drawable.GetSizeX() / 2) - this.cameraService.GetOffsetY());//  + (drawable.GetSizeY() / 2));//  + this.cameraService.GetOffsetY();
             canv.ctx.translate(
@@ -45,7 +52,7 @@ export class DrawingService {
             const drawSizeX = drawable.GetSizeX();
             const drawSizeY = drawable.GetSizeY();
 
-            if (this.allowTextureDrawing && drawable.getTexture().GetCanRender()) {
+            if (this.allowTextureDrawing && drawable.getTexture() && drawable.getTexture().GetCanRender()) {
                 this.DrawAsTexture(drawable, canv, drawLocationX, drawLocationY, drawSizeX, drawSizeY);
             } else {
                 this.DrawAsRect(drawable, canv, drawLocationX, drawLocationY, drawSizeX, drawSizeY);
