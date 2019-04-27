@@ -4,6 +4,8 @@ import { TileService } from "./Tiles/tile.service";
 import { GameCameraService } from "./Camera/game-camera.service";
 import { DrawingService } from "./Draw/drawing.service";
 import { TextureService } from "./Textures/texture.service";
+import { AABB } from "../../numerics/models/AABB.model";
+import { Vector2 } from "../../numerics/models/Vector2.model";
 
 export class GraphicsService {
     
@@ -20,7 +22,7 @@ export class GraphicsService {
         this.canvasService = new CanvasService(this.htmlService);
         this.tileService = new TileService(this.canvasService, this);
         this.textureService = new TextureService();
-        this.gameCameraService = new GameCameraService(0, 0);
+        this.gameCameraService = new GameCameraService(0, 0, true);
         this.drawingService = new DrawingService(this.gameCameraService, this.canvasService, this.textureService);
     }
 
@@ -30,9 +32,7 @@ export class GraphicsService {
         this.htmlService.Init();
         this.canvasService.Init();
         this.tileService.Init();
-        // for (let i = 0; i < 10; i++) {
-        //     this.canvasService.RegisterNewCanvas(i.toString());
-        // }
+
     }
 
     public GetTextureService(): TextureService {

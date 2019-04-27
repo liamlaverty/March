@@ -8,14 +8,31 @@ import { AABB } from "../../../numerics/models/AABB.model";
 export class GameCameraService {
     private offset: Vector2;
     private displayableSize: Vector2;
+    private applyWorldBounding: boolean;
 
     private cameraAABB: AABB;
+    private levelAABB: AABB;
 
-    constructor(xOffset: number, yOffset: number) {
+    /**
+     *Creates an instance of GameCameraService.
+
+     applyWorldBounding tells the camera if it should continue
+     moving right or left if it reaches the edge of the level
+     * @param {number} xOffset
+     * @param {number} yOffset
+     * @param {boolean} applyWorldBounding
+     * @memberof GameCameraService
+     */
+    constructor(xOffset: number, yOffset: number, applyWorldBounding: boolean) {
         this.offset = new Vector2(xOffset, yOffset);
+        this.applyWorldBounding = applyWorldBounding;
 
         this.displayableSize = ViewportHelper.GetWindowInAspectRatio();
         this.UpdatePositionAndSize();
+    }
+
+    public SetLevelAABB(levelAABB: AABB) {
+        this.levelAABB = levelAABB;
     }
 
     public GetDebugInfo(): string[] {
@@ -51,7 +68,7 @@ export class GameCameraService {
         this.offset.y += yAmount;
     }
 
-    
+
     /**
      * sets the camera to points at (looks at) a specific entity 
      *
@@ -60,7 +77,7 @@ export class GameCameraService {
      * @memberof GameCameraService
      */
     public LookAt(entityPosition: Vector2, entitySize: Vector2): void {
-                
+
         const vieportWidth = ViewportHelper.GetWindowInAspectRatio().getValueX();
         const vieportHeight = ViewportHelper.GetWindowInAspectRatio().getValueY();
 
@@ -74,11 +91,22 @@ export class GameCameraService {
     }
     private SetOffset(positionVector: Vector2) {
         this.offset = positionVector;
-        if (this.offset.getValueX() < 0) {
-            this.offset.setValueX(0);
-        }
-        if (this.offset.getValueY() < 0) {
-            this.offset.setValueY(0);
+        if (this.applyWorldBounding) {
+            if (this.offset.getValueX() < this.levelAABB.GetLeft()) {
+                this.offset.setValueX(this.levelAABB.GetLeft());
+            }
+
+            if (this.offset.getValueX() > this.levelAABB.GetRight()) {
+                this.offset.setValueX(this.levelAABB.GetRight());
+            }
+
+
+            if (this.offset.getValueY() < this.levelAABB.GetTop()) {
+                this.offset.setValueY(this.levelAABB.GetTop());
+            }
+            if (this.offset.getValueY() > this.levelAABB.GetBottom()) {
+                this.offset.setValueY(this.levelAABB.GetBottom());
+            }
         }
         this.UpdatePositionAndSize();
     }

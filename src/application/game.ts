@@ -74,6 +74,8 @@ export class Game {
         this.inputManager.InitInputManager();
         this.graphicsService.InitGraphicsService();
         this.worldService.Init();
+        this.graphicsService.getGameCameraService().SetLevelAABB(this.worldService.GetWorldSize());
+
         this.registerEntities();
         // this.canvasManager.InitCanvasManager('main_div', this.gameEntities);
         if (this.debugService.IsInDebugMode()) {
