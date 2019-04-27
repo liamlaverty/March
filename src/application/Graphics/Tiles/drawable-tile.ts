@@ -3,14 +3,13 @@ import { Drawable } from "../Draw/drawable";
 
 export class DrawableTile extends Drawable {
     private readonly tileTypeId: number;
-    private readonly fallbackOutlineColour: string = '#fafafa';
 
-    constructor(tileTypeId: number, position: Vector2, size: Vector2, fallbackOutlineColour: string, canvasId: string) {
-        super(position, size, canvasId);
+    constructor(tileTypeId: number, position: Vector2, size: Vector2, fallbackOutlineColour: string, canvasId: string,
+        textureId: string) {
+        super(position, size, canvasId, undefined, textureId);
         this.tileTypeId = tileTypeId;
-        // this.position = position;
-        // this.size = size;
-        this.fallbackOutlineColour = fallbackOutlineColour;
+        this.colour = fallbackOutlineColour;
+       
         console.log(`tile construct tile at ${this.position.concat()} with size ${this.size.concat()}`)
     }
 
@@ -24,10 +23,5 @@ export class DrawableTile extends Drawable {
 
     public getSize(): Vector2 {
         return this.size;
-    }
-
-    public GetFallbackColour(): string {
-        // console.warn('using fallback colour for tile ' + this.getTileTypeId());
-        return this.fallbackOutlineColour;
     }
 }

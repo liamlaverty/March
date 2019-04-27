@@ -1,9 +1,7 @@
-import { DrawableCanvas } from "../Models/graphics.drawable-canvas";
 import { Texture2D } from "../Textures/Texture2d";
 import { AABB } from "../../../numerics/models/AABB.model";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
 import { GraphicsService } from "../graphics.service";
-import { RandomStringGenerator } from "../../Tools/random_generators/random_string.generator";
 
 export abstract class Drawable {
     // protected canvas: DrawableCanvas;
@@ -11,12 +9,13 @@ export abstract class Drawable {
     private texture: Texture2D;
     private AABB: AABB;
     protected colour: string;
+    protected textureId: string;
 
     protected position: Vector2;
     protected size: Vector2;
     protected rotationDegrees: number;
 
-    constructor(position: Vector2, size: Vector2, canvasId: string = '', texture: Texture2D = undefined) {
+    constructor(position: Vector2, size: Vector2, canvasId: string, texture: Texture2D, textureId: string) {
         console.log(`drawable constructor`);
         this.position = position;
         this.size = size;
@@ -24,6 +23,7 @@ export abstract class Drawable {
         this.canvasId = canvasId;
         this.texture = texture;
         this.rotationDegrees = 0;
+        this.textureId = textureId;
     }
 
     public getCanvasId(): string {
@@ -34,8 +34,11 @@ export abstract class Drawable {
         this.canvasId = canvasId;
     }
 
-    public getTexture(): Texture2D {
-        return this.texture;
+    public GetTextureId(): string {
+        return this.textureId;
+    }
+    public SetTextureId(textureId: string): void {
+        this.textureId = textureId;
     }
 
     protected setTexture(texture: Texture2D

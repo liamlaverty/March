@@ -6,20 +6,26 @@ export class Texture2D {
     private url: string;
     private image: HTMLImageElement;
     private imageCanRender: boolean;
+    private path: string;
 
     constructor(path: string) {
         this.url = path;
         this.id = GuidGenerator.NewGuid();
         this.image = ImageHelper.NewImage(this.url);
-        // console.error('loading image')
+        // this.imageCanRender = false;
         this.image.onload = (() => {
             this.imageCanRender = true;
-            // console.error('this image width is ' + this.image.width);
+            console.error('text2d: this image width is ' + this.image.width);
         })
         this.image.onerror = (() => {
             this.imageCanRender = false;
+            console.error('text2d: image could not render')
         })
 
+    }
+
+    public GetPath() {
+        return this.path;
     }
 
     /**

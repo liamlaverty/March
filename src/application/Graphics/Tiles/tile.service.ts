@@ -12,6 +12,7 @@ import { DirtTileType } from "./TileTypes/GroundTileTypes/dirt.tiletype";
 import { SandTileTypeGrassTop, SandTileType, SandTileTypeGrassRight, SandTileTypeGrassBottom, SandTileTypeGrassLeft } from "./TileTypes/GroundTileTypes/sand.tiletype";
 import { ShallowWaterTileType, ShallowWaterTileTypeSandTop, ShallowWaterTileTypeSandRight, ShallowWaterTileTypeSandBottom, ShallowWaterTileTypeSandLeft } from "./TileTypes/GroundTileTypes/shallow-water.tiletype";
 import { StoneTileType } from "./TileTypes/GroundTileTypes/stone.tiletype";
+import { Texture2D } from "../Textures/Texture2d";
 
 export class TileService {
 
@@ -61,31 +62,32 @@ export class TileService {
 
     Init() {
         this.tileCanvasId = this.canvasService.RegisterNewCanvas();
-        this.spaceTileType = new SpaceTileType(0);
-        this.starTileType = new StarTileType(1);
-        this.grassTileType = new GrassTileType(2);
+        this.spaceTileType = new SpaceTileType(0, this.graphicsService.GetTextureService().RegisterNewTexture(SpaceTileType.texturePath));
+        this.starTileType = new StarTileType(1, this.graphicsService.GetTextureService().RegisterNewTexture(StarTileType.texturePath));
+        this.grassTileType = new GrassTileType(2, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileType.texturePath));
 
-        this.grassTileTypeDirt = new GrassTileTypeDirt(3);
-        this.grassTileTypeDirtTop = new GrassTileTypeDirtTop(4);
-        this.grassTileTypeDirtRight = new GrassTileTypeDirtRight(5);
-        this.grassTileTypeBottom = new GrassTileTypeDirtBottom(6);
-        this.grassTileTypeLeft = new GrassTileTypeDirtLeft(7);
-        this.grassTileTypeMiddle = new GrassTileTypeDirtMiddle(8);
+        this.grassTileTypeDirt = new GrassTileTypeDirt(3, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileTypeDirt.texturePath));
+        this.grassTileTypeDirtTop = new GrassTileTypeDirtTop(4, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileTypeDirtTop.texturePath));
+        this.grassTileTypeDirtRight = new GrassTileTypeDirtRight(5, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileTypeDirtRight.texturePath));
+        this.grassTileTypeBottom = new GrassTileTypeDirtBottom(6, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileTypeDirtBottom.texturePath));
+        this.grassTileTypeLeft = new GrassTileTypeDirtLeft(7, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileTypeDirtLeft.texturePath));
+        this.grassTileTypeMiddle = new GrassTileTypeDirtMiddle(8, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileTypeDirtMiddle.texturePath));
 
-        this.dirtTileType = new DirtTileType(9);
-        this.stoneTileType = new StoneTileType(10);
+        this.dirtTileType = new DirtTileType(9, this.graphicsService.GetTextureService().RegisterNewTexture(DirtTileType.texturePath));
+        
+        this.stoneTileType = new StoneTileType(10, this.graphicsService.GetTextureService().RegisterNewTexture(StoneTileType.texturePath));
 
-        this.sandTileType = new SandTileType(11);
-        this.sandTileTypeDirtTop = new SandTileTypeGrassTop(12);
-        this.sandTileTypeDirtRight = new SandTileTypeGrassRight(13);
-        this.sandTileTypeBottom = new SandTileTypeGrassBottom(14);
-        this.sandTileTypeLeft = new SandTileTypeGrassLeft(15);
+        this.sandTileType = new SandTileType(11, this.graphicsService.GetTextureService().RegisterNewTexture(SandTileType.texturePath));
+        this.sandTileTypeDirtTop = new SandTileTypeGrassTop(12, this.graphicsService.GetTextureService().RegisterNewTexture(SandTileTypeGrassTop.texturePath));
+        this.sandTileTypeDirtRight = new SandTileTypeGrassRight(13, this.graphicsService.GetTextureService().RegisterNewTexture(SandTileTypeGrassRight.texturePath));
+        this.sandTileTypeBottom = new SandTileTypeGrassBottom(14, this.graphicsService.GetTextureService().RegisterNewTexture(SandTileTypeGrassBottom.texturePath));
+        this.sandTileTypeLeft = new SandTileTypeGrassLeft(15, this.graphicsService.GetTextureService().RegisterNewTexture(SandTileTypeGrassLeft.texturePath));
 
-        this.shallowWaterTileType = new ShallowWaterTileType(16);
-        this.shallowWaterTileTypeDirtTop = new ShallowWaterTileTypeSandTop(17);
-        this.shallowWaterTileTypeDirtRight = new ShallowWaterTileTypeSandRight(18);
-        this.shallowWaterTileTypeBottom = new ShallowWaterTileTypeSandBottom(19);
-        this.shallowWaterTileTypeLeft = new ShallowWaterTileTypeSandLeft(20);
+        this.shallowWaterTileType = new ShallowWaterTileType(16, this.graphicsService.GetTextureService().RegisterNewTexture(ShallowWaterTileType.texturePath));
+        this.shallowWaterTileTypeDirtTop = new ShallowWaterTileTypeSandTop(17, this.graphicsService.GetTextureService().RegisterNewTexture(ShallowWaterTileTypeSandTop.texturePath));
+        this.shallowWaterTileTypeDirtRight = new ShallowWaterTileTypeSandRight(18, this.graphicsService.GetTextureService().RegisterNewTexture(ShallowWaterTileTypeSandRight.texturePath));
+        this.shallowWaterTileTypeBottom = new ShallowWaterTileTypeSandBottom(19, this.graphicsService.GetTextureService().RegisterNewTexture(ShallowWaterTileTypeSandBottom.texturePath));
+        this.shallowWaterTileTypeLeft = new ShallowWaterTileTypeSandLeft(20, this.graphicsService.GetTextureService().RegisterNewTexture(ShallowWaterTileTypeSandLeft.texturePath));
 
         this.setupTileTypes();
         // this.setupTiles();
@@ -135,14 +137,15 @@ export class TileService {
         // const canvId = `${this.graphicsService.RegisterDrawableEntity('texts')}`;
         for (let x = 0; x < tiles.length; x++) {
             for (let y = 0; y < tiles[x].length; y++) {
-
+                console.warn(` text Id will be ${this.tileTypes[tiles[x][y]].GetTextureId()}`)
                 this.tiles.push(new DrawableTile(tiles[x][y],
                     new Vector2(
                         y * this.GetTileSize().getValueX(),
                         x * this.GetTileSize().getValueY()),
                     TileDefaultSettings.DEFAULT_SIZE,
                     this.tileTypes[tiles[x][y]].GetFallbackColour(),
-                    this.tileCanvasId));
+                    this.tileCanvasId,
+                    this.tileTypes[tiles[x][y]].GetTextureId()));
             }
         }
         return size;
@@ -159,7 +162,7 @@ export class TileService {
         // canv.ClearCanvas();
         for (let i = 0; i < this.tiles.length; i++) {
             this.graphicsService.getDrawingService().Draw(
-                this.tiles[i], 
+                this.tiles[i],
                 true);
 
             // if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.tiles[i].getPosition(), this.tiles[i].getSize())) {
@@ -178,16 +181,17 @@ export class TileService {
     }
 
     protected DrawToCanvasAsRect(canv: DrawableCanvas, tile: DrawableTile) {
-        canv.ctx.strokeStyle = tile.GetFallbackColour();
-        canv.ctx.strokeRect(
-            tile.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
-            tile.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
-            tile.getSize().x,
-            tile.getSize().y
-        );
+        throw new Error('obsolete');
+        // canv.ctx.strokeStyle = tile.GetFallbackColour();
+        // canv.ctx.strokeRect(
+        //     tile.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
+        //     tile.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
+        //     tile.getSize().x,
+        //     tile.getSize().y
+        // );
     }
 
-    GetTextureFromTileType(id: number) {
+    GetTextureFromTileType(id: number): Texture2D {
         try {
             return this.tileTypes[id].GetTexture();
         }

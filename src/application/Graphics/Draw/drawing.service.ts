@@ -6,16 +6,20 @@ import { Drawable } from "./drawable";
 import { CanvasService } from "../Canvas/graphics.canvas.service";
 import { GameCameraService } from "../Camera/game-camera.service";
 import { DrawableTile } from "../Tiles/drawable-tile";
+import { TextureService } from "../Textures/texture.service";
 
 export class DrawingService {
     private cameraService: GameCameraService;
     private canvasService: CanvasService;
+    private textureService: TextureService;
     private allowTextureDrawing: boolean = true;
     private drawAsStroke = true;
 
     constructor(
         cameraService: GameCameraService,
-        canvasService: CanvasService) {
+        canvasService: CanvasService,
+        textureService: TextureService) {
+        this.textureService = textureService;
         this.canvasService = canvasService;
         this.cameraService = cameraService;
         console.log('constructing drawing service');
@@ -23,10 +27,6 @@ export class DrawingService {
 
     public Draw(drawable: Drawable, skipCanvasClear: boolean = false) {
         const deg: number = drawable.GetRotation();
-        if (drawable.getCanvasId() === 'texts') {
-            console.log(`tile: AABB is ${JSON.stringify(drawable.getAABB())}
-            onscreen = ${this.cameraService.IsObjectOnScreenAABB(drawable.getAABB())}`);
-        }
         if (this.cameraService.IsObjectOnScreenAABB(drawable.getAABB())) {
 
             const canv = this.canvasService.GetCanvas(drawable.getCanvasId());
@@ -52,9 +52,19 @@ export class DrawingService {
             const drawSizeX = drawable.GetSizeX();
             const drawSizeY = drawable.GetSizeY();
 
-            if (this.allowTextureDrawing && drawable.getTexture() && drawable.getTexture().GetCanRender()) {
-                this.DrawAsTexture(drawable, canv, drawLocationX, drawLocationY, drawSizeX, drawSizeY);
+            const texture = this.textureService.GetTexture(drawable.GetTextureId());
+
+
+            if (this.allowTextureDrawing && texture && texture.GetCanRender()) {
+                this.DrawAsTexture(texture, canv, drawLocationX, drawLocationY, drawSizeX, drawSizeY);
+            } else if (false) {
+                //TODO remove or change this
             } else {
+                if (drawable.GetTextureId()) {
+                    console.log(`
+                     text: ${texture.GetId()}
+                     rend: ${texture.GetCanRender()}`);
+                }
                 this.DrawAsRect(drawable, canv, drawLocationX, drawLocationY, drawSizeX, drawSizeY);
             }
 
@@ -83,7 +93,7 @@ export class DrawingService {
 
     // }
 
-    DrawAsTexture(drawable: Drawable, canv: DrawableCanvas,
+    DrawAsTexture(texture: Texture2D, canv: DrawableCanvas,
         drawLocationX: number, drawLocationY: number, drawSizeX: number, drawSizeY: number) {
 
         canv.ctx.strokeStyle = '#fff';
@@ -94,7 +104,9 @@ export class DrawingService {
             drawSizeY
         );
 
-        canv.ctx.drawImage(drawable.getTexture().GetImage(),
+
+
+        canv.ctx.drawImage(texture.GetImage(),
             drawLocationX,
             drawLocationY,
             drawSizeX,

@@ -1,36 +1,36 @@
 import { TileType } from "../_base-tiletype";
 
 export class SandTileType extends TileType {
-    private static readonly texturePath: string = '/Tiles/ground/sand.png';
-    constructor(id: number) {
-        super(SandTileType.texturePath, id, '#C1C128');
+    public static readonly texturePath: string = '/Tiles/ground/sand.png';
+    constructor(id: number, textId: string) {
+        super(SandTileType.texturePath, id, '#C1C128', textId);
     }
 }
 
 export class SandTileTypeGrassTop extends TileType {
-    private static readonly texturePath: string = '/Tiles/ground/sand_grass_top.png';
-    constructor(id: number) {
-        super(SandTileTypeGrassTop.texturePath, id, '#C1C128');
+    public static readonly texturePath: string = '/Tiles/ground/sand_grass_top.png';
+    constructor(id: number, textId: string) {
+        super(SandTileTypeGrassTop.texturePath, id, '#C1C128', textId);
     }
 }
 
 export class SandTileTypeGrassRight extends TileType {
-    private static readonly texturePath: string = '/Tiles/ground/sand_grass_right.png';
-    constructor(id: number) {
-        super(SandTileTypeGrassRight.texturePath, id, '#C1C128');
+    public static readonly texturePath: string = '/Tiles/ground/sand_grass_right.png';
+    constructor(id: number, textId: string) {
+        super(SandTileTypeGrassRight.texturePath, id, '#C1C128', textId);
     }
 }
 
 export class SandTileTypeGrassBottom extends TileType {
-    private static readonly texturePath: string = '/Tiles/ground/sand_grass_bottom.png';
-    constructor(id: number) {
-        super(SandTileTypeGrassBottom.texturePath, id, '#C1C128');
+    public static readonly texturePath: string = '/Tiles/ground/sand_grass_bottom.png';
+    constructor(id: number, textId: string) {
+        super(SandTileTypeGrassBottom.texturePath, id, '#C1C128', textId);
     }
 }
 
 export class SandTileTypeGrassLeft extends TileType {
-    private static readonly texturePath: string = '/Tiles/ground/sand_grass_left.png';
-    constructor(id: number) {
-        super(SandTileTypeGrassLeft.texturePath, id, '#C1C128');
+    public static readonly texturePath: string = '/Tiles/ground/sand_grass_left.png';
+    constructor(id: number, textId: string) {
+        super(SandTileTypeGrassLeft.texturePath, id, '#C1C128', textId);
     }
 }

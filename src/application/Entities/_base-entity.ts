@@ -19,8 +19,8 @@ export abstract class Entity extends Drawable {
     protected id: string;
 
 
-    constructor(position: Vector2, size: Vector2, name: string, canvasId: string, texture: Texture2D = undefined) {
-        super(position, size, canvasId, texture);
+    constructor(position: Vector2, size: Vector2, name: string, canvasId: string, texture: Texture2D, textureId: string) {
+        super(position, size, canvasId, texture, textureId);
         this.id = GuidGenerator.NewGuid();
         this.name = name;
     }

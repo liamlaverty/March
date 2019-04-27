@@ -3,6 +3,7 @@ import { CanvasService } from "./Canvas/graphics.canvas.service";
 import { TileService } from "./Tiles/tile.service";
 import { GameCameraService } from "./Camera/game-camera.service";
 import { DrawingService } from "./Draw/drawing.service";
+import { TextureService } from "./Textures/texture.service";
 
 export class GraphicsService {
     
@@ -11,6 +12,7 @@ export class GraphicsService {
     private tileService: TileService;
     private gameCameraService: GameCameraService;
     private drawingService: DrawingService;
+    private textureService: TextureService;
 
     
 
@@ -22,8 +24,9 @@ export class GraphicsService {
         this.htmlService = new HtmlService();
         this.canvasService = new CanvasService(this.htmlService);
         this.tileService = new TileService(this.canvasService, this);
+        this.textureService = new TextureService();
         this.gameCameraService = new GameCameraService(0, 0);
-        this.drawingService = new DrawingService(this.gameCameraService, this.canvasService);
+        this.drawingService = new DrawingService(this.gameCameraService, this.canvasService, this.textureService);
         this.ticks = 0;
     }
 
@@ -36,6 +39,10 @@ export class GraphicsService {
         // for (let i = 0; i < 10; i++) {
         //     this.canvasService.RegisterNewCanvas(i.toString());
         // }
+    }
+
+    public GetTextureService(): TextureService {
+        return this.textureService;
     }
 
     GetTileService(): TileService {

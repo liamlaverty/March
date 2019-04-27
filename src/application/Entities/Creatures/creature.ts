@@ -34,7 +34,9 @@ export abstract class Creature extends Entity {
     constructor(position: Vector2, size: Vector2, name: string,
         texturePath: string,
         graphicsService: GraphicsService) {
-        super(position, size, name, '1');
+        super(position, size, name, '1', undefined, '1');
+        console.error('passing incorrect texture ID and canvasId, and canvas to super');
+
         this.graphicsService = graphicsService;
 
         this.health = CreatureDefaultSettings.DEFAULT_HEALTH;
@@ -48,6 +50,8 @@ export abstract class Creature extends Entity {
 
 
         if (texturePath !== undefined && texturePath !== null && texturePath.length) {
+            const textureId = this.graphicsService.GetTextureService().RegisterNewTexture(texturePath);
+            this.SetTextureId(textureId);
             this.setTexture(new Texture2D(texturePath));
         }
 
@@ -142,40 +146,6 @@ export abstract class Creature extends Entity {
         //     this.rotationDegrees = 0;
         // }
     }
-
-    Draw(colour: string): CanvasRenderingContext2D {
-        const canv = this.graphicsService.GetCanvas(this.getCanvasId());
-        canv.ClearCanvas();
-        if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.getPosition(), this.getSize())) {
-            this.DrawToCanvasAsTexture2D(canv, colour);
-        }
-        return canv.ctx;
-    }
-
-    protected DrawToCanvasAsRect(canv: DrawableCanvas, colour: string) {
-        canv.ctx.strokeStyle = colour;
-
-        canv.ctx.strokeRect(
-            this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
-            this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
-            this.getSize().x,
-            this.getSize().y
-        );
-    }
-
-    DrawToCanvasAsTexture2D(canv: DrawableCanvas, colour: string) {
-
-        if (this.getTexture().GetCanRender()) {
-            canv.ctx.drawImage(this.getTexture().GetImage(),
-                this.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
-                this.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
-                this.getSize().x,
-                this.getSize().y);
-        } else {
-            this.DrawToCanvasAsRect(canv, colour);
-        }
-    }
-
 
     public getHealth(): number {
         return this.health;
