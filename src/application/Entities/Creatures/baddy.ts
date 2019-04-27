@@ -7,6 +7,7 @@ import { IntersectionHelper } from "../../../numerics/helpers/intersection.helpe
 import { RandomNumberGenerator } from "../../Tools/random_generators/random_number.generators";
 import { Radians, Degrees, FartherRight } from "../../../numerics/helpers/degrees.helper";
 import { Between, Lerp } from "../../../numerics/helpers/number.helper";
+import { Entity } from "../_base-entity";
 
 export class Baddy extends Creature {
     private playerService: PlayerService;
@@ -19,7 +20,7 @@ export class Baddy extends Creature {
         super(position, size, name, texturePath, graphicsService);
         this.playerService = playerService;
         this.colour = colour;
-        this.maxSpeed = new Vector2(10,10);
+        this.maxSpeed = new Vector2(10, 10);
         this.acceleration = new Vector2(.55, .6);
 
         // const friction = 0.85; // RandomNumberGenerator.GetRandomNumber(100, 200) / 1000;
@@ -31,13 +32,14 @@ export class Baddy extends Creature {
 
         // this.velocity = RandomNumberGenerator.GetRandomVector2(-10, 10, -10, 10);
         this.rotationDegrees = 0;// RandomNumberGenerator.GetRandomNumber(0, 359);
-        this.turnSpeed = .5;
+        this.turnSpeed = .0515;
         this.thrust = 1;
 
     }
 
     public Tick(lastDelta: number): void {
         this.UpdateAABB();
+
         const playerAABB = this.playerService.GetPlayer().getAABB();
         this.MoveToPlayer(playerAABB);
 
@@ -47,7 +49,9 @@ export class Baddy extends Creature {
         // super.Draw(this.colour);
     }
 
-
+    collideWithObject(entity: Entity) {
+        console.log('colliding with object')
+    }
 
     private turnToPlayer(playerAABB: AABB) {
         let dx = playerAABB.GetCenter().getValueX() - this.getAABB().GetCenter().getValueX();
@@ -74,8 +78,8 @@ export class Baddy extends Creature {
         const rotSin = Math.sin(rotationAsRadians);
         const rotCos = Math.cos(rotationAsRadians);
 
-         this.velocity.x -= (rotCos * this.thrust);
-         this.velocity.y -= (rotSin * this.thrust);
+        this.velocity.x -= (rotCos * this.thrust);
+        this.velocity.y -= (rotSin * this.thrust);
 
 
         // const rotationAsRadians = this.rotationDegrees / Math.PI * 180;
