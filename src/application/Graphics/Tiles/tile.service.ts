@@ -74,7 +74,7 @@ export class TileService {
         this.grassTileTypeMiddle = new GrassTileTypeDirtMiddle(8, this.graphicsService.GetTextureService().RegisterNewTexture(GrassTileTypeDirtMiddle.texturePath));
 
         this.dirtTileType = new DirtTileType(9, this.graphicsService.GetTextureService().RegisterNewTexture(DirtTileType.texturePath));
-        
+
         this.stoneTileType = new StoneTileType(10, this.graphicsService.GetTextureService().RegisterNewTexture(StoneTileType.texturePath));
 
         this.sandTileType = new SandTileType(11, this.graphicsService.GetTextureService().RegisterNewTexture(SandTileType.texturePath));
@@ -157,48 +157,14 @@ export class TileService {
         canv.ClearCanvas();
     }
     Redner() {
-        // const canv = this.graphicsService.GetCanvas(this.tileCanvasId);
         this.PreClearCanvas();
-        // canv.ClearCanvas();
         for (let i = 0; i < this.tiles.length; i++) {
             this.graphicsService.getDrawingService().Draw(
                 this.tiles[i],
                 true);
-
-            // if (this.graphicsService.getGameCameraService().IsObectOnScreen(this.tiles[i].getPosition(), this.tiles[i].getSize())) {
-            //     const text = this.GetTextureFromTileType(this.tiles[i].getTileTypeId());
-            //     const cameraOffset = this.graphicsService.getGameCameraService().GetOffsetVector();
-            //     if (text.GetCanRender()) {
-
-            //         canv.ctx.drawImage(text.GetImage(),
-            //             this.tiles[i].getPosition().x - cameraOffset.getValueX(),
-            //             this.tiles[i].getPosition().y - cameraOffset.getValueY());
-            //     } else {
-            //         this.DrawToCanvasAsRect(canv, this.tiles[i]);
-            //     }
-            // }
         }
     }
 
-    protected DrawToCanvasAsRect(canv: DrawableCanvas, tile: DrawableTile) {
-        throw new Error('obsolete');
-        // canv.ctx.strokeStyle = tile.GetFallbackColour();
-        // canv.ctx.strokeRect(
-        //     tile.getPosition().x - this.graphicsService.getGameCameraService().GetOffsetX(),
-        //     tile.getPosition().y - this.graphicsService.getGameCameraService().GetOffsetY(),
-        //     tile.getSize().x,
-        //     tile.getSize().y
-        // );
-    }
-
-    GetTextureFromTileType(id: number): Texture2D {
-        try {
-            return this.tileTypes[id].GetTexture();
-        }
-        catch (ex) {
-            console.warn('failed to get texture for tile type at ' + id);
-        }
-    }
 
     public GetTileSize() {
         return this.tileSize;

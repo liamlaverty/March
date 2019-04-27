@@ -6,7 +6,7 @@ export class DrawableTile extends Drawable {
 
     constructor(tileTypeId: number, position: Vector2, size: Vector2, fallbackOutlineColour: string, canvasId: string,
         textureId: string) {
-        super(position, size, canvasId, undefined, textureId);
+        super(position, size, canvasId, textureId);
         this.tileTypeId = tileTypeId;
         this.colour = fallbackOutlineColour;
        

@@ -1,12 +1,8 @@
-import { Texture2D } from "../Textures/Texture2d";
 import { AABB } from "../../../numerics/models/AABB.model";
 import { Vector2 } from "../../../numerics/models/Vector2.model";
-import { GraphicsService } from "../graphics.service";
 
 export abstract class Drawable {
-    // protected canvas: DrawableCanvas;
     private canvasId: string;
-    private texture: Texture2D;
     private AABB: AABB;
     protected colour: string;
     protected textureId: string;
@@ -15,13 +11,12 @@ export abstract class Drawable {
     protected size: Vector2;
     protected rotationDegrees: number;
 
-    constructor(position: Vector2, size: Vector2, canvasId: string, texture: Texture2D, textureId: string) {
+    constructor(position: Vector2, size: Vector2, canvasId: string, textureId: string) {
         console.log(`drawable constructor`);
         this.position = position;
         this.size = size;
         this.AABB = new AABB(this.position, this.size);
         this.canvasId = canvasId;
-        this.texture = texture;
         this.rotationDegrees = 0;
         this.textureId = textureId;
     }
@@ -39,11 +34,6 @@ export abstract class Drawable {
     }
     public SetTextureId(textureId: string): void {
         this.textureId = textureId;
-    }
-
-    protected setTexture(texture: Texture2D
-    ): void {
-        this.texture = texture;
     }
 
     public getAABB(): AABB {

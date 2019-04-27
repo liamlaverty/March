@@ -34,7 +34,7 @@ export abstract class Creature extends Entity {
     constructor(position: Vector2, size: Vector2, name: string,
         texturePath: string,
         graphicsService: GraphicsService) {
-        super(position, size, name, '1', undefined, '1');
+        super(position, size, name, '1', 'no_text_yet');
         console.error('passing incorrect texture ID and canvasId, and canvas to super');
 
         this.graphicsService = graphicsService;
@@ -52,7 +52,8 @@ export abstract class Creature extends Entity {
         if (texturePath !== undefined && texturePath !== null && texturePath.length) {
             const textureId = this.graphicsService.GetTextureService().RegisterNewTexture(texturePath);
             this.SetTextureId(textureId);
-            this.setTexture(new Texture2D(texturePath));
+        } else {
+            console.error(new Error(`creature [${name}] did not have a texture`));
         }
 
     }

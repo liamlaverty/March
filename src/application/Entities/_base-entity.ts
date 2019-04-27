@@ -19,14 +19,15 @@ export abstract class Entity extends Drawable {
     protected id: string;
 
 
-    constructor(position: Vector2, size: Vector2, name: string, canvasId: string, texture: Texture2D, textureId: string) {
-        super(position, size, canvasId, texture, textureId);
+    // constructor(position: Vector2, size: Vector2, name: string, canvasId: string, texture: Texture2D, textureId: string) {
+    constructor(position: Vector2, size: Vector2, name: string, canvasId: string, textureId: string) {
+        super(position, size, canvasId, textureId);
         this.id = GuidGenerator.NewGuid();
         this.name = name;
     }
 
     public abstract Tick(lastDelta: number): void;
-    
+
 
     getName(): string {
         return this.name;
@@ -35,8 +36,6 @@ export abstract class Entity extends Drawable {
     getId(): string {
         return this.name;
     }
-
-
 
     getPosition(): Vector2 {
         return this.position;
