@@ -28,7 +28,6 @@ export class InputState {
     constructor() {
         console.log('inputState: constructing input state');
         this.detailsDiv = document.getElementById('details_div');
-        this.detailsDiv.innerHTML = `No gamepad connected`;
         this.registeredGamePads = new Array<Gamepad>();
         this.gamePads = new Array<Gamepad>();
     }

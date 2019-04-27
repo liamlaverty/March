@@ -57,10 +57,10 @@ export class TimerService {
      */
     public PrintCurrentFpsToConsole() {
         return `
-        ticks and frames: ${this.ticks}
-        lastDelta: ${this.delta}
-        timer: ${this.timer}
-        lastTime Took: ${this.lastTimeTook}`;
+        ticks and frames: ${this.ticks.toFixed(2)}
+        lastDelta: ${this.delta.toFixed(2)}
+        timer: ${this.timer.toFixed(2)}
+        lastTime Took: ${this.lastTimeTook.toFixed(2)}`;
     }
 
     public ResetTimers() {

@@ -41,9 +41,13 @@ export class Game {
     private settingsState: SettingsState;
 
     gameEntities: Entity[];
+    private performanceInfoDiv: HTMLElement;
 
 
     constructor() {
+        this.performanceInfoDiv = document.getElementById('performance_div');
+        this.performanceInfoDiv.innerHTML = `waiting for perf data`;
+
         this.viewportService = new ViewportService();
         const loadedInDebugMode = this.checkDebugModeFromQueryString();
         this.graphicsService = new GraphicsService();
@@ -104,7 +108,7 @@ export class Game {
                     this.timerService.UpdateTicksAndRenderAfterLoop();
                 }
 
-                this.PrintDebugInfoToConsole();
+                this.PrintDebugInfoToConsole(false, true);
                 this.timerService.ResetTimers();
             }
             this.Loop();
@@ -118,18 +122,24 @@ export class Game {
      * @private
      * @memberof Game
      */
-    private PrintDebugInfoToConsole() {
+    private PrintDebugInfoToConsole(printToConsole: boolean = false, printToHtml: boolean = false) {
         if (this.timerService.ShouldPrintDebugData()) {
             // console.clear();
             let debugInformation: string[] = new Array<string>();
             debugInformation.push('FPS Serv: ' + this.timerService.PrintCurrentFpsToConsole());
             debugInformation.push('Cam Serv: ' + this.graphicsService.getGameCameraService().GetDebugInfo());
-            for (let line of debugInformation) {
-                if (line.length > 0) {
-                    console.log('%c ' + line + ' ', 'background: #000; color:white; ');
+            if (printToConsole) {
+                for (let line of debugInformation) {
+                    if (line.length > 0) {
+                        console.log('%c ' + line + ' ', 'background: #000; color:white; ');
+                    }
                 }
             }
-            debugInformation = Array<string>(0);
+            if (printToHtml) {
+                this.performanceInfoDiv.innerHTML = `<pre>${debugInformation.join('\n')}</pre>`;
+            }
+
+            // debugInformation = Array<string>(0);
         }
     }
 
@@ -167,11 +177,11 @@ export class Game {
 
     registerEntities(baddyCount: number = 25): void {
 
-        
+
 
 
         const ships = [
-            'metalic_01.png', 
+            'metalic_01.png',
             'metalic_02.png',
             'metalic_03.png',
             'metalic_04.png',
@@ -190,9 +200,9 @@ export class Game {
             console.log('image loc will be ' + imageLoc);
             const entity = new Baddy(
                 // new Vector2(500, 300),
-                 RandomNumberGenerator.GetRandomVector2(
-                     0, this.viewportService.GetBrowserWidth(),
-                     0, this.viewportService.GetBrowserHeight()),
+                RandomNumberGenerator.GetRandomVector2(
+                    0, this.viewportService.GetBrowserWidth(),
+                    0, this.viewportService.GetBrowserHeight()),
                 entitySize,
                 'baddy' + i.toString(),
                 '/Ships/' + ships[imageLoc],

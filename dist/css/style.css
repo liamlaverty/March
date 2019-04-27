@@ -86,12 +86,17 @@ canvas {
   canvas.parent {
     background: black; }
 
-#details_div {
+.notice-holder {
   padding: 20px;
   width: auto;
   clear: both;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0; }
+  .notice-holder #details_div, .notice-holder #performance_div {
+    position: relative;
+    width: auto;
+    border: 1px dashed pink;
+    padding: 1rem; }

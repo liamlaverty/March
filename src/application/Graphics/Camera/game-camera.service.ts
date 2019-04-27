@@ -20,8 +20,8 @@ export class GameCameraService {
 
     public GetDebugInfo(): string[] {
         return [`
-        offset:     ${this.offset.concat()} 
-        size:       ${this.displayableSize.concat()}`];
+        offset:     ${this.offset.concat(2)} 
+        size:       ${this.displayableSize.concat(2)}`];
     }
 
     /**
