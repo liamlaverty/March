@@ -22,7 +22,8 @@ export class GraphicsService {
         this.canvasService = new CanvasService(this.htmlService);
         this.tileService = new TileService(this.canvasService, this);
         this.textureService = new TextureService();
-        this.gameCameraService = new GameCameraService(0, 0, true);
+        const applyCameraWorldBounding = false;
+        this.gameCameraService = new GameCameraService(0, 0, applyCameraWorldBounding);
         this.drawingService = new DrawingService(this.gameCameraService, this.canvasService, this.textureService);
     }
 
