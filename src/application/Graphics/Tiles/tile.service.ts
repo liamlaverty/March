@@ -137,7 +137,6 @@ export class TileService {
         // const canvId = `${this.graphicsService.RegisterDrawableEntity('texts')}`;
         for (let x = 0; x < tiles.length; x++) {
             for (let y = 0; y < tiles[x].length; y++) {
-                console.warn(` text Id will be ${this.tileTypes[tiles[x][y]].GetTextureId()}`)
                 this.tiles.push(new DrawableTile(tiles[x][y],
                     new Vector2(
                         y * this.GetTileSize().getValueX(),

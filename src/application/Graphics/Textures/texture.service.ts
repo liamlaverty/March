@@ -27,13 +27,15 @@ export class TextureService {
      */
     public RegisterNewTexture(texturePath: string): string {
         for (let i = 0; i < this.textures.length; i++) {
-            if (this.textures[i].GetPath() === texturePath) {
+            const thisTextPath = this.textures[i].GetPath()
+            if (thisTextPath === texturePath) {
                 console.error('attempted to create a texture a second time')
                 return this.textures[i].GetId();
             }
         }
         const newTexture = new Texture2D(texturePath);
         this.textures.push(newTexture);
+        console.warn(`texture stack is now [${this.textures.length}] long`)
         return newTexture.GetId();
     }
 }

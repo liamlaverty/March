@@ -60,11 +60,11 @@ export class DrawingService {
             } else if (false) {
                 //TODO remove or change this
             } else {
-                if (drawable.GetTextureId()) {
-                    console.log(`
-                     text: ${texture.GetId()}
-                     rend: ${texture.GetCanRender()}`);
-                }
+                // if (drawable.GetTextureId()) {
+                //     console.log(`
+                //      text: ${texture.GetId()}
+                //      rend: ${texture.GetCanRender()}`);
+                // }
                 this.DrawAsRect(drawable, canv, drawLocationX, drawLocationY, drawSizeX, drawSizeY);
             }
 

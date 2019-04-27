@@ -9,13 +9,12 @@ export class Texture2D {
     private path: string;
 
     constructor(path: string) {
+        this.path = path;
         this.url = path;
         this.id = GuidGenerator.NewGuid();
         this.image = ImageHelper.NewImage(this.url);
-        // this.imageCanRender = false;
         this.image.onload = (() => {
             this.imageCanRender = true;
-            console.error('text2d: this image width is ' + this.image.width);
         })
         this.image.onerror = (() => {
             this.imageCanRender = false;

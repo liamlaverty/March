@@ -9,8 +9,6 @@ export class DrawableTile extends Drawable {
         super(position, size, canvasId, textureId);
         this.tileTypeId = tileTypeId;
         this.colour = fallbackOutlineColour;
-       
-        console.log(`tile construct tile at ${this.position.concat()} with size ${this.size.concat()}`)
     }
 
     public getTileTypeId(): number {

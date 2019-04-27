@@ -14,11 +14,6 @@ export class GraphicsService {
     private drawingService: DrawingService;
     private textureService: TextureService;
 
-    
-
-
-    private ticks: number;
-
     constructor() {
         console.log('starting graphics service');
         this.htmlService = new HtmlService();
@@ -27,7 +22,6 @@ export class GraphicsService {
         this.textureService = new TextureService();
         this.gameCameraService = new GameCameraService(0, 0);
         this.drawingService = new DrawingService(this.gameCameraService, this.canvasService, this.textureService);
-        this.ticks = 0;
     }
 
 
