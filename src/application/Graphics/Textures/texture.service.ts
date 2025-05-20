@@ -35,7 +35,7 @@ export class TextureService {
         }
         const newTexture = new Texture2D(texturePath);
         this.textures.push(newTexture);
-        console.warn(`texture stack is now [${this.textures.length}] long`)
+        // console.warn(`texture stack is now [${this.textures.length}] long`)
         return newTexture.GetId();
     }
 }

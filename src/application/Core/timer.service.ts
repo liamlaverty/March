@@ -29,7 +29,8 @@ export class TimerService {
         if (this.delta >= 1) {
             return true;
         }
-        console.warn(`RUNNING SLOWLY. did not render. Delta [${this.delta}]`)
+        
+        // console.warn(`RUNNING SLOWLY. did not render. Delta [${this.delta}]`)
         return false;
     }
 

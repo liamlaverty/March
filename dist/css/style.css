@@ -21,70 +21,85 @@ time, mark, audio, video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+}
 
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-  display: block; }
+  display: block;
+}
 
 body {
-  line-height: 1; }
+  line-height: 1;
+}
 
 ol, ul {
-  list-style: none; }
+  list-style: none;
+}
 
 blockquote, q {
-  quotes: none; }
+  quotes: none;
+}
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
-  content: none; }
+  content: "";
+  content: none;
+}
 
 table {
   border-collapse: collapse;
-  border-spacing: 0; }
+  border-spacing: 0;
+}
 
 #el_canvasable {
   height: 100%;
-  width: 100%; }
+  width: 100%;
+}
 
 div.in_debug_mode #el_canvasable {
   height: 100%;
-  width: 100%; }
-
+  width: 100%;
+}
 div.in_debug_mode #el_debug_info {
   position: absolute;
   right: 0;
   height: 100%;
   width: 30%;
   color: #c0c0c0;
-  background-color: rgba(45, 45, 45, 0.5); }
+  background-color: rgba(45, 45, 45, 0.5);
+}
 
 body {
-  background: #ff0000; }
+  background: #ff0000;
+}
 
 body, html {
   height: 100%;
-  width: 100%; }
+  width: 100%;
+}
 
 body {
-  background: #2F4F4F; }
+  background: #2F4F4F;
+}
 
 #main_div {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center; }
+  align-items: center;
+}
 
 canvas {
   background: transparent;
   display: block;
   margin: 0 auto;
-  box-sizing: border-box; }
-  canvas.parent {
-    background: black; }
+  box-sizing: border-box;
+}
+canvas.parent {
+  background: black;
+}
 
 .notice-holder {
   padding: 20px;
@@ -94,9 +109,13 @@ canvas {
   color: white;
   position: absolute;
   left: 0;
-  top: 0; }
-  .notice-holder #details_div, .notice-holder #performance_div {
-    position: relative;
-    width: auto;
-    border: 1px dashed pink;
-    padding: 1rem; }
+  top: 0;
+}
+.notice-holder #details_div, .notice-holder #performance_div {
+  position: relative;
+  width: auto;
+  border: 1px dashed pink;
+  padding: 1rem;
+}
+
+/*# sourceMappingURL=style.css.map */
