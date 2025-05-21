@@ -1,3 +1,4 @@
+import './scss/_main.scss';
 import { Game } from './application/game';
 
 export class App {
